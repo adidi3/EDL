@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "707117580263",
+    "firebase_url": "https://edlfirebaseproject.firebaseio.com",
+    "project_id": "edlfirebaseproject",
+    "storage_bucket": "edlfirebaseproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707117580263:android:d246d97a3cd13deae10742",
+        "android_client_info": {
+          "package_name": "com.example.edl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707117580263-ara1mskma9onkj4h8ri2pr87v1smnohr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.edl",
+            "certificate_hash": "a1f9825984d3769b338dbbc26a4be6b350a549c5"
+          }
+        },
+        {
+          "client_id": "707117580263-llopcfu9sbopav1h5iebroqfu18ifih0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLJuEu5qLipErlLpluA6HlGK4Mq9NBbso"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707117580263-llopcfu9sbopav1h5iebroqfu18ifih0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
