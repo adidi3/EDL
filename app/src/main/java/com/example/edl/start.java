@@ -45,12 +45,12 @@ public class start extends AppCompatActivity {
     ListView l1;
     Spinner spinner;
     Switch switchMALEfemale, switchTecherstudent, switchAutoManuel;
-    String name, phone, email, password, uid;
+    String name, phone, email, password, uid, id;
     User userdb;
     DatePickerDialog.OnDateSetListener d1;
     Boolean stayConnect, registered;
-    Boolean male=false;
-    Boolean auto=false;
+    Boolean female=false;
+    Boolean manual=false;
     Boolean teacher= false;
 
 
@@ -144,11 +144,11 @@ public class start extends AppCompatActivity {
             public void onClick(View textView) {
                 tVtitle.setText("Register");
                 eTname.setVisibility(View.VISIBLE);
+                eTid.setVisibility(View.VISIBLE);
                 switchTecherstudent.setVisibility(View.VISIBLE);
                 eTphone.setVisibility(View.VISIBLE);
                 tVteacher.setVisibility(View.VISIBLE);
                 tVstudent.setVisibility(View.VISIBLE);
-                eTname.setVisibility(View.VISIBLE);
                 btn.setText("Register");
                 registered=false;
                logoption();
@@ -166,6 +166,7 @@ public class start extends AppCompatActivity {
             public void onClick(View textView) {
                 tVtitle.setText("Login");
                 eTname.setVisibility(View.INVISIBLE);
+                eTid.setVisibility(View.INVISIBLE);
                 eTphone.setVisibility(View.INVISIBLE);
                 tvDate.setVisibility(View.INVISIBLE);
                 switchTecherstudent.setVisibility(View.INVISIBLE);
@@ -223,6 +224,7 @@ public class start extends AppCompatActivity {
 
         } else {
             name=eTname.getText().toString();
+            id=eTid.getText().toString();
             phone=eTphone.getText().toString();
             email=eTemail.getText().toString();
             password=eTpass.getText().toString();
@@ -262,7 +264,6 @@ public class start extends AppCompatActivity {
     public void switchTeacher(View view) {
         if (switchTecherstudent.isChecked()){
             tvDate.setVisibility(View.VISIBLE);
-            switchAutoManuel.setVisibility(View.VISIBLE);
             switchMALEfemale.setVisibility(View.VISIBLE);
             l1.setVisibility(View.VISIBLE);
             tVauto.setVisibility(View.VISIBLE);
@@ -271,12 +272,30 @@ public class start extends AppCompatActivity {
             tVfemale.setVisibility(View.VISIBLE);
             switchAutoManuel.setVisibility(View.VISIBLE);
             teacher=true;
+            if(switchMALEfemale.isChecked()){
+                female=true;
+            }
+            else{
+                female=false;
+            }
+
+            if (switchAutoManuel.isChecked()){
+                manual=true;
+            }
+            else{
+                manual=false;
+            }
 
         }
         else {
             tvDate.setVisibility(View.INVISIBLE);
             switchAutoManuel.setVisibility(View.INVISIBLE);
             l1.setVisibility(View.INVISIBLE);
+            tVauto.setVisibility(View.INVISIBLE);
+            tVmanual.setVisibility(View.INVISIBLE);
+            tVmale.setVisibility(View.INVISIBLE);
+            tVfemale.setVisibility(View.INVISIBLE);
+            switchMALEfemale.setVisibility(View.INVISIBLE);
             teacher= false;
 
         }
