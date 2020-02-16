@@ -243,7 +243,7 @@ public class start extends AppCompatActivity {
                                 Log.d("MainActivity", "createUserWithEmail:success");
                                 FirebaseUser user = refAuth.getCurrentUser();
                                 uid = user.getUid();
-                                userdb=new User(name,email,phone,uid);
+                                userdb=new User(name,email,phone,uid, id, password);
                                 refUsers.child(name).setValue(userdb);
                                 Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                 Intent si = new Intent(start.this,Loginok.class);
