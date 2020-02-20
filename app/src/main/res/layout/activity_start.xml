@@ -90,9 +90,9 @@
                 <Switch
                     android:id="@+id/switchTecherstudent"
                     android:layout_width="wrap_content"
-                    android:onClick="switchTeacher"
                     android:layout_height="match_parent"
                     android:ems="10"
+                    android:onClick="switchTeacher"
                     android:visibility="invisible" />
 
                 <TextView

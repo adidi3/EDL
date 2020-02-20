@@ -2,16 +2,37 @@ package com.example.edl;
 
 class User {
     private String name, email, phone, uid, id, password;
+    private boolean student, manual, female;
 
     public User (){}
-    public User (String name, String email, String phone, String uid, String id, String password) {
+    public User (String name, String email, String phone, String uid, String id, String password, Boolean student, Boolean manual, Boolean female) {
         this.name=name;
         this.email=email;
         this.phone=phone;
         this.uid=uid;
         this.id=id;
         this.password=password;
+        this.female=female;
+        this.manual=manual;
+        this.student=student;
     }
+    public Boolean getFemale() {
+        return female;
+    }
+
+    public void setFemale(Boolean female) {this.female=female;}
+
+    public Boolean getStudent() {
+        return student;
+    }
+
+    public void setStudent(Boolean student) {this.student=student;}
+
+    public Boolean getManual() {
+        return manual;
+    }
+
+    public void setManual(Boolean manual) {this.manual=manual;}
 
     public String getName() {
         return name;

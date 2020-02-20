@@ -16,6 +16,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -31,6 +32,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
@@ -45,15 +49,18 @@ public class start extends AppCompatActivity {
     ListView l1;
     Spinner spinner;
     Switch switchMALEfemale, switchTecherstudent, switchAutoManuel;
+
     String name, phone, email, password, uid, id;
+
     User userdb;
     DatePickerDialog.OnDateSetListener d1;
     Boolean stayConnect, registered;
+
     Boolean female=false;
     Boolean manual=false;
-    Boolean teacher= false;
+    Boolean student= false;
 
-
+    ArrayAdapter<String> adp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,6 +207,21 @@ public class start extends AppCompatActivity {
             email=eTemail.getText().toString();
             password=eTpass.getText().toString();
 
+            ValueEventListener mrListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot ds) {
+                    for (DataSnapshot data : ds.getChildren()) {
+                        eTemail.setText(refAuth.getCurrentUser().getEmail());
+                        //student = refAuth.getCurrentUser().getStudent();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+
             final ProgressDialog pd=ProgressDialog.show(this,"Login","Connecting...",true);
             refAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -213,8 +235,12 @@ public class start extends AppCompatActivity {
                                 editor.commit();
                                 Log.d("MainActivity", "signinUserWithEmail:success");
                                 Toast.makeText(start.this, "Login Success", Toast.LENGTH_LONG).show();
-                                Intent si = new Intent(start.this,Loginok.class);
-                                startActivity(si);
+                                if (student) {
+                                    Intent si = new Intent(start.this, lessonsStudent.class);
+                                    startActivity(si);
+                                }
+                                else{ Intent si = new Intent(start.this, lessonsTeachers.class);
+                                    startActivity(si);}
                             } else {
                                 Log.d("MainActivity", "signinUserWithEmail:fail");
                                 Toast.makeText(start.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
@@ -222,12 +248,16 @@ public class start extends AppCompatActivity {
                         }
                     });
 
-        } else {
+        }
+        else {
             name=eTname.getText().toString();
             id=eTid.getText().toString();
             phone=eTphone.getText().toString();
             email=eTemail.getText().toString();
             password=eTpass.getText().toString();
+
+            if(switchMALEfemale.isChecked()){ female=true; }
+            if (switchAutoManuel.isChecked()){manual=true;}
 
             final ProgressDialog pd=ProgressDialog.show(this,"Register","Registering...",true);
             refAuth.createUserWithEmailAndPassword(email, password)
@@ -243,11 +273,15 @@ public class start extends AppCompatActivity {
                                 Log.d("MainActivity", "createUserWithEmail:success");
                                 FirebaseUser user = refAuth.getCurrentUser();
                                 uid = user.getUid();
-                                userdb=new User(name,email,phone,uid, id, password);
+                                userdb=new User(name,email,phone,uid, id, password, student, manual, female);
                                 refUsers.child(name).setValue(userdb);
                                 Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
-                                Intent si = new Intent(start.this,Loginok.class);
-                                startActivity(si);
+                                if (student) {
+                                    Intent si = new Intent(start.this, lessonsStudent.class);
+                                    startActivity(si);
+                                }
+                                else{ Intent si = new Intent(start.this, lessonsTeachers.class);
+                                    startActivity(si);}
                             } else {
                                 if (task.getException() instanceof FirebaseAuthUserCollisionException)
                                     Toast.makeText(start.this, "User with e-mail already exist!", Toast.LENGTH_LONG).show();
@@ -260,7 +294,6 @@ public class start extends AppCompatActivity {
                     });
         }
     }
-
     public void switchTeacher(View view) {
         if (switchTecherstudent.isChecked()){
             tvDate.setVisibility(View.VISIBLE);
@@ -271,21 +304,7 @@ public class start extends AppCompatActivity {
             tVmale.setVisibility(View.VISIBLE);
             tVfemale.setVisibility(View.VISIBLE);
             switchAutoManuel.setVisibility(View.VISIBLE);
-            teacher=true;
-            if(switchMALEfemale.isChecked()){
-                female=true;
-            }
-            else{
-                female=false;
-            }
-
-            if (switchAutoManuel.isChecked()){
-                manual=true;
-            }
-            else{
-                manual=false;
-            }
-
+            student=true;
         }
         else {
             tvDate.setVisibility(View.INVISIBLE);
@@ -296,8 +315,9 @@ public class start extends AppCompatActivity {
             tVmale.setVisibility(View.INVISIBLE);
             tVfemale.setVisibility(View.INVISIBLE);
             switchMALEfemale.setVisibility(View.INVISIBLE);
-            teacher= false;
+            student = false;
 
         }
     }
+
 }
