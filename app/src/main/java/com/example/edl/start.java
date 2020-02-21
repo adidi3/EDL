@@ -43,14 +43,14 @@ import static com.example.edl.FBref.refUsers;
 
 public class start extends AppCompatActivity {
     TextView tVtitle, tVregister, tvDate, tVauto, tVmanual, tVmale, tVfemale, tVteacher, tVstudent;
-    EditText eTname, eTphone, eTemail, eTpass, eTid;
+    EditText eTname, eTphone, eTemail, eTpass, eTid, eTmoney;
     CheckBox cBstayconnect;
     Button btn;
     ListView l1;
     Spinner spinner;
     Switch switchMALEfemale, switchTecherstudent, switchAutoManuel;
 
-    String name, phone, email, password, uid, id;
+    String name, phone, email, password, uid, id, money;
 
     User userdb;
     DatePickerDialog.OnDateSetListener d1;
@@ -76,6 +76,7 @@ public class start extends AppCompatActivity {
         eTpass=(EditText)findViewById(R.id.eTpass);
         eTid=(EditText)findViewById(R.id.eTid);
         eTphone=(EditText)findViewById(R.id.eTphone);
+        eTmoney=(EditText)findViewById(R.id.eTmoney);
         l1=(ListView) findViewById(R.id.listview);
         cBstayconnect=(CheckBox)findViewById(R.id.cBstayconnect);
         spinner=(Spinner) findViewById(R.id.spinner);
@@ -152,6 +153,7 @@ public class start extends AppCompatActivity {
                 tVtitle.setText("Register");
                 eTname.setVisibility(View.VISIBLE);
                 eTid.setVisibility(View.VISIBLE);
+                eTmoney.setVisibility(View.VISIBLE);
                 switchTecherstudent.setVisibility(View.VISIBLE);
                 eTphone.setVisibility(View.VISIBLE);
                 tVteacher.setVisibility(View.VISIBLE);
@@ -174,6 +176,7 @@ public class start extends AppCompatActivity {
                 tVtitle.setText("Login");
                 eTname.setVisibility(View.INVISIBLE);
                 eTid.setVisibility(View.INVISIBLE);
+                eTmoney.setVisibility(View.INVISIBLE);
                 eTphone.setVisibility(View.INVISIBLE);
                 tvDate.setVisibility(View.INVISIBLE);
                 switchTecherstudent.setVisibility(View.INVISIBLE);
@@ -255,6 +258,7 @@ public class start extends AppCompatActivity {
             phone=eTphone.getText().toString();
             email=eTemail.getText().toString();
             password=eTpass.getText().toString();
+            money=eTmoney.getText().toString();
 
             if(switchMALEfemale.isChecked()){ female=true; }
             if (switchAutoManuel.isChecked()){manual=true;}
@@ -273,14 +277,18 @@ public class start extends AppCompatActivity {
                                 Log.d("MainActivity", "createUserWithEmail:success");
                                 FirebaseUser user = refAuth.getCurrentUser();
                                 uid = user.getUid();
-                                userdb=new User(name,email,phone,uid, id, password, student, manual, female);
-                                refUsers.child(name).setValue(userdb);
-                                Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                 if (student) {
+                                userdb=new User(name,email,phone,uid, id, password, student, manual, female);
+                                refUsers.child(uid).setValue(userdb);
+                                Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                     Intent si = new Intent(start.this, lessonsStudent.class);
                                     startActivity(si);
                                 }
-                                else{ Intent si = new Intent(start.this, lessonsTeachers.class);
+                                else{
+                                    userdb=new User(name,email,phone,uid, id, password, student,money);
+                                    refUsers.child(uid).setValue(userdb);
+                                    Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
+                                    Intent si = new Intent(start.this, lessonsTeachers.class);
                                     startActivity(si);}
                             } else {
                                 if (task.getException() instanceof FirebaseAuthUserCollisionException)
@@ -303,11 +311,13 @@ public class start extends AppCompatActivity {
             tVmanual.setVisibility(View.VISIBLE);
             tVmale.setVisibility(View.VISIBLE);
             tVfemale.setVisibility(View.VISIBLE);
+            eTmoney.setVisibility(View.INVISIBLE);
             switchAutoManuel.setVisibility(View.VISIBLE);
             student=true;
         }
         else {
             tvDate.setVisibility(View.INVISIBLE);
+            eTmoney.setVisibility(View.VISIBLE);
             switchAutoManuel.setVisibility(View.INVISIBLE);
             l1.setVisibility(View.INVISIBLE);
             tVauto.setVisibility(View.INVISIBLE);
