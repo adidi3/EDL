@@ -284,6 +284,7 @@ public class start extends AppCompatActivity {
                                     Intent si = new Intent(start.this, lessonsStudent.class);
                                     startActivity(si);
                                 }
+                                
                                 else{
                                     userdb=new User(name,email,phone,uid, id, password, student,money);
                                     refUsers.child(uid).setValue(userdb);
