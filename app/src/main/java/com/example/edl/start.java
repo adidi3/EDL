@@ -50,7 +50,7 @@ public class start extends AppCompatActivity {
     Spinner spinner;
     Switch switchMALEfemale, switchTecherstudent, switchAutoManuel;
 
-    String name, phone, email, password, uid, id, money;
+    String name, phone, email, password, uid, id, money, date;
 
     User userdb;
     DatePickerDialog.OnDateSetListener d1;
@@ -108,7 +108,7 @@ public class start extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int day, int month, int year) {
                         month = month + 1;
-                        String date = day + "/" + month + "/" + year;
+                        date = day + "/" + month + "/" + year;
                         tvDate.setText(date);
                     }
 
@@ -262,7 +262,7 @@ public class start extends AppCompatActivity {
 
             if(switchMALEfemale.isChecked()){ female=true; }
             if (switchAutoManuel.isChecked()){manual=true;}
-
+            if ((!name.isEmpty()) && (!email.isEmpty()) && (!password.isEmpty()) && (!phone.isEmpty()) && (!id.isEmpty())&& (((!student)&&(!money.isEmpty()))||((student)&&(!date.isEmpty()))))  {
             final ProgressDialog pd=ProgressDialog.show(this,"Register","Registering...",true);
             refAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -278,13 +278,13 @@ public class start extends AppCompatActivity {
                                 FirebaseUser user = refAuth.getCurrentUser();
                                 uid = user.getUid();
                                 if (student) {
-                                userdb=new User(name,email,phone,uid, id, password, student, manual, female);
+                                userdb=new User(name,email,phone,uid, id, password, student, manual, female, date);
                                 refUsers.child(uid).setValue(userdb);
                                 Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                     Intent si = new Intent(start.this, lessonsStudent.class);
                                     startActivity(si);
                                 }
-                                
+
                                 else{
                                     userdb=new User(name,email,phone,uid, id, password, student,money);
                                     refUsers.child(uid).setValue(userdb);
@@ -301,6 +301,10 @@ public class start extends AppCompatActivity {
                             }
                         }
                     });
+            }
+            else{
+                Toast.makeText(start.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
+            }
         }
     }
     public void switchTeacher(View view) {
