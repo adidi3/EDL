@@ -34,11 +34,16 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
 import static com.example.edl.FBref.refAuth;
+import static com.example.edl.FBref.refStudent;
+import static com.example.edl.FBref.refTeacher;
 import static com.example.edl.FBref.refUsers;
 
 public class start extends AppCompatActivity {
@@ -49,17 +54,16 @@ public class start extends AppCompatActivity {
     ListView l1;
     Spinner spinner;
     Switch switchMALEfemale, switchTecherstudent, switchAutoManuel;
-
     String name, phone, email, password, uid, id, money, date;
-
     User userdb;
+    Ustudents Ustudents1;
+    Uteachers Uteachers1;
+
     DatePickerDialog.OnDateSetListener d1;
     Boolean stayConnect, registered;
-
     Boolean female=false;
     Boolean manual=false;
     Boolean student= false;
-
     ArrayAdapter<String> adp;
 
     @Override
@@ -119,6 +123,9 @@ public class start extends AppCompatActivity {
 
 
     }
+
+
+
     /**
      * On activity start - Checking if user already logged in.
      * If logged in & asked to be remembered - pass on.
@@ -278,16 +285,17 @@ public class start extends AppCompatActivity {
                                 FirebaseUser user = refAuth.getCurrentUser();
                                 uid = user.getUid();
                                 if (student) {
-                                userdb=new User(name,email,phone,uid, id, password, student, manual, female, date);
-                                refUsers.child(uid).setValue(userdb);
+                                    Ustudents1=new Ustudents( name, email,  phone, uid, id, password, student, manual,  female,  date);
+                                //userdb=new User(name,email,phone,uid, id, password, student, manual, female, date);
+                                refStudent.child(uid).setValue(Ustudents1);
                                 Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                     Intent si = new Intent(start.this, lessonsStudent.class);
                                     startActivity(si);
                                 }
 
                                 else{
-                                    userdb=new User(name,email,phone,uid, id, password, student,money);
-                                    refUsers.child(uid).setValue(userdb);
+                                    Uteachers1=new Uteachers(name,email,phone,uid, id, password, student,money);
+                                    refTeacher.child(uid).setValue(Uteachers1);
                                     Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                     Intent si = new Intent(start.this, lessonsTeachers.class);
                                     startActivity(si);}
