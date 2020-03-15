@@ -7,6 +7,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,6 +25,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,11 +43,14 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
+import java.util.List;
 
 import static com.example.edl.FBref.refAuth;
 import static com.example.edl.FBref.refStudent;
 import static com.example.edl.FBref.refTeacher;
 import static com.example.edl.FBref.refUsers;
+
+
 
 public class start extends AppCompatActivity {
     TextView tVtitle, tVregister, tvDate, tVauto, tVmanual, tVmale, tVfemale, tVteacher, tVstudent;
@@ -55,16 +61,18 @@ public class start extends AppCompatActivity {
     Spinner spinner;
     Switch switchMALEfemale, switchTecherstudent, switchAutoManuel;
     String name, phone, email, password, uid, id, money, date;
-    User userdb;
+    Query query;
+    SpinnerAdapter A1;
     Ustudents Ustudents1;
     Uteachers Uteachers1;
-
     DatePickerDialog.OnDateSetListener d1;
     Boolean stayConnect, registered;
     Boolean female=false;
     Boolean manual=false;
     Boolean student= false;
     ArrayAdapter<String> adp;
+    boolean inPList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +100,6 @@ public class start extends AppCompatActivity {
         tVfemale=(TextView) findViewById(R.id.female);
         tVmanual=(TextView) findViewById(R.id.manual);
         tVauto=(TextView) findViewById(R.id.auto);
-
         stayConnect=false;
         registered=true;
 
@@ -119,10 +126,20 @@ public class start extends AppCompatActivity {
                 };
 
 
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.teacher_array, android.R.layout.simple_spinner_item);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                 spinner.setAdapter(adapter);
+
+
                 regoption();
 
 
     }
+
+
+
 
 
 
@@ -286,7 +303,6 @@ public class start extends AppCompatActivity {
                                 uid = user.getUid();
                                 if (student) {
                                     Ustudents1=new Ustudents( name, email,  phone, uid, id, password, student, manual,  female,  date);
-                                //userdb=new User(name,email,phone,uid, id, password, student, manual, female, date);
                                 refStudent.child(uid).setValue(Ustudents1);
                                 Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                     Intent si = new Intent(start.this, lessonsStudent.class);
@@ -325,6 +341,7 @@ public class start extends AppCompatActivity {
             tVmale.setVisibility(View.VISIBLE);
             tVfemale.setVisibility(View.VISIBLE);
             eTmoney.setVisibility(View.INVISIBLE);
+            spinner.setVisibility(View.VISIBLE);
             switchAutoManuel.setVisibility(View.VISIBLE);
             student=true;
         }
@@ -332,6 +349,7 @@ public class start extends AppCompatActivity {
             tvDate.setVisibility(View.INVISIBLE);
             eTmoney.setVisibility(View.VISIBLE);
             switchAutoManuel.setVisibility(View.INVISIBLE);
+            spinner.setVisibility(View.INVISIBLE);
             l1.setVisibility(View.INVISIBLE);
             tVauto.setVisibility(View.INVISIBLE);
             tVmanual.setVisibility(View.INVISIBLE);
