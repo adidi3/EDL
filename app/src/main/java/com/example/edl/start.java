@@ -139,8 +139,9 @@ public class start extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         tl.clear();
                         for (DataSnapshot ds: dataSnapshot.getChildren()){
-                            String teacherN= (String) ds.child("phone").getValue();
-                            tl.add(teacherN);
+                            String teacherP= (String) ds.child("phone").getValue();
+                            String teacherN= (String) ds.child("name").getValue();
+                            tl.add(teacherN+ " " +teacherP);
                         }
                         ArrayAdapter<String> arrayAdapter= new ArrayAdapter<String>(start.this, android.R.layout.simple_spinner_dropdown_item, tl);
                         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
