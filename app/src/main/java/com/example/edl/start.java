@@ -42,6 +42,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -71,7 +72,9 @@ public class start extends AppCompatActivity {
     Boolean manual=false;
     Boolean student= false;
     ArrayAdapter<String> adp;
-    boolean inPList;
+    List<String> tl= new ArrayList<String>();
+
+
 
 
     @Override
@@ -127,10 +130,31 @@ public class start extends AppCompatActivity {
 
 
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.teacher_array, android.R.layout.simple_spinner_item);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                 spinner.setAdapter(adapter);
+        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+              //  R.array.teacher_array, android.R.layout.simple_spinner_item);
+              //  adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                query=refTeacher.orderByChild("name");
+                query.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        tl.clear();
+                        for (DataSnapshot ds: dataSnapshot.getChildren()){
+                            String teacherN= (String) ds.child("phone").getValue();
+                            tl.add(teacherN);
+                        }
+                        ArrayAdapter<String> arrayAdapter= new ArrayAdapter<String>(start.this, android.R.layout.simple_spinner_dropdown_item, tl);
+                        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner.setAdapter(arrayAdapter);
+
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
 
                 regoption();

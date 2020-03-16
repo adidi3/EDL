@@ -91,7 +91,7 @@
                     android:id="@+id/switchTecherstudent"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:ems="10"
+                    android:ems="3"
                     android:onClick="switchTeacher"
                     android:visibility="invisible" />
 
@@ -130,7 +130,7 @@
                             android:id="@+id/switchMALEfemale"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:ems="10"
+                            android:ems="4"
                             android:visibility="invisible" />
 
                         <TextView
@@ -159,6 +159,7 @@
                 <Switch
                     android:id="@+id/switchAutoManuel"
                     android:layout_width="wrap_content"
+                    android:ems="4"
                     android:layout_height="match_parent"
                     android:visibility="invisible" />
 
