@@ -24,6 +24,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Switch;
@@ -46,6 +47,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.crypto.SealedObject;
+
 import static com.example.edl.FBref.refAuth;
 import static com.example.edl.FBref.refStudent;
 import static com.example.edl.FBref.refTeacher;
@@ -58,12 +61,11 @@ public class start extends AppCompatActivity {
     EditText eTname, eTphone, eTemail, eTpass, eTid, eTmoney;
     CheckBox cBstayconnect;
     Button btn;
-    ListView l1;
-    Spinner spinner;
+    ListView l1, myList;
+    SearchView sv;
     Switch switchMALEfemale, switchTecherstudent, switchAutoManuel;
-    String name, phone, email, password, uid, id, money, date;
+    String name, phone, email, password, uid, id, money, date, wteacher;
     Query query;
-    SpinnerAdapter A1;
     Ustudents Ustudents1;
     Uteachers Uteachers1;
     DatePickerDialog.OnDateSetListener d1;
@@ -71,8 +73,9 @@ public class start extends AppCompatActivity {
     Boolean female=false;
     Boolean manual=false;
     Boolean student= false;
-    ArrayAdapter<String> adp;
-    List<String> tl= new ArrayList<String>();
+    ArrayAdapter<String> adapter;
+   // List<String> tl= new ArrayList<String>();
+    ArrayList<String> tl;
 
 
 
@@ -93,8 +96,9 @@ public class start extends AppCompatActivity {
         eTphone=(EditText)findViewById(R.id.eTphone);
         eTmoney=(EditText)findViewById(R.id.eTmoney);
         l1=(ListView) findViewById(R.id.listview);
+        myList=(ListView) findViewById(R.id.lview);
         cBstayconnect=(CheckBox)findViewById(R.id.cBstayconnect);
-        spinner=(Spinner) findViewById(R.id.spinner);
+        sv=(SearchView) findViewById(R.id.sview);
         tVregister=(TextView) findViewById(R.id.tVregister);
         btn=(Button)findViewById(R.id.btn);
         tVmale=(TextView) findViewById(R.id.male);
@@ -128,8 +132,10 @@ public class start extends AppCompatActivity {
 
                 };
 
+            tl=new ArrayList<String>();
 
-
+        adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,tl);
+        myList.setAdapter(adapter);
         //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
               //  R.array.teacher_array, android.R.layout.simple_spinner_item);
               //  adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -143,9 +149,22 @@ public class start extends AppCompatActivity {
                             String teacherN= (String) ds.child("name").getValue();
                             tl.add(teacherN+ " " +teacherP);
                         }
-                        ArrayAdapter<String> arrayAdapter= new ArrayAdapter<String>(start.this, android.R.layout.simple_spinner_dropdown_item, tl);
-                        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner.setAdapter(arrayAdapter);
+
+                       // final ArrayAdapter<String> arrayAdapter= new ArrayAdapter<String>(start.this, android.R.layout.simple_list_item_1, tl);
+                     //   arrayAdapter.s etDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                      //  spinner.setAdapter(arrayAdapter);
+                        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                            @Override
+                            public boolean onQueryTextSubmit(String s) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onQueryTextChange(String s) {
+                                adapter.getFilter().filter(s);
+                                return false;
+                            }
+                        });
 
 
 
@@ -308,6 +327,7 @@ public class start extends AppCompatActivity {
             email=eTemail.getText().toString();
             password=eTpass.getText().toString();
             money=eTmoney.getText().toString();
+          //  wteacher=spinner.getSelectedItem().toString();
 
             if(switchMALEfemale.isChecked()){ female=true; }
             if (switchAutoManuel.isChecked()){manual=true;}
@@ -327,8 +347,8 @@ public class start extends AppCompatActivity {
                                 FirebaseUser user = refAuth.getCurrentUser();
                                 uid = user.getUid();
                                 if (student) {
-                                    Ustudents1=new Ustudents( name, email,  phone, uid, id, password, student, manual,  female,  date);
-                                refStudent.child(uid).setValue(Ustudents1);
+                                    Ustudents1=new Ustudents( name, email,  phone, uid, id, password, student, manual,  female,  date, wteacher);
+                                refStudent.child(phone).setValue(Ustudents1);
                                 Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                     Intent si = new Intent(start.this, lessonsStudent.class);
                                     startActivity(si);
@@ -336,7 +356,7 @@ public class start extends AppCompatActivity {
 
                                 else{
                                     Uteachers1=new Uteachers(name,email,phone,uid, id, password, student,money);
-                                    refTeacher.child(uid).setValue(Uteachers1);
+                                    refTeacher.child(phone).setValue(Uteachers1);
                                     Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                     Intent si = new Intent(start.this, lessonsTeachers.class);
                                     startActivity(si);}
@@ -364,9 +384,10 @@ public class start extends AppCompatActivity {
             tVauto.setVisibility(View.VISIBLE);
             tVmanual.setVisibility(View.VISIBLE);
             tVmale.setVisibility(View.VISIBLE);
+            myList.setVisibility(View.VISIBLE);
             tVfemale.setVisibility(View.VISIBLE);
             eTmoney.setVisibility(View.INVISIBLE);
-            spinner.setVisibility(View.VISIBLE);
+            sv.setVisibility(View.VISIBLE);
             switchAutoManuel.setVisibility(View.VISIBLE);
             student=true;
         }
@@ -374,7 +395,8 @@ public class start extends AppCompatActivity {
             tvDate.setVisibility(View.INVISIBLE);
             eTmoney.setVisibility(View.VISIBLE);
             switchAutoManuel.setVisibility(View.INVISIBLE);
-            spinner.setVisibility(View.INVISIBLE);
+            sv.setVisibility(View.INVISIBLE);
+            myList.setVisibility(View.INVISIBLE);
             l1.setVisibility(View.INVISIBLE);
             tVauto.setVisibility(View.INVISIBLE);
             tVmanual.setVisibility(View.INVISIBLE);

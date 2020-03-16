@@ -190,13 +190,23 @@
                 android:layout_height="wrap_content"
                 android:text="Select date of birth" />
 
-            <Spinner
-                android:id="@+id/spinner"
+
+
+
+            <SearchView
+                android:id="@+id/sview"
                 android:layout_width="match_parent"
                 android:visibility="invisible"
+                android:queryHint="Search here"
+                android:iconifiedByDefault="false"
                 android:layout_height="wrap_content" />
 
+            <ListView
+                android:layout_width="match_parent"
+                android:id="@+id/lview"
+                android:layout_height="wrap_content">
 
+            </ListView>
 
             <CheckBox
                         android:id="@+id/cBstayconnect"
