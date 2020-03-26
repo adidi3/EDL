@@ -3,7 +3,6 @@ package com.example.edl;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -24,9 +23,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Switch;
@@ -49,8 +46,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.crypto.SealedObject;
-
 import static com.example.edl.FBref.refAuth;
 import static com.example.edl.FBref.refStudent;
 import static com.example.edl.FBref.refTeacher;
@@ -58,30 +53,31 @@ import static com.example.edl.FBref.refUsers;
 
 
 
-public class start extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class start extends AppCompatActivity {
     TextView tVtitle, tVregister, tvDate, tVauto, tVmanual, tVmale, tVfemale, tVteacher, tVstudent;
     EditText eTname, eTphone, eTemail, eTpass, eTid, eTmoney;
     CheckBox cBstayconnect;
     Button btn;
-    LinearLayout dialog;
-    ListView  myList;
-    SearchView sv;
+    ListView l1;
+    Spinner spinner;
     Switch switchMALEfemale, switchTecherstudent, switchAutoManuel;
     String name, phone, email, password, uid, id, money, date, wteacher;
     Query query;
+    SpinnerAdapter A1;
     Ustudents Ustudents1;
     Uteachers Uteachers1;
+    String s;
+    String sf= "";
+
     DatePickerDialog.OnDateSetListener d1;
     Boolean stayConnect, registered;
     Boolean female=false;
     Boolean manual=false;
     Boolean student= false;
-    ArrayAdapter<String> adapter;
-  //  ArrayAdapter<String> ada;
-   // List<String> tl= new ArrayList<String>();
-    ArrayList<String> tl=new ArrayList<String>();
-    ArrayList<String> tlname=new ArrayList<String>();
-   // ArrayAdapter<String> adp;
+    ArrayAdapter<String> adp;
+    Character r;
+    List<String> tl= new ArrayList<String>();
+    List<String> tlname=new ArrayList<String>();
 
 
 
@@ -90,7 +86,6 @@ public class start extends AppCompatActivity implements AdapterView.OnItemClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-
         switchMALEfemale=(Switch) findViewById(R.id.switchMALEfemale);
         switchTecherstudent=(Switch) findViewById(R.id.switchTecherstudent);
         switchAutoManuel=(Switch) findViewById(R.id.switchAutoManuel);
@@ -102,9 +97,9 @@ public class start extends AppCompatActivity implements AdapterView.OnItemClickL
         eTid=(EditText)findViewById(R.id.eTid);
         eTphone=(EditText)findViewById(R.id.eTphone);
         eTmoney=(EditText)findViewById(R.id.eTmoney);
-        myList=(ListView) findViewById(R.id.lview);
+        l1=(ListView) findViewById(R.id.listview);
         cBstayconnect=(CheckBox)findViewById(R.id.cBstayconnect);
-        sv=(SearchView) findViewById(R.id.sview);
+        spinner=(Spinner) findViewById(R.id.spinner);
         tVregister=(TextView) findViewById(R.id.tVregister);
         btn=(Button)findViewById(R.id.btn);
         tVmale=(TextView) findViewById(R.id.male);
@@ -113,13 +108,9 @@ public class start extends AppCompatActivity implements AdapterView.OnItemClickL
         tVfemale=(TextView) findViewById(R.id.female);
         tVmanual=(TextView) findViewById(R.id.manual);
         tVauto=(TextView) findViewById(R.id.auto);
+
         stayConnect=false;
         registered=true;
-
-        myList.setOnItemClickListener(this);
-        myList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        adapter=new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,tlname);
-        myList.setAdapter(adapter);
 
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,45 +135,46 @@ public class start extends AppCompatActivity implements AdapterView.OnItemClickL
                 };
 
 
+
         //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
               //  R.array.teacher_array, android.R.layout.simple_spinner_item);
               //  adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 query=refTeacher.orderByChild("name");
-
                 query.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        tlname.clear();
                         tl.clear();
+                        tlname.clear();
                         for (DataSnapshot ds: dataSnapshot.getChildren()){
-                            String teacherP= (String) ds.child("phone").getValue();
-                            tl.add(teacherP);
                             String teacherN= (String) ds.child("name").getValue();
-                            tlname.add(teacherN+ " " +teacherP);
+                            String teacherP= (String) ds.child("phone").getValue();
+                            tlname.add(teacherP);
+                            tl.add(teacherP+ " "+ teacherN );
                         }
+                        ArrayAdapter<String> arrayAdapter= new ArrayAdapter<String>(start.this, android.R.layout.simple_spinner_dropdown_item, tl);
+                        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner.setAdapter(arrayAdapter);
 
-                       // final ArrayAdapter<String> arrayAdapter= new ArrayAdapter<String>(start.this, android.R.layout.simple_list_item_1, tl);
-                     //   arrayAdapter.s etDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                      //  spinner.setAdapter(arrayAdapter);
-                        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                            @Override
-                            public boolean onQueryTextSubmit(String s) {
-                                return false;
-                            }
 
-                            @Override
-                            public boolean onQueryTextChange(String s) {
-                                adapter.getFilter().filter(s);
-                                return false;
-                            }
-                        });
+
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
+
                     }
                 });
+
+
                 regoption();
+
+
     }
+
+
+
+
+
 
     /**
      * On activity start - Checking if user already logged in.
@@ -324,13 +316,31 @@ public class start extends AppCompatActivity implements AdapterView.OnItemClickL
             email=eTemail.getText().toString();
             password=eTpass.getText().toString();
             money=eTmoney.getText().toString();
-          //  wteacher=spinner.getSelectedItem().toString();
+             s =spinner.getSelectedItem().toString();
+            for(int i=0; i<=10; i++)
+                sf=sf + s.charAt(i);
+            wteacher=sf;
+           // while (i<s.length()-9)
+           // StringBuilder sb = new StringBuilder(s);
+
+            //while(r!='0'){
+              //  for (int i=0; i<=s.length()-1;i++){
+                //    r=s.charAt(i);
+                  //  sb.deleteCharAt(i);
+                    //s = s.substring(i+1);
+
+//                }
+
+            }
+
+
 
             if(switchMALEfemale.isChecked()){ female=true; }
             if (switchAutoManuel.isChecked()){manual=true;}
             if ((!name.isEmpty()) && (!email.isEmpty()) && (!password.isEmpty()) && (!phone.isEmpty()) && (!id.isEmpty())&& (((!student)&&(!money.isEmpty()))||((student)&&(!date.isEmpty()))))  {
             final ProgressDialog pd=ProgressDialog.show(this,"Register","Registering...",true);
-            refAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            refAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             pd.dismiss();
@@ -339,7 +349,7 @@ public class start extends AppCompatActivity implements AdapterView.OnItemClickL
                                 SharedPreferences.Editor editor=settings.edit();
                                 editor.putBoolean("stayConnect",cBstayconnect.isChecked());
                                 editor.commit();
-                                Log.d("start", "createUserWithEmail:success");
+                                Log.d("MainActivity", "createUserWithEmail:success");
                                 FirebaseUser user = refAuth.getCurrentUser();
                                 uid = user.getUid();
                                 if (student) {
@@ -371,18 +381,18 @@ public class start extends AppCompatActivity implements AdapterView.OnItemClickL
                 Toast.makeText(start.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
             }
         }
-    }
+
     public void switchTeacher(View view) {
         if (switchTecherstudent.isChecked()){
             tvDate.setVisibility(View.VISIBLE);
             switchMALEfemale.setVisibility(View.VISIBLE);
+            l1.setVisibility(View.VISIBLE);
             tVauto.setVisibility(View.VISIBLE);
             tVmanual.setVisibility(View.VISIBLE);
             tVmale.setVisibility(View.VISIBLE);
-            myList.setVisibility(View.VISIBLE);
             tVfemale.setVisibility(View.VISIBLE);
             eTmoney.setVisibility(View.INVISIBLE);
-            sv.setVisibility(View.VISIBLE);
+            spinner.setVisibility(View.VISIBLE);
             switchAutoManuel.setVisibility(View.VISIBLE);
             student=true;
         }
@@ -390,19 +400,16 @@ public class start extends AppCompatActivity implements AdapterView.OnItemClickL
             tvDate.setVisibility(View.INVISIBLE);
             eTmoney.setVisibility(View.VISIBLE);
             switchAutoManuel.setVisibility(View.INVISIBLE);
-            sv.setVisibility(View.INVISIBLE);
-            myList.setVisibility(View.INVISIBLE);
+            spinner.setVisibility(View.INVISIBLE);
+            l1.setVisibility(View.INVISIBLE);
             tVauto.setVisibility(View.INVISIBLE);
             tVmanual.setVisibility(View.INVISIBLE);
             tVmale.setVisibility(View.INVISIBLE);
             tVfemale.setVisibility(View.INVISIBLE);
             switchMALEfemale.setVisibility(View.INVISIBLE);
             student = false;
+
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-        wteacher = tl.get(position);
-    }
 }
