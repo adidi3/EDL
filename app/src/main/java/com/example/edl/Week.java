@@ -1,14 +1,13 @@
 package com.example.edl;
 
-public class Schedule {
-    private String sunday, monday, tuesday, wednesday, thursday, friday;
-    public Schedule (String sunday, String monday, String tuesday, String wednesday, String thursday, String friday) {
-        this.sunday=sunday;
-        this.monday=monday;
-        this.tuesday=tuesday;
-        this.wednesday=wednesday;
-        this.thursday=thursday;
-        this.friday=friday;
+public class Week {
+    private String sunday, monday, tuesday, wednesday, thursday;
+    public Week() {
+        this.sunday="sunday";
+        this.monday="monday";
+        this.tuesday="tuesday";
+        this.wednesday="wednesday";
+        this.thursday="thursday";
 
     }
     public String getSunday() {
@@ -49,11 +48,7 @@ public class Schedule {
         this.thursday=thursday;
     }
 
-    public String getFriday() {
-        return friday;
-    }
 
-    public void setFriday(String friday) {
-        this.friday=friday;
-    }
 }
+
+

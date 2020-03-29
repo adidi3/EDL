@@ -50,8 +50,9 @@ import java.util.List;
 import static com.example.edl.FBref.refAuth;
 import static com.example.edl.FBref.refStudent;
 import static com.example.edl.FBref.refTeacher;
+import static com.example.edl.FBref.refTeacherTime;
 import static com.example.edl.FBref.refUsers;
-
+import static com.example.edl.FBref.refVarible;
 
 
 public class start extends AppCompatActivity {
@@ -68,7 +69,8 @@ public class start extends AppCompatActivity {
     Uteachers Uteachers1;
     String s;
     String sf= "";
-
+    Day day1= new Day();
+    Week week1=new Week();
     DatePickerDialog.OnDateSetListener d1;
     Boolean stayConnect, registered;
     Boolean female=false;
@@ -341,6 +343,12 @@ public class start extends AppCompatActivity {
                                     else {
                                         Uteachers1 = new Uteachers(name, email, phone, uid, id, password, student, money);
                                         refTeacher.child(phone).setValue(Uteachers1);
+                                        refTeacherTime.child(phone).setValue(week1);
+                                        refTeacherTime.child(phone).child("sunday").setValue(day1);
+                                        refTeacherTime.child(phone).child("monday").setValue(day1);
+                                        refTeacherTime.child(phone).child("tuesday").setValue(day1);
+                                        refTeacherTime.child(phone).child("wednesday").setValue(day1);
+                                        refTeacherTime.child(phone).child("thursday").setValue(day1);
                                         Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                         Intent in = new Intent(start.this, TeacherLessons.class);
                                         in.putExtra("phone", phone);

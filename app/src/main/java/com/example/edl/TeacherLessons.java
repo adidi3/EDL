@@ -16,11 +16,14 @@ import com.google.firebase.database.ValueEventListener;
 import static com.example.edl.FBref.refAuth;
 import static com.example.edl.FBref.refSunday;
 import static com.example.edl.FBref.refTeacher;
+import static com.example.edl.FBref.refTeacherTime;
 
 public class TeacherLessons extends AppCompatActivity {
     String phone1;
     String name1;
     TextView v1;
+    Day day1= new Day();
+    Week week1=new Week();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +40,13 @@ public class TeacherLessons extends AppCompatActivity {
     }
 
     public void next(View view) {
-        refSunday.child("1").setValue("");
-        refSunday.child("2").removeValue();
-        refSunday.child("3").removeValue();
-        refSunday.child("4").removeValue();
-        refSunday.child("5").removeValue();
-        refSunday.child("6").removeValue();
-        refSunday.child("7").removeValue();
-        refSunday.child("8").removeValue();
-        refSunday.child("9").removeValue();
-        refSunday.child("10").removeValue();
+
+        refTeacherTime.child(phone1).setValue(week1);
+        refTeacherTime.child(phone1).child("sunday").setValue(day1);
+        refTeacherTime.child(phone1).child("monday").setValue(day1);
+        refTeacherTime.child(phone1).child("tuesday").setValue(day1);
+        refTeacherTime.child(phone1).child("wednesday").setValue(day1);
+        refTeacherTime.child(phone1).child("thursday").setValue(day1);
 
     }
 }
