@@ -1,8 +1,8 @@
 package com.example.edl;
 
 public class Ustudents {
-    private String name, email, phone, uid, id, password, date, wteacher;
-    private boolean student, manual, female;
+    public String name, email, phone, uid, id, password, date, wteacher;
+    public boolean student, manual, female;
     public Ustudents (String name, String email, String phone, String uid, String id, String password, Boolean student, Boolean manual, Boolean female, String date, String wteacher) {
         this.name=name;
         this.date=date;

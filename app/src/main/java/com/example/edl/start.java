@@ -35,6 +35,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -58,10 +59,9 @@ public class start extends AppCompatActivity {
     EditText eTname, eTphone, eTemail, eTpass, eTid, eTmoney;
     CheckBox cBstayconnect;
     Button btn;
-    ListView l1;
     Spinner spinner;
     Switch switchMALEfemale, switchTecherstudent, switchAutoManuel;
-    String name, phone, email, password, uid, id, money, date, wteacher;
+    String name="nnn", phone="0", email, password, uid, id, money, date, wteacher;
     Query query;
     SpinnerAdapter A1;
     Ustudents Ustudents1;
@@ -97,7 +97,6 @@ public class start extends AppCompatActivity {
         eTid=(EditText)findViewById(R.id.eTid);
         eTphone=(EditText)findViewById(R.id.eTphone);
         eTmoney=(EditText)findViewById(R.id.eTmoney);
-        l1=(ListView) findViewById(R.id.listview);
         cBstayconnect=(CheckBox)findViewById(R.id.cBstayconnect);
         spinner=(Spinner) findViewById(R.id.spinner);
         tVregister=(TextView) findViewById(R.id.tVregister);
@@ -154,34 +153,21 @@ public class start extends AppCompatActivity {
                         ArrayAdapter<String> arrayAdapter= new ArrayAdapter<String>(start.this, android.R.layout.simple_spinner_dropdown_item, tl);
                         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinner.setAdapter(arrayAdapter);
-
-
-
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
                     }
                 });
 
-
                 regoption();
-
-
     }
-
-
-
-
-
 
     /**
      * On activity start - Checking if user already logged in.
      * If logged in & asked to be remembered - pass on.
      * <p>
      */
-
     protected void onStart() {
         super.onStart();
         SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
@@ -266,7 +252,6 @@ public class start extends AppCompatActivity {
         if (registered) {
             email=eTemail.getText().toString();
             password=eTpass.getText().toString();
-
             ValueEventListener mrListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot ds) {
@@ -278,13 +263,14 @@ public class start extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
                 }
             };
+            if (mrListener!=null) {
+                refUsers.removeEventListener(mrListener);
+            }
 
             final ProgressDialog pd=ProgressDialog.show(this,"Login","Connecting...",true);
-            refAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            refAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             pd.dismiss();
@@ -293,100 +279,96 @@ public class start extends AppCompatActivity {
                                 SharedPreferences.Editor editor=settings.edit();
                                 editor.putBoolean("stayConnect",cBstayconnect.isChecked());
                                 editor.commit();
-                                Log.d("MainActivity", "signinUserWithEmail:success");
+                                Log.d("start", "signinUserWithEmail:success");
                                 Toast.makeText(start.this, "Login Success", Toast.LENGTH_LONG).show();
                                 if (student) {
-                                    Intent si = new Intent(start.this, lessonsStudent.class);
-                                    startActivity(si);
+                                    Intent in = new Intent(start.this,lessonsStudent.class);
+                                    in.putExtra("phone_t",wteacher);
+                                    in.putExtra("name",name);
+                                    startActivity(in);
                                 }
-                                else{ Intent si = new Intent(start.this, lessonsTeachers.class);
-                                    startActivity(si);}
+                                else {
+                                    Intent in = new Intent(start.this, lessonsTeachers.class);
+                                    in.putExtra("phone",phone);
+                                    in.putExtra("nameS",name);
+                                    startActivity(in);
+                                }
+
                             } else {
-                                Log.d("MainActivity", "signinUserWithEmail:fail");
+                                Log.d("start", "signinUserWithEmail:fail");
                                 Toast.makeText(start.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
-
         }
         else {
-            name=eTname.getText().toString();
-            id=eTid.getText().toString();
-            phone=eTphone.getText().toString();
-            email=eTemail.getText().toString();
-            password=eTpass.getText().toString();
-            money=eTmoney.getText().toString();
-             s =spinner.getSelectedItem().toString();
-            for(int i=0; i<=10; i++)
-                sf=sf + s.charAt(i);
-            wteacher=sf;
-           // while (i<s.length()-9)
-           // StringBuilder sb = new StringBuilder(s);
-
-            //while(r!='0'){
-              //  for (int i=0; i<=s.length()-1;i++){
-                //    r=s.charAt(i);
-                  //  sb.deleteCharAt(i);
-                    //s = s.substring(i+1);
-
-//                }
-
-            }
-
-
-
-            if(switchMALEfemale.isChecked()){ female=true; }
-            if (switchAutoManuel.isChecked()){manual=true;}
-            if ((!name.isEmpty()) && (!email.isEmpty()) && (!password.isEmpty()) && (!phone.isEmpty()) && (!id.isEmpty())&& (((!student)&&(!money.isEmpty()))||((student)&&(!date.isEmpty()))))  {
-            final ProgressDialog pd=ProgressDialog.show(this,"Register","Registering...",true);
-            refAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            pd.dismiss();
-                            if (task.isSuccessful()) {
-                                SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
-                                SharedPreferences.Editor editor=settings.edit();
-                                editor.putBoolean("stayConnect",cBstayconnect.isChecked());
-                                editor.commit();
-                                Log.d("MainActivity", "createUserWithEmail:success");
-                                FirebaseUser user = refAuth.getCurrentUser();
-                                uid = user.getUid();
-                                if (student) {
-                                    Ustudents1=new Ustudents( name, email,  phone, uid, id, password, student, manual,  female,  date, wteacher);
-                                refStudent.child(phone).setValue(Ustudents1);
-                                Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
-                                    Intent si = new Intent(start.this, lessonsStudent.class);
-                                    startActivity(si);
+            name = eTname.getText().toString();
+            id = eTid.getText().toString();
+            phone = eTphone.getText().toString();
+            email = eTemail.getText().toString();
+            password = eTpass.getText().toString();
+            money = eTmoney.getText().toString();
+            s = spinner.getSelectedItem().toString();
+            for (int i = 0; i <= 10; i++)
+                sf = sf + s.charAt(i);
+            wteacher = sf;
+            if (switchMALEfemale.isChecked()) {female = true; }
+            if (switchAutoManuel.isChecked()) { manual = true;}
+            if ((!name.isEmpty()) && (!email.isEmpty()) && (!password.isEmpty()) && (!phone.isEmpty()) && (!id.isEmpty()) && (((!student) && (!money.isEmpty())) || ((student) && (!date.isEmpty())))) {
+                final ProgressDialog pd = ProgressDialog.show(this, "Register", "Registering...", true);
+                refAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                pd.dismiss();
+                                if (task.isSuccessful()) {
+                                    SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = settings.edit();
+                                    editor.putBoolean("stayConnect", cBstayconnect.isChecked());
+                                    editor.commit();
+                                    Log.d("start", "createUserWithEmail:success");
+                                    FirebaseUser user = refAuth.getCurrentUser();
+                                    uid = user.getUid();
+                                    if (student) {
+                                        Ustudents1 = new Ustudents(name, email, phone, uid, id, password, student, manual, female, date, wteacher);
+                                        refStudent.child(phone).setValue(Ustudents1);
+                                        Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
+                                        Intent in = new Intent(start.this, lessonsStudent.class);
+                                        in.putExtra("phonet", phone);
+                                        in.putExtra("name", name);
+                                        startActivity(in);
+                                        finish();
+                                    }
+                                    else {
+                                        Uteachers1 = new Uteachers(name, email, phone, uid, id, password, student, money);
+                                        refTeacher.child(phone).setValue(Uteachers1);
+                                        Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
+                                        Intent in = new Intent(start.this, TeacherLessons.class);
+                                        in.putExtra("phone", phone);
+                                        in.putExtra("nameS", name);
+                                        startActivity(in);
+                                        finish();
+                                    }
                                 }
-
-                                else{
-                                    Uteachers1=new Uteachers(name,email,phone,uid, id, password, student,money);
-                                    refTeacher.child(phone).setValue(Uteachers1);
-                                    Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
-                                    Intent si = new Intent(start.this, lessonsTeachers.class);
-                                    startActivity(si);}
-                            } else {
-                                if (task.getException() instanceof FirebaseAuthUserCollisionException)
-                                    Toast.makeText(start.this, "User with e-mail already exist!", Toast.LENGTH_LONG).show();
                                 else {
-                                    Log.w("MainActivity", "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(start.this, "User create failed.",Toast.LENGTH_LONG).show();
+                                    if (task.getException() instanceof FirebaseAuthUserCollisionException)
+                                        Toast.makeText(start.this, "User with e-mail already exist!", Toast.LENGTH_LONG).show();
+                                    else {
+                                        Log.w("start", "createUserWithEmail:failure", task.getException());
+                                        Toast.makeText(start.this, "User create failed.", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                             }
-                        }
-                    });
-            }
-            else{
+                        });
+            } else {
                 Toast.makeText(start.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
             }
         }
+    }
 
     public void switchTeacher(View view) {
         if (switchTecherstudent.isChecked()){
             tvDate.setVisibility(View.VISIBLE);
             switchMALEfemale.setVisibility(View.VISIBLE);
-            l1.setVisibility(View.VISIBLE);
             tVauto.setVisibility(View.VISIBLE);
             tVmanual.setVisibility(View.VISIBLE);
             tVmale.setVisibility(View.VISIBLE);
@@ -401,7 +383,6 @@ public class start extends AppCompatActivity {
             eTmoney.setVisibility(View.VISIBLE);
             switchAutoManuel.setVisibility(View.INVISIBLE);
             spinner.setVisibility(View.INVISIBLE);
-            l1.setVisibility(View.INVISIBLE);
             tVauto.setVisibility(View.INVISIBLE);
             tVmanual.setVisibility(View.INVISIBLE);
             tVmale.setVisibility(View.INVISIBLE);
@@ -411,5 +392,7 @@ public class start extends AppCompatActivity {
 
         }
     }
+
+
 
 }

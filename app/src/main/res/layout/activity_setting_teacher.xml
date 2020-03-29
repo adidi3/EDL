@@ -118,9 +118,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/btEnter"
-            android:onClick="Et"
+            android:onClick="NW"
             android:layout_weight="0.3"
-            android:text="Enter data"/>
+            android:text="new week"/>
 
         <Space
             android:layout_width="0dp"

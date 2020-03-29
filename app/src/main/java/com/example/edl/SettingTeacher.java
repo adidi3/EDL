@@ -25,13 +25,14 @@ public class SettingTeacher extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_teacher);
-        tvTimeStart= (TextView) findViewById(R.id.tvTimeStart);
-        tvDays= (TextView) findViewById(R.id.textView2);
-        tvTimeEnd= (TextView) findViewById(R.id.tvTimeEnd);
+        tvTimeStart = (TextView) findViewById(R.id.tvTimeStart);
+        tvDays = (TextView) findViewById(R.id.textView2);
+        tvTimeEnd = (TextView) findViewById(R.id.tvTimeEnd);
 
-        ca= Calendar.getInstance();
+        ca = Calendar.getInstance();
+    }
 
-        Nhour=ca.get(Calendar.HOUR_OF_DAY);
+       /* Nhour=ca.get(Calendar.HOUR_OF_DAY);
         Nminute=ca.get(Calendar.MINUTE);
 
         sTF(Nhour);
@@ -84,7 +85,7 @@ public class SettingTeacher extends AppCompatActivity {
     }
 
 
-  /*  Nminute= Nminute+40;
+    Nminute= Nminute+40;
                         if (Nminute>=60){
         Nhour=Nhour+1;
         Nminute=Nminute-60;
@@ -142,7 +143,7 @@ public class SettingTeacher extends AppCompatActivity {
         Toast.makeText(SettingTeacher.this, "it's the last day!", Toast.LENGTH_LONG).show();
     }
 
-    public void Et(View view) {
+  /*  public void Et(View view) {
         switch (dayCount){
             case 1: break;
             case 2: break;
@@ -150,8 +151,8 @@ public class SettingTeacher extends AppCompatActivity {
             case 4:break;
             case 5: break;
             case 6: ;break;
-        }
-    }
+        }}
+ */
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
@@ -165,6 +166,10 @@ public class SettingTeacher extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void NW(View view) {
+
     }
 }
 
