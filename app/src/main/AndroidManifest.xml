@@ -12,7 +12,6 @@
         <activity android:name=".TeacherLessons"></activity>
         <activity android:name=".Editlist" />
         <activity android:name=".SettingTeacher" />
-        <activity android:name=".lessonsTeachers" />
         <activity android:name=".lessonsStudent" />
         <activity android:name=".start" />
         <activity android:name=".MainActivity">

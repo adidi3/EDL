@@ -54,7 +54,7 @@ public class Editlist extends AppCompatActivity implements AdapterView.OnItemCli
         String st = item.getTitle().toString();
 
         if (st.equals("Home screem")) {
-            Intent in = new Intent(Editlist.this, lessonsTeachers.class);
+            Intent in = new Intent(Editlist.this, TeacherLessons.class);
             startActivity(in);
         }
         return super.onOptionsItemSelected(item);

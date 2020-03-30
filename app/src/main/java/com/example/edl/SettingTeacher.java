@@ -161,7 +161,7 @@ public class SettingTeacher extends AppCompatActivity {
         //menu
         String st=item.getTitle().toString();
         if (st.equals("Home screen")){
-            Intent gotogal = new Intent(this, lessonsTeachers.class);
+            Intent gotogal = new Intent(this, TeacherLessons.class);
             startActivity(gotogal);
         }
 

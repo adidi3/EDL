@@ -15,11 +15,7 @@ public class FBref {
     public static DatabaseReference refVarible  = FBDB.getReference("Varible");
     public static DatabaseReference refStudent  = refUsers.child("Ustudents");
     public static DatabaseReference refTeacher  = refUsers.child("Uteachers");
-    public static DatabaseReference refMonday  = refVarible.child("monday");
-    public static DatabaseReference refSunday  = refVarible.child("sanday");
-    public static DatabaseReference refThursday  = refVarible.child("thursday");
-    public static DatabaseReference refWednesday  = refVarible.child("wednesday");
-    public static DatabaseReference refTuesday  = refVarible.child("tuesday");
+
 
     public static FirebaseStorage FBST = FirebaseStorage.getInstance();
     public static StorageReference mStorageRef = FBST.getReference("images");

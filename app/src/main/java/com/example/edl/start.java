@@ -174,10 +174,26 @@ public class start extends AppCompatActivity {
         super.onStart();
         SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
         Boolean isChecked=settings.getBoolean("stayConnect",false);
-        Intent si = new Intent(start.this,Loginok.class);
-        if (refAuth.getCurrentUser()!=null && isChecked) {
-            stayConnect=true;
-            startActivity(si);
+        if (student) {
+            Intent si = new Intent(start.this, TeacherLessons.class);
+            if (refAuth.getCurrentUser() != null && isChecked) {
+                stayConnect = true;
+                si.putExtra("phone_t", wteacher);
+                si.putExtra("name", name);
+                startActivity(si);
+                finish();
+            }
+        }
+        else {
+            Intent si = new Intent(start.this, TeacherLessons.class);
+            if (refAuth.getCurrentUser() != null && isChecked) {
+                stayConnect = true;
+                si.putExtra("phone",phone);
+                si.putExtra("nameS",name);
+                startActivity(si);
+                finish();
+            }
+
         }
     }
     /**
@@ -290,7 +306,7 @@ public class start extends AppCompatActivity {
                                     startActivity(in);
                                 }
                                 else {
-                                    Intent in = new Intent(start.this, lessonsTeachers.class);
+                                    Intent in = new Intent(start.this, TeacherLessons.class);
                                     in.putExtra("phone",phone);
                                     in.putExtra("nameS",name);
                                     startActivity(in);

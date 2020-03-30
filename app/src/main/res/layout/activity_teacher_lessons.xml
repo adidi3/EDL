@@ -4,23 +4,97 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:layout_gravity="center"
     tools:context=".TeacherLessons">
 
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="snjdhbs;dfv"
-        android:textSize="36sp" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:onClick="next"
-        android:text="Button" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="3"
+        android:layout_height="0dp"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:textColor="@color/colorPrimary"
+            android:text="sunday"
+            android:textAlignment="center"
+            android:textSize="@android:dimen/app_icon_size"
+            />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="5"
+        android:layout_height="0dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/btl"
+            android:onClick="bl"
+            android:layout_weight="1"
+            android:text="to the previous day"/>
+
+
+
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/btr"
+            android:onClick="br"
+            android:layout_weight="1"
+            android:text="to the next day"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="2"
+        android:layout_height="0dp"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/btEnter"
+            android:onClick="NW"
+            android:layout_weight="0.3"
+            android:text="new week"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2" />
+
+    </LinearLayout>
+
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_weight="25"
+        android:layout_height="0dp"
+        android:id="@+id/lv1"/>
 </LinearLayout>
