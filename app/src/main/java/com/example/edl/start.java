@@ -347,8 +347,8 @@ public class start extends AppCompatActivity {
                                     FirebaseUser user = refAuth.getCurrentUser();
                                     uid = user.getUid();
                                     if (student) {
-                                        for (int i = 0; i <= 10; i++)
-                                            sf = sf + s.charAt(i);
+                                        for (int i = 0; i <= 9; i++)
+                                            sf =sf+s.charAt(i);
                                         wteacher = sf;
                                         Ustudents1 = new Ustudents(name, email, phone, uid, id, password, student, manual, female, date, wteacher);
                                         refStudent.child(phone).setValue(Ustudents1);
