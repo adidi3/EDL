@@ -29,7 +29,7 @@
             android:textColor="@color/colorPrimary"
             android:text="sunday"
             android:textAlignment="center"
-            android:textSize="@android:dimen/app_icon_size"
+            android:textSize="40dp"
             />
 
         <Space
@@ -37,6 +37,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
     </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
 
     <LinearLayout

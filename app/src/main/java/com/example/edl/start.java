@@ -178,7 +178,7 @@ public class start extends AppCompatActivity {
             Intent si = new Intent(start.this, TeacherLessons.class);
             if (refAuth.getCurrentUser() != null && isChecked) {
                 stayConnect = true;
-                si.putExtra("phone_t", wteacher);
+                si.putExtra("phonet", wteacher);
                 si.putExtra("name", name);
                 startActivity(si);
                 finish();
@@ -189,7 +189,7 @@ public class start extends AppCompatActivity {
             if (refAuth.getCurrentUser() != null && isChecked) {
                 stayConnect = true;
                 si.putExtra("phone",phone);
-                si.putExtra("nameS",name);
+                si.putExtra("namet",name);
                 startActivity(si);
                 finish();
             }
@@ -301,15 +301,17 @@ public class start extends AppCompatActivity {
                                 Toast.makeText(start.this, "Login Success", Toast.LENGTH_LONG).show();
                                 if (student) {
                                     Intent in = new Intent(start.this,lessonsStudent.class);
-                                    in.putExtra("phone_t",wteacher);
+                                    in.putExtra("phonet",wteacher);
                                     in.putExtra("name",name);
                                     startActivity(in);
+                                    finish();
                                 }
                                 else {
                                     Intent in = new Intent(start.this, TeacherLessons.class);
                                     in.putExtra("phone",phone);
-                                    in.putExtra("nameS",name);
+                                    in.putExtra("namet",name);
                                     startActivity(in);
+                                    finish();
                                 }
 
                             } else {
@@ -327,9 +329,7 @@ public class start extends AppCompatActivity {
             password = eTpass.getText().toString();
             money = eTmoney.getText().toString();
             s = spinner.getSelectedItem().toString();
-            for (int i = 0; i <= 10; i++)
-                sf = sf + s.charAt(i);
-            wteacher = sf;
+
             if (switchMALEfemale.isChecked()) {female = true; }
             if (switchAutoManuel.isChecked()) { manual = true;}
             if ((!name.isEmpty()) && (!email.isEmpty()) && (!password.isEmpty()) && (!phone.isEmpty()) && (!id.isEmpty()) && (((!student) && (!money.isEmpty())) || ((student) && (!date.isEmpty())))) {
@@ -347,11 +347,14 @@ public class start extends AppCompatActivity {
                                     FirebaseUser user = refAuth.getCurrentUser();
                                     uid = user.getUid();
                                     if (student) {
+                                        for (int i = 0; i <= 10; i++)
+                                            sf = sf + s.charAt(i);
+                                        wteacher = sf;
                                         Ustudents1 = new Ustudents(name, email, phone, uid, id, password, student, manual, female, date, wteacher);
                                         refStudent.child(phone).setValue(Ustudents1);
                                         Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                         Intent in = new Intent(start.this, lessonsStudent.class);
-                                        in.putExtra("phonet", phone);
+                                        in.putExtra("phonet", wteacher);
                                         in.putExtra("name", name);
                                         startActivity(in);
                                         finish();
@@ -368,7 +371,7 @@ public class start extends AppCompatActivity {
                                         Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                         Intent in = new Intent(start.this, TeacherLessons.class);
                                         in.putExtra("phone", phone);
-                                        in.putExtra("nameS", name);
+                                        in.putExtra("namet", name);
                                         startActivity(in);
                                         finish();
                                     }

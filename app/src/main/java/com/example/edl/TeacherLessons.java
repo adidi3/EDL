@@ -31,7 +31,7 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
     String phone1;
     String name1;
     TextView  tvDays;
-    TextView v1;
+ //   TextView v1;
     int  dayCount=1;
     ListView lv;
     ArrayList<String> stringList= new ArrayList<String>();
@@ -53,7 +53,7 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
         //v1.setText(phone1);
         Intent in = getIntent();
         phone1 = in.getExtras().getString("phone");
-        name1 = in.getExtras().getString("nameS");
+        name1 = in.getExtras().getString("namet");
 
         lv = (ListView) findViewById(R.id.lv1);
         tvDays = (TextView) findViewById(R.id.textView2);
