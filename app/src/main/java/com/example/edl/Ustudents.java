@@ -1,9 +1,9 @@
 package com.example.edl;
 
 public class Ustudents {
-    public String name, email, phone, uid, id, password, date, wteacher;
+    public String name, email, phone, uid, id, password, date, wteacher, count;
     public boolean student, manual, female;
-    public Ustudents (String name, String email, String phone, String uid, String id, String password, Boolean student, Boolean manual, Boolean female, String date, String wteacher) {
+    public Ustudents (String name, String email, String phone, String uid, String id, String password, Boolean student, Boolean manual, Boolean female, String date, String wteacher, String count) {
         this.name=name;
         this.date=date;
         this.email=email;
@@ -15,7 +15,37 @@ public class Ustudents {
         this.female=female;
         this.manual=manual;
         this.student=student;
+        this.count=count;
     }
+    public Ustudents(){
+        this.name = "";
+        this.email = "";
+        this.uid = "";
+        this.date="";
+        this.phone="";
+        this.id="";
+        this.wteacher="";
+        this.password="";
+        this.female=false;
+        this.manual=false;
+        this.student=true;
+        this.count="";
+    }
+    public void copyStudent(Ustudents student){
+        this.name = student.getName();
+        this.email = student.getEmail();
+        this.date = student.getDate();
+        this.phone = student.getPhone();
+        this.id = student.getId();
+        this.wteacher = student.getWteacher();
+        this.password = student.getPassword();
+        this.female = student.getFemale();
+        this.manual = student.getManual();
+        this.student = student.getStudent();
+        this.count = student.getCount();
+        }
+
+
     public Boolean getFemale() {
         return female;
     }
@@ -98,5 +128,12 @@ public class Ustudents {
         this.date=date;
     }
 
+    public void setCount(String count) {
+        this.count = count;
+    }
+
+    public String getCount() {
+        return count;
+    }
 
 }

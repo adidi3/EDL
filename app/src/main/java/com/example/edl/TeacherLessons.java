@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,17 +20,20 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 import static com.example.edl.FBref.refAuth;
+import static com.example.edl.FBref.refStudent;
 import static com.example.edl.FBref.refTeacher;
 import static com.example.edl.FBref.refTeacherTime;
 
 public class TeacherLessons extends AppCompatActivity implements AdapterView.OnItemClickListener  {
     String phone1;
     String name1;
+    String money1, id1, email1;
     TextView  tvDays;
  //   TextView v1;
     int  dayCount=1;
@@ -39,9 +43,12 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
     String day="Sunday";
     Day day1= new Day();
     Week week1=new Week();
-
+    String phonestudent="", phonestudent1;
     AlertDialog.Builder ad;
+    TextView vname;
     LinearLayout dialog;
+    Uteachers user = new Uteachers();
+    int t;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +64,34 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
 
         lv = (ListView) findViewById(R.id.lv1);
         tvDays = (TextView) findViewById(R.id.textView2);
+        vname = (TextView) findViewById(R.id.textView3);
 
         lv.setOnItemClickListener(this);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         adp=new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item,stringList);
         lv.setAdapter(adp);
 
-        DatabaseReference refDay = refTeacherTime.child(phone1).child(day);
+        final ProgressDialog progressDialog = ProgressDialog.show(this,"Login",
+                "Connecting...",true);
+        refTeacher.child(phone1).addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                user.copyUser(dataSnapshot.getValue(Uteachers.class));
+                vname.setText("Welcome "+user.getName());
+                name1=user.getName();
+                money1=user.getMoney();
+                id1=user.getId();
+                email1=user.getEmail();
+                progressDialog.dismiss();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+             }
+        });
+
+            DatabaseReference refDay = refTeacherTime.child(phone1).child(day);
         // Read from the database
         refDay.addValueEventListener(new ValueEventListener() {
             @Override
@@ -201,9 +229,43 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
              //   String str = stringList.get(position);
                 String str=("l"+Integer.toString(position));
                // String str= stringList.get(position);
+                phonestudent1 = stringList.get(position);
+                for (int x = 0; x <= 9; x++)
+                    phonestudent =phonestudent+phonestudent1.charAt(x);
+
+          //   DatabaseReference refDay = refStudent.child(phonestudent).child("count");
+                // Read from the database
+                refStudent.child(phonestudent).child("count").addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot ds) {
+                        // This method is called once with the initial value and again
+                        // whenever data at this location is updated.
+
+                        for (DataSnapshot data : ds.getChildren()) {
+                            String tmp = data.getValue(String.class);
+                            t = Integer.parseInt(tmp);
+                            t--;
+
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+
+                    //  count1++;
+                //refStudent.child(phonestudent).child("count").setValue(count1);
+                String sr="count";
+                String sc=Integer.toString(t);
+                refStudent.child(phonestudent).child(sr).removeValue();
+                refStudent.child(phonestudent).child(sr).setValue(sc);
                 refTeacherTime.child(phone1).child(day).child(str).removeValue();
-                refTeacherTime.child(phone1).child(day).child(str).setValue("cancelled");
+                refTeacherTime.child(phone1).child(day).child(str).setValue("Canceled");
                 Toast.makeText(TeacherLessons.this, "Deleting succeeded", Toast.LENGTH_SHORT).show();
+                phonestudent="";
                 dialogInterface.dismiss();
             }
         });

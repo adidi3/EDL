@@ -65,6 +65,7 @@ public class start extends AppCompatActivity {
     String name="nnn", phone="0", email, password, uid, id, money, date, wteacher;
     Query query;
     SpinnerAdapter A1;
+    String count="0";
     Ustudents Ustudents1;
     Uteachers Uteachers1;
     String s;
@@ -180,6 +181,8 @@ public class start extends AppCompatActivity {
                 stayConnect = true;
                 si.putExtra("phonet", wteacher);
                 si.putExtra("name", name);
+                si.putExtra("count",count);
+                si.putExtra("phones", phone);
                 startActivity(si);
                 finish();
             }
@@ -216,7 +219,6 @@ public class start extends AppCompatActivity {
                 eTid.setVisibility(View.VISIBLE);
                 eTmoney.setVisibility(View.VISIBLE);
                 switchTecherstudent.setVisibility(View.VISIBLE);
-                eTphone.setVisibility(View.VISIBLE);
                 tVteacher.setVisibility(View.VISIBLE);
                 tVstudent.setVisibility(View.VISIBLE);
                 btn.setText("Register");
@@ -238,7 +240,6 @@ public class start extends AppCompatActivity {
                 eTname.setVisibility(View.INVISIBLE);
                 eTid.setVisibility(View.INVISIBLE);
                 eTmoney.setVisibility(View.INVISIBLE);
-                eTphone.setVisibility(View.INVISIBLE);
                 tvDate.setVisibility(View.INVISIBLE);
                 switchTecherstudent.setVisibility(View.INVISIBLE);
                 switchAutoManuel.setVisibility(View.INVISIBLE);
@@ -293,6 +294,9 @@ public class start extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             pd.dismiss();
                             if (task.isSuccessful()) {
+                                phone = eTphone.getText().toString();
+
+
                                 SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
                                 SharedPreferences.Editor editor=settings.edit();
                                 editor.putBoolean("stayConnect",cBstayconnect.isChecked());
@@ -303,6 +307,8 @@ public class start extends AppCompatActivity {
                                     Intent in = new Intent(start.this,lessonsStudent.class);
                                     in.putExtra("phonet",wteacher);
                                     in.putExtra("name",name);
+                                    in.putExtra("count",count);
+                                    in.putExtra("phones", phone);
                                     startActivity(in);
                                     finish();
                                 }
@@ -350,12 +356,14 @@ public class start extends AppCompatActivity {
                                         for (int i = 0; i <= 9; i++)
                                             sf =sf+s.charAt(i);
                                         wteacher = sf;
-                                        Ustudents1 = new Ustudents(name, email, phone, uid, id, password, student, manual, female, date, wteacher);
+                                        Ustudents1 = new Ustudents(name, email, phone, uid, id, password, student, manual, female, date, wteacher, count);
                                         refStudent.child(phone).setValue(Ustudents1);
                                         Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                         Intent in = new Intent(start.this, lessonsStudent.class);
                                         in.putExtra("phonet", wteacher);
                                         in.putExtra("name", name);
+                                        in.putExtra("count",count);
+                                        in.putExtra("phones", phone);
                                         startActivity(in);
                                         finish();
                                     }

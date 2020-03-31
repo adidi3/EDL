@@ -14,6 +14,26 @@ public class Uteachers {
         this.student=student;
 
     }
+    public Uteachers(){
+        this.name = "";
+        this.email = "";
+        this.uid = "";
+        this.phone="";
+        this.id="";
+        this.money="";
+        this.password="";
+        this.student=false;
+    }
+
+    public void copyUser(Uteachers user){
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.phone = user.getPhone();
+        this.id = user.getId();
+        this.money = user.getMoney();
+        this.password = user.getPassword();
+        this.student = user.getStudent();
+        this.uid = user.getUid();}
 
 
     public Boolean getStudent() {
