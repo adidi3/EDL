@@ -47,7 +47,9 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
     Week week1=new Week();
     String phonestudent="", phonestudent1;
     AlertDialog.Builder ad;
+    Ustudents student = new Ustudents();
     TextView vname;
+    String count1="";
     LinearLayout dialog;
     Uteachers user = new Uteachers();
     int t;
@@ -235,21 +237,27 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
 
           //   DatabaseReference refDay = refStudent.child(phonestudent).child("count");
                 // Read from the database
-                refStudent.child(phonestudent).child("count").addValueEventListener(new ValueEventListener() {
-
+             //   refStudent.child(phonestudent).child("count").addValueEventListener(new ValueEventListener() {
+                refStudent.child(phonestudent).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot ds) {
-                        // This method is called once with the initial value and again
-                        // whenever data at this location is updated.
-
-                        for (DataSnapshot data : ds.getChildren()) {
-                            String tmp = data.getValue(String.class);
-                            t = Integer.parseInt(tmp);
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        student.copyStudent(dataSnapshot.getValue(Ustudents.class));
+                            count1=student.getCount();
+                            t = Integer.parseInt(count1);
                             t--;
+                        String sr="count";
+                        String sc=Integer.toString(t);
+                        refStudent.child(phonestudent).child(sr).removeValue();
+                        refStudent.child(phonestudent).child(sr).setValue(sc);
+                        String str=("l"+Integer.toString(position));
+                        refTeacherTime.child(phone1).child(day).child(str).removeValue();
+                        refTeacherTime.child(phone1).child(day).child(str).setValue("Canceled");
+                        Toast.makeText(TeacherLessons.this, "Deleting succeeded", Toast.LENGTH_SHORT).show();
+                        phonestudent="";
 
 
                         }
-                    }
+
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -258,14 +266,6 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
 
                     //  count1++;
                 //refStudent.child(phonestudent).child("count").setValue(count1);
-                String sr="count";
-                String sc=Integer.toString(t);
-                refStudent.child(phonestudent).child(sr).removeValue();
-                refStudent.child(phonestudent).child(sr).setValue(sc);
-                refTeacherTime.child(phone1).child(day).child(str).removeValue();
-                refTeacherTime.child(phone1).child(day).child(str).setValue("Canceled");
-                Toast.makeText(TeacherLessons.this, "Deleting succeeded", Toast.LENGTH_SHORT).show();
-                phonestudent="";
                 dialogInterface.dismiss();
             }
         });
