@@ -254,6 +254,7 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
                         refTeacherTime.child(phone1).child(day).child(str).setValue("Canceled");
                         Toast.makeText(TeacherLessons.this, "Deleting succeeded", Toast.LENGTH_SHORT).show();
                         phonestudent="";
+                        
 
 
                         }
