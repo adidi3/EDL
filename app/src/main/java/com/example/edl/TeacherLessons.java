@@ -8,6 +8,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -74,8 +76,6 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
         final ProgressDialog progressDialog = ProgressDialog.show(this,"Login",
                 "Connecting...",true);
         refTeacher.child(phone1).addListenerForSingleValueEvent(new ValueEventListener() {
-
-
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 user.copyUser(dataSnapshot.getValue(Uteachers.class));
@@ -278,5 +278,25 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
         AlertDialog adb = ad.create();
         adb.show();
 
+    }
+    public boolean onCreateOptionsMenu (Menu menu){
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    public boolean onOptionsItemSelected (MenuItem item){
+        //menu
+        String st = item.getTitle().toString();
+
+        if (st.equals("Students information")) {
+            Intent in = new Intent(TeacherLessons.this, StudentsInfo.class);
+            in.putExtra("id",id1);
+            in.putExtra("name",name1);
+            in.putExtra("email",email1);
+            in.putExtra("phone", phone1);
+            in.putExtra("money", money1);
+            startActivity(in);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

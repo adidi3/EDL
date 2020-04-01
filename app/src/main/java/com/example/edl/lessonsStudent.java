@@ -28,11 +28,11 @@ import static com.example.edl.FBref.refTeacher;
 import static com.example.edl.FBref.refTeacherTime;
 
 public class lessonsStudent extends AppCompatActivity implements AdapterView.OnItemClickListener{
-    String phone;
-    String phonestudent;
-    String names;
-    String count1;
-    String id, email, date ;
+    String phone="";
+    String phonestudent="";
+    String names="";
+    String count1="";
+    String id="", email="", date="" ;
     ListView lv1;
     ArrayList<String> stringLst= new ArrayList<String>();
     ArrayAdapter<String> adp1;
@@ -51,9 +51,6 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
         setContentView(R.layout.activity_lessons_student);
 
         Intent in = getIntent();
-        phone = in.getExtras().getString("phonet");
-        names = in.getExtras().getString("name");
-        count1=in.getExtras().getString("count");
         phonestudent=in.getExtras().getString("phones");
 
        lv1=(ListView)findViewById(R.id.lv11);
@@ -72,6 +69,7 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 student.copyStudent(dataSnapshot.getValue(Ustudents.class));
+
                 tvname.setText("Welcome "+student.getName());
                 names=student.getName();
                 count1=student.getCount();

@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.example.edl.FBref.refAllUsers;
 import static com.example.edl.FBref.refAuth;
 import static com.example.edl.FBref.refStudent;
 import static com.example.edl.FBref.refTeacher;
@@ -77,8 +78,10 @@ public class start extends AppCompatActivity {
     Boolean female=false;
     Boolean manual=false;
     Boolean student= false;
+    DatabaseReference reff;
     ArrayAdapter<String> adp;
     Character r;
+    String e;
     List<String> tl= new ArrayList<String>();
     List<String> tlname=new ArrayList<String>();
 
@@ -296,29 +299,43 @@ public class start extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 phone = eTphone.getText().toString();
 
-
                                 SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
                                 SharedPreferences.Editor editor=settings.edit();
                                 editor.putBoolean("stayConnect",cBstayconnect.isChecked());
                                 editor.commit();
                                 Log.d("start", "signinUserWithEmail:success");
                                 Toast.makeText(start.this, "Login Success", Toast.LENGTH_LONG).show();
-                                if (student) {
-                                    Intent in = new Intent(start.this,lessonsStudent.class);
-                                    in.putExtra("phonet",wteacher);
-                                    in.putExtra("name",name);
-                                    in.putExtra("count",count);
-                                    in.putExtra("phones", phone);
-                                    startActivity(in);
-                                    finish();
-                                }
-                                else {
-                                    Intent in = new Intent(start.this, TeacherLessons.class);
-                                    in.putExtra("phone",phone);
-                                    in.putExtra("namet",name);
-                                    startActivity(in);
-                                    finish();
-                                }
+                                reff = refAllUsers.child(phone);
+                                reff.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                       // String tmp=dataSnapshot.getValue(String.class);
+                                        //e=tmp;
+                                         e = dataSnapshot.child("student").getValue().toString();
+                                        if (e.equals("true")) {
+                                            wteacher="";
+                                            count="";
+                                            Intent in = new Intent(start.this,lessonsStudent.class);
+                                            in.putExtra("phonet",wteacher);
+                                            in.putExtra("name",name);
+                                            in.putExtra("count",count);
+                                            in.putExtra("phones", phone);
+                                            startActivity(in);
+                                            finish();
+                                        }
+                                        else {
+                                            Intent in = new Intent(start.this, TeacherLessons.class);
+                                            in.putExtra("phone",phone);
+                                            in.putExtra("namet",name);
+                                            startActivity(in);
+                                            finish();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    }
+                                });
 
                             } else {
                                 Log.d("start", "signinUserWithEmail:fail");
@@ -358,6 +375,7 @@ public class start extends AppCompatActivity {
                                         wteacher = sf;
                                         Ustudents1 = new Ustudents(name, email, phone, uid, id, password, student, manual, female, date, wteacher, count);
                                         refStudent.child(phone).setValue(Ustudents1);
+                                        refAllUsers.child(phone).setValue(Ustudents1);
                                         Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                         Intent in = new Intent(start.this, lessonsStudent.class);
                                         in.putExtra("phonet", wteacher);
@@ -370,6 +388,7 @@ public class start extends AppCompatActivity {
                                     else {
                                         Uteachers1 = new Uteachers(name, email, phone, uid, id, password, student, money);
                                         refTeacher.child(phone).setValue(Uteachers1);
+                                        refAllUsers.child(phone).setValue(Uteachers1);
                                         refTeacherTime.child(phone).setValue(week1);
                                         refTeacherTime.child(phone).child("sunday").setValue(day1);
                                         refTeacherTime.child(phone).child("monday").setValue(day1);

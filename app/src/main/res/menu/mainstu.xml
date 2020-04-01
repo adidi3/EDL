@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:id="@+id/menuhome"
         android:title="Home screen"
         android:orderInCategory="2"
         />
     <item
-        android:title="Students information"
-        android:id="@+id/stuinfo"
+        android:id="@+id/info"
+        android:title="information"
         android:orderInCategory="3"
         />
-
 
 </menu>
