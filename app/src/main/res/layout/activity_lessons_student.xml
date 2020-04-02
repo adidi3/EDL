@@ -13,26 +13,24 @@
         android:layout_height="0dp"
         android:orientation="horizontal">
 
-        <Space
+        <ImageView
+            android:id="@+id/imageView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="3"
+            app:srcCompat="@drawable/edl2" />
 
         <TextView
             android:id="@+id/tv3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="7"
             android:textColor="@color/colorPrimary"
             android:text="sunday"
             android:textAlignment="center"
-            android:textSize="@android:dimen/app_icon_size"
+            android:textSize="20dp"
             />
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,7 +42,7 @@
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1.3" />
 
         <TextView
             android:id="@+id/tv2"
@@ -54,13 +52,10 @@
             android:textColor="@color/colorPrimary"
             android:text="sunday"
             android:textAlignment="center"
-            android:textSize="@android:dimen/app_icon_size"
+            android:textSize="20dp"
             />
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+
     </LinearLayout>
 
 

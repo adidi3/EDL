@@ -84,8 +84,9 @@ public class start extends AppCompatActivity {
     String e;
     List<String> tl= new ArrayList<String>();
     List<String> tlname=new ArrayList<String>();
-
-
+    String uiduser;
+    Uteachers usert;
+    Ustudents users;
 
 
     @Override
@@ -116,6 +117,14 @@ public class start extends AppCompatActivity {
 
         stayConnect=false;
         registered=true;
+
+        FirebaseUser fbuser = refAuth.getCurrentUser();
+        uiduser = fbuser.getUid();
+        Query query = refTeacher.orderByChild("uid").equalTo(uiduser);
+        query.addListenerForSingleValueEvent(VEL);
+        Query query2 = refStudent.orderByChild("uid").equalTo(uiduser);
+        query2.addListenerForSingleValueEvent(VEL2);
+
 
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,6 +178,36 @@ public class start extends AppCompatActivity {
                 regoption();
     }
 
+    com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dS) {
+            if (dS.exists()) {
+                for(DataSnapshot data : dS.getChildren()) {
+                    usert = data.getValue(Uteachers.class);
+                    student=usert.getStudent();
+                    phone=usert.getPhone();
+                }
+            }
+        }
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+        }
+    };
+    com.google.firebase.database.ValueEventListener VEL2 = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            if (dataSnapshot.exists()) {
+                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                    users = data.getValue(Ustudents.class);
+                    student=usert.getStudent();
+                    phone=usert.getPhone();
+                }
+            }
+        }
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+        }
+    };
     /**
      * On activity start - Checking if user already logged in.
      * If logged in & asked to be remembered - pass on.
@@ -182,10 +221,6 @@ public class start extends AppCompatActivity {
             Intent si = new Intent(start.this, TeacherLessons.class);
             if (refAuth.getCurrentUser() != null && isChecked) {
                 stayConnect = true;
-                si.putExtra("phonet", wteacher);
-                si.putExtra("name", name);
-                si.putExtra("count",count);
-                si.putExtra("phones", phone);
                 startActivity(si);
                 finish();
             }
@@ -194,8 +229,6 @@ public class start extends AppCompatActivity {
             Intent si = new Intent(start.this, TeacherLessons.class);
             if (refAuth.getCurrentUser() != null && isChecked) {
                 stayConnect = true;
-                si.putExtra("phone",phone);
-                si.putExtra("namet",name);
                 startActivity(si);
                 finish();
             }
@@ -224,6 +257,7 @@ public class start extends AppCompatActivity {
                 switchTecherstudent.setVisibility(View.VISIBLE);
                 tVteacher.setVisibility(View.VISIBLE);
                 tVstudent.setVisibility(View.VISIBLE);
+                eTphone.setVisibility(View.VISIBLE);
                 btn.setText("Register");
                 registered=false;
                logoption();
@@ -244,6 +278,7 @@ public class start extends AppCompatActivity {
                 eTid.setVisibility(View.INVISIBLE);
                 eTmoney.setVisibility(View.INVISIBLE);
                 tvDate.setVisibility(View.INVISIBLE);
+                eTphone.setVisibility(View.INVISIBLE);
                 switchTecherstudent.setVisibility(View.INVISIBLE);
                 switchAutoManuel.setVisibility(View.INVISIBLE);
                 switchMALEfemale.setVisibility(View.INVISIBLE);
@@ -297,7 +332,7 @@ public class start extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             pd.dismiss();
                             if (task.isSuccessful()) {
-                                phone = eTphone.getText().toString();
+                               // phone = eTphone.getText().toString();
 
                                 SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
                                 SharedPreferences.Editor editor=settings.edit();
@@ -313,20 +348,12 @@ public class start extends AppCompatActivity {
                                         //e=tmp;
                                          e = dataSnapshot.child("student").getValue().toString();
                                         if (e.equals("true")) {
-                                            wteacher="";
-                                            count="";
                                             Intent in = new Intent(start.this,lessonsStudent.class);
-                                            in.putExtra("phonet",wteacher);
-                                            in.putExtra("name",name);
-                                            in.putExtra("count",count);
-                                            in.putExtra("phones", phone);
                                             startActivity(in);
                                             finish();
                                         }
                                         else {
                                             Intent in = new Intent(start.this, TeacherLessons.class);
-                                            in.putExtra("phone",phone);
-                                            in.putExtra("namet",name);
                                             startActivity(in);
                                             finish();
                                         }
@@ -378,10 +405,6 @@ public class start extends AppCompatActivity {
                                         refAllUsers.child(phone).setValue(Ustudents1);
                                         Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                         Intent in = new Intent(start.this, lessonsStudent.class);
-                                        in.putExtra("phonet", wteacher);
-                                        in.putExtra("name", name);
-                                        in.putExtra("count",count);
-                                        in.putExtra("phones", phone);
                                         startActivity(in);
                                         finish();
                                     }
@@ -397,8 +420,6 @@ public class start extends AppCompatActivity {
                                         refTeacherTime.child(phone).child("thursday").setValue(day1);
                                         Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                         Intent in = new Intent(start.this, TeacherLessons.class);
-                                        in.putExtra("phone", phone);
-                                        in.putExtra("namet", name);
                                         startActivity(in);
                                         finish();
                                     }

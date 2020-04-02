@@ -53,11 +53,6 @@
                         android:hint="password"
                         android:inputType="textPassword" />
 
-
-
-
-
-
                     <EditText
                         android:id="@+id/eTphone"
                         android:layout_width="match_parent"
@@ -65,7 +60,7 @@
                         android:ems="10"
                         android:hint="phone"
                         android:inputType="phone"
-                        />
+                        android:visibility="invisible"/>
 
             <EditText
                 android:id="@+id/eTid"

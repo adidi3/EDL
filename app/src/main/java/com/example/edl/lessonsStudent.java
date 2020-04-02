@@ -16,23 +16,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import static com.example.edl.FBref.refAuth;
 import static com.example.edl.FBref.refStudent;
 import static com.example.edl.FBref.refTeacher;
 import static com.example.edl.FBref.refTeacherTime;
 
 public class lessonsStudent extends AppCompatActivity implements AdapterView.OnItemClickListener{
-    String phone="";
-    String phonestudent="";
-    String names="";
-    String count1="";
-    String id="", email="", date="" ;
+    String phone="", phonestudent="", names="", count1="";
+    //String id="", email="", date="" ;
     ListView lv1;
     ArrayList<String> stringLst= new ArrayList<String>();
     ArrayAdapter<String> adp1;
@@ -44,25 +44,28 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
     Boolean female1, manual1;
     int count=0;
     Ustudents student = new Ustudents();
+    String uid;
+    Ustudents user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lessons_student);
-
-        Intent in = getIntent();
-        phonestudent=in.getExtras().getString("phones");
-
        lv1=(ListView)findViewById(R.id.lv11);
        tvDays1=(TextView)findViewById(R.id.tv2);
        tvname=(TextView)findViewById(R.id.tv3);
+
+        FirebaseUser fbuser = refAuth.getCurrentUser();
+        uid = fbuser.getUid();
+        Query query = refTeacher.orderByChild("uid").equalTo(uid);
+        query.addListenerForSingleValueEvent(VEL);
 
         lv1.setOnItemClickListener(this);
         lv1.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         adp1=new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item,stringLst);
         lv1.setAdapter(adp1);
 
-        final ProgressDialog progressDialog = ProgressDialog.show(this,"Login",
+    /*    final ProgressDialog progressDialog = ProgressDialog.show(this,"Login",
                 "Connecting...",true);
         refStudent.child(phonestudent).addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -86,7 +89,7 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
-        });
+        });*/
 
             DatabaseReference refDay1 = refTeacherTime.child(phone).child(day);
         // Read from the database
@@ -111,6 +114,24 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
             }
         });
     }
+
+    com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dS) {
+            if (dS.exists()) {
+                for(DataSnapshot data : dS.getChildren()) {
+                    user = data.getValue(Ustudents.class);
+                    tvname.setText("Welcome "+user.getName());
+                    names=user.getName();
+                    phone=user.getWteacher();
+                    phonestudent=user.getPhone();
+                }
+            }
+        }
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+        }
+    };
 
     public void previous(View view) {
         if (dayCount>1){

@@ -33,9 +33,7 @@ import static com.example.edl.FBref.refTeacher;
 import static com.example.edl.FBref.refTeacherTime;
 
 public class TeacherLessons extends AppCompatActivity implements AdapterView.OnItemClickListener  {
-    String phone1;
-    String name1;
-    String money1, id1, email1;
+    String phone1="", name1="", str;
     TextView  tvDays;
  //   TextView v1;
     int  dayCount=1;
@@ -51,8 +49,9 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
     TextView vname;
     String count1="";
     LinearLayout dialog;
-    Uteachers user = new Uteachers();
+    Uteachers user;
     int t;
+    String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,20 +61,22 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
       //  phone1=firebaseUser.getPhoneNumber();
        // v1=(TextView) findViewById(R.id.textView3);
         //v1.setText(phone1);
-        Intent in = getIntent();
-        phone1 = in.getExtras().getString("phone");
-        name1 = in.getExtras().getString("namet");
 
         lv = (ListView) findViewById(R.id.lv1);
         tvDays = (TextView) findViewById(R.id.textView2);
         vname = (TextView) findViewById(R.id.textView3);
+
+        FirebaseUser fbuser = refAuth.getCurrentUser();
+        uid = fbuser.getUid();
+        Query query = refTeacher.orderByChild("uid").equalTo(uid);
+        query.addListenerForSingleValueEvent(VEL);
 
         lv.setOnItemClickListener(this);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         adp=new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item,stringList);
         lv.setAdapter(adp);
 
-        final ProgressDialog progressDialog = ProgressDialog.show(this,"Login",
+   /*     final ProgressDialog progressDialog = ProgressDialog.show(this,"Login",
                 "Connecting...",true);
         refTeacher.child(phone1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -91,9 +92,9 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
              }
-        });
+        });*/
 
-            DatabaseReference refDay = refTeacherTime.child(phone1).child(day);
+        DatabaseReference refDay = refTeacherTime.child(phone1).child(day);
         // Read from the database
         refDay.addValueEventListener(new ValueEventListener() {
             @Override
@@ -104,7 +105,6 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
                 for (DataSnapshot data : ds.getChildren()){
                     String tmp=data.getValue(String.class);
                     stringList.add(tmp);
-
                 }
                 adp=new ArrayAdapter<String>(TeacherLessons.this,R.layout.support_simple_spinner_dropdown_item,stringList);
                 lv.setAdapter(adp);
@@ -115,9 +115,26 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
                 // Failed to read value
             }
         });
-
-//        finish();
     }
+
+    com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dS) {
+            if (dS.exists()) {
+                for(DataSnapshot data : dS.getChildren()) {
+                    user = data.getValue(Uteachers.class);
+                    vname.setText("Welcome "+user.getName());
+                    name1=user.getName();
+                    phone1=user.getPhone();
+
+                }
+            }
+        }
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+        }
+    };
+
     public void bl(View view) {
         if (dayCount>1){
             dayCount--;
@@ -229,9 +246,13 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
              //   String str = stringList.get(position);
-                String str=("l"+Integer.toString(position));
+                                      String str=("l"+position);
                // String str= stringList.get(position);
                 phonestudent1 = stringList.get(position);
+                if((!phonestudent1.equals("08:00-08:40"))&&!phonestudent1.equals("08:45-09:25")&&!phonestudent1.equals("10:00-10:40")&&!phonestudent1.equals("10:45-11:25")&&!phonestudent1.equals("12:30-13:10")&&!phonestudent1.equals("13:15-13:55")&&
+                        !phonestudent1.equals("14:00-14:40")&&!phonestudent1.equals("14:45-15:25")&&!phonestudent1.equals("19:00-19:40")&&!phonestudent1.equals("19:45-20:25")) {
+
+
                 for (int x = 0; x <= 9; x++)
                     phonestudent =phonestudent+phonestudent1.charAt(x);
 
@@ -242,28 +263,30 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         student.copyStudent(dataSnapshot.getValue(Ustudents.class));
-                            count1=student.getCount();
-                            t = Integer.parseInt(count1);
-                            t--;
-                        String sr="count";
-                        String sc=Integer.toString(t);
+                        count1 = student.getCount();
+                        t = Integer.parseInt(count1);
+                        t--;
+                        String sr = "count";
+                        String sc = Integer.toString(t);
                         refStudent.child(phonestudent).child(sr).removeValue();
                         refStudent.child(phonestudent).child(sr).setValue(sc);
-                        String str=("l"+Integer.toString(position));
-                        refTeacherTime.child(phone1).child(day).child(str).removeValue();
-                        refTeacherTime.child(phone1).child(day).child(str).setValue("Canceled");
+                    //    str = ("l" + Integer.toString(position));
+                    //    refTeacherTime.child(phone1).child(day).child(str).removeValue();
+                      //  refTeacherTime.child(phone1).child(day).child(str).setValue("Canceled");
                         Toast.makeText(TeacherLessons.this, "Deleting succeeded", Toast.LENGTH_SHORT).show();
-                        phonestudent="";
-                        
+                        phonestudent = "";
 
 
-                        }
-
-
+                    }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                     }
                 });
+                }
+                    refTeacherTime.child(phone1).child(day).child(str).removeValue();
+                    refTeacherTime.child(phone1).child(day).child(str).setValue("Canceled");
+
+
 
                     //  count1++;
                 //refStudent.child(phonestudent).child("count").setValue(count1);
@@ -290,11 +313,6 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
 
         if (st.equals("Students information")) {
             Intent in = new Intent(TeacherLessons.this, StudentsInfo.class);
-            in.putExtra("id",id1);
-            in.putExtra("name",name1);
-            in.putExtra("email",email1);
-            in.putExtra("phone", phone1);
-            in.putExtra("money", money1);
             startActivity(in);
             finish();
         }
