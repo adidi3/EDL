@@ -199,8 +199,8 @@ public class start extends AppCompatActivity {
             if (dataSnapshot.exists()) {
                 for(DataSnapshot data : dataSnapshot.getChildren()) {
                     users = data.getValue(Ustudents.class);
-                    student=usert.getStudent();
-                    phone=usert.getPhone();
+                    student=users.getStudent();
+                    phone=users.getPhone();
                 }
             }
         }
@@ -340,14 +340,7 @@ public class start extends AppCompatActivity {
                                 editor.commit();
                                 Log.d("start", "signinUserWithEmail:success");
                                 Toast.makeText(start.this, "Login Success", Toast.LENGTH_LONG).show();
-                                reff = refAllUsers.child(phone);
-                                reff.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                       // String tmp=dataSnapshot.getValue(String.class);
-                                        //e=tmp;
-                                         e = dataSnapshot.child("student").getValue().toString();
-                                        if (e.equals("true")) {
+                               if (student) {
                                             Intent in = new Intent(start.this,lessonsStudent.class);
                                             startActivity(in);
                                             finish();
@@ -357,12 +350,6 @@ public class start extends AppCompatActivity {
                                             startActivity(in);
                                             finish();
                                         }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                                    }
-                                });
 
                             } else {
                                 Log.d("start", "signinUserWithEmail:fail");

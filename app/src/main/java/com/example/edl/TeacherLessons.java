@@ -71,6 +71,7 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
         Query query = refTeacher.orderByChild("uid").equalTo(uid);
         query.addListenerForSingleValueEvent(VEL);
 
+
         lv.setOnItemClickListener(this);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         adp=new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item,stringList);
@@ -245,9 +246,7 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
         ad.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-             //   String str = stringList.get(position);
-                                      String str=("l"+position);
-               // String str= stringList.get(position);
+                String str=("l"+position);
                 phonestudent1 = stringList.get(position);
                 if((!phonestudent1.equals("08:00-08:40"))&&!phonestudent1.equals("08:45-09:25")&&!phonestudent1.equals("10:00-10:40")&&!phonestudent1.equals("10:45-11:25")&&!phonestudent1.equals("12:30-13:10")&&!phonestudent1.equals("13:15-13:55")&&
                         !phonestudent1.equals("14:00-14:40")&&!phonestudent1.equals("14:45-15:25")&&!phonestudent1.equals("19:00-19:40")&&!phonestudent1.equals("19:45-20:25")) {
@@ -255,10 +254,6 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
 
                 for (int x = 0; x <= 9; x++)
                     phonestudent =phonestudent+phonestudent1.charAt(x);
-
-          //   DatabaseReference refDay = refStudent.child(phonestudent).child("count");
-                // Read from the database
-             //   refStudent.child(phonestudent).child("count").addValueEventListener(new ValueEventListener() {
                 refStudent.child(phonestudent).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -270,9 +265,6 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
                         String sc = Integer.toString(t);
                         refStudent.child(phonestudent).child(sr).removeValue();
                         refStudent.child(phonestudent).child(sr).setValue(sc);
-                    //    str = ("l" + Integer.toString(position));
-                    //    refTeacherTime.child(phone1).child(day).child(str).removeValue();
-                      //  refTeacherTime.child(phone1).child(day).child(str).setValue("Canceled");
                         Toast.makeText(TeacherLessons.this, "Deleting succeeded", Toast.LENGTH_SHORT).show();
                         phonestudent = "";
 
