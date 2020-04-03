@@ -44,7 +44,7 @@ public class infoStudent1 extends AppCompatActivity {
         uid = fbuser.getUid();
         Query query = refTeacher.orderByChild("uid").equalTo(uid);
         query.addListenerForSingleValueEvent(VEL);
-        eemail.setText(email1);
+
 
     }
     com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
@@ -61,6 +61,7 @@ public class infoStudent1 extends AppCompatActivity {
                     manual1=user.getManual();
                     count1=user.getCount();
                     date1=user.getDate();
+                    eemail.setText(email1);
 
 
                 }

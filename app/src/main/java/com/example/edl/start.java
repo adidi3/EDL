@@ -173,6 +173,7 @@ public class start extends AppCompatActivity {
                 regoption();
     }
 
+
     com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dS) {
@@ -181,6 +182,16 @@ public class start extends AppCompatActivity {
                     usert = data.getValue(Uteachers.class);
                     student=usert.getStudent();
                     phone=usert.getPhone();
+                    if (student) {
+                        Intent in = new Intent(start.this,lessonsStudent.class);
+                        startActivity(in);
+                        finish();
+                    }
+                    else {
+                        Intent in = new Intent(start.this, TeacherLessons.class);
+                        startActivity(in);
+                        finish();
+                    }
                 }
             }
         }
@@ -196,6 +207,16 @@ public class start extends AppCompatActivity {
                     users = data.getValue(Ustudents.class);
                     student=users.getStudent();
                     phone=users.getPhone();
+                    if (student) {
+                        Intent in = new Intent(start.this,lessonsStudent.class);
+                        startActivity(in);
+                        finish();
+                    }
+                    else {
+                        Intent in = new Intent(start.this, TeacherLessons.class);
+                        startActivity(in);
+                        finish();
+                    }
                 }
             }
         }
@@ -213,22 +234,20 @@ public class start extends AppCompatActivity {
         SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
         Boolean isChecked=settings.getBoolean("stayConnect",false);
         FirebaseUser fbuser = refAuth.getCurrentUser();
-        uiduser = fbuser.getUid();
-        Query query = refTeacher.orderByChild("uid").equalTo(uiduser);
-        query.addListenerForSingleValueEvent(VEL);
-        Query query2 = refStudent.orderByChild("uid").equalTo(uiduser);
-        query2.addListenerForSingleValueEvent(VEL2);
+
         if (student) {
-            Intent si = new Intent(start.this, TeacherLessons.class);
+
             if (refAuth.getCurrentUser() != null && isChecked) {
+                Intent si = new Intent(start.this, lessonsStudent.class);
                 stayConnect = true;
                 startActivity(si);
                 finish();
             }
         }
         else {
-            Intent si = new Intent(start.this, TeacherLessons.class);
+
             if (refAuth.getCurrentUser() != null && isChecked) {
+                Intent si = new Intent(start.this, TeacherLessons.class);
                 stayConnect = true;
                 startActivity(si);
                 finish();
@@ -347,16 +366,7 @@ public class start extends AppCompatActivity {
                                 editor.commit();
                                 Log.d("start", "signinUserWithEmail:success");
                                 Toast.makeText(start.this, "Login Success", Toast.LENGTH_LONG).show();
-                               if (student) {
-                                            Intent in = new Intent(start.this,lessonsStudent.class);
-                                            startActivity(in);
-                                            finish();
-                                        }
-                                        else {
-                                            Intent in = new Intent(start.this, TeacherLessons.class);
-                                            startActivity(in);
-                                            finish();
-                                        }
+
 
                             } else {
                                 Log.d("start", "signinUserWithEmail:fail");
