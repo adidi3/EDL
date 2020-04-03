@@ -5,33 +5,10 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context=".StudentsInfo">
+    tools:context=".infoStudent1">
 
-
-    <Spinner
-        android:id="@+id/spinner2"
-        android:layout_width="match_parent"
-        android:layout_weight="5"
-        android:layout_height="0dp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_weight="5"
-        android:layout_height="0dp"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:id="@+id/btEnter"
-            android:onClick="show"
-            android:layout_weight="0.3"
-            android:text="Show student's details"/>
-
-    </LinearLayout>
-
-
-
-        <LinearLayout
         android:layout_width="match_parent"
         android:layout_weight="5"
         android:layout_height="0dp"
@@ -251,6 +228,5 @@
             android:text=""/>
 
     </LinearLayout>
-
 
 </LinearLayout>

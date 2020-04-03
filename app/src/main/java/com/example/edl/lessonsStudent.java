@@ -8,6 +8,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -300,5 +302,20 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
             adb2.show();
 
         }
+    }
+    public boolean onCreateOptionsMenu (Menu menu){
+        getMenuInflater().inflate(R.menu.mainstu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    public boolean onOptionsItemSelected (MenuItem item){
+        //menu
+        String st = item.getTitle().toString();
+
+        if (st.equals("information")) {
+            Intent in = new Intent(lessonsStudent.this, infoStudent1.class);
+            startActivity(in);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

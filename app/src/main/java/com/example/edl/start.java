@@ -118,12 +118,7 @@ public class start extends AppCompatActivity {
         stayConnect=false;
         registered=true;
 
-        FirebaseUser fbuser = refAuth.getCurrentUser();
-        uiduser = fbuser.getUid();
-        Query query = refTeacher.orderByChild("uid").equalTo(uiduser);
-        query.addListenerForSingleValueEvent(VEL);
-        Query query2 = refStudent.orderByChild("uid").equalTo(uiduser);
-        query2.addListenerForSingleValueEvent(VEL2);
+
 
 
         tvDate.setOnClickListener(new View.OnClickListener() {
@@ -217,6 +212,12 @@ public class start extends AppCompatActivity {
         super.onStart();
         SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
         Boolean isChecked=settings.getBoolean("stayConnect",false);
+        FirebaseUser fbuser = refAuth.getCurrentUser();
+        uiduser = fbuser.getUid();
+        Query query = refTeacher.orderByChild("uid").equalTo(uiduser);
+        query.addListenerForSingleValueEvent(VEL);
+        Query query2 = refStudent.orderByChild("uid").equalTo(uiduser);
+        query2.addListenerForSingleValueEvent(VEL2);
         if (student) {
             Intent si = new Intent(start.this, TeacherLessons.class);
             if (refAuth.getCurrentUser() != null && isChecked) {
@@ -332,6 +333,12 @@ public class start extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             pd.dismiss();
                             if (task.isSuccessful()) {
+                                FirebaseUser fbuser = refAuth.getCurrentUser();
+                                uiduser = fbuser.getUid();
+                                Query query = refTeacher.orderByChild("uid").equalTo(uiduser);
+                                query.addListenerForSingleValueEvent(VEL);
+                                Query query2 = refStudent.orderByChild("uid").equalTo(uiduser);
+                                query2.addListenerForSingleValueEvent(VEL2);
                                // phone = eTphone.getText().toString();
 
                                 SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
