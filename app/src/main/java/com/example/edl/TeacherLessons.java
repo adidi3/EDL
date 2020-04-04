@@ -39,7 +39,7 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
     ListView lv;
     ArrayList<String> stringList= new ArrayList<String>();
     ArrayAdapter<String> adp;
-    String day="Sunday";
+    String day="sunday";
     Day day1= new Day();
     Week week1=new Week();
     String phonestudent="", phonestudent1;
@@ -69,31 +69,11 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
 
         lv.setOnItemClickListener(this);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        adp=new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item,stringList);
+        adp = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, stringList);
         lv.setAdapter(adp);
-
-        DatabaseReference refDay = refTeacherTime.child(phone1).child(day);
-        // Read from the database
-        refDay.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot ds) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                stringList.clear();
-                for (DataSnapshot data : ds.getChildren()){
-                    String tmp=data.getValue(String.class);
-                    stringList.add(tmp);
-                }
-                adp=new ArrayAdapter<String>(TeacherLessons.this,R.layout.support_simple_spinner_dropdown_item,stringList);
-                lv.setAdapter(adp);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-            }
-        });
     }
+
+
 
     com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
         @Override
@@ -106,6 +86,27 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
                     phone1=user.getPhone();
 
                 }
+                DatabaseReference refDay = refTeacherTime.child(phone1).child(day);
+                // Read from the database
+                refDay.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot ds) {
+                        // This method is called once with the initial value and again
+                        // whenever data at this location is updated.
+                        stringList.clear();
+                        for (DataSnapshot data : ds.getChildren()){
+                            String tmp=data.getValue(String.class);
+                            stringList.add(tmp);
+                        }
+                        adp=new ArrayAdapter<String>(TeacherLessons.this,R.layout.support_simple_spinner_dropdown_item,stringList);
+                        lv.setAdapter(adp);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+                    }
+                });
             }
         }
         @Override

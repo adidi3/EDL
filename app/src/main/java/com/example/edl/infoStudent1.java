@@ -116,7 +116,7 @@ public class infoStudent1 extends AppCompatActivity {
             refStudent.child(phone1).child("female").setValue(true);
         }
         else {
-            if (efemale.getText().toString().equals("male")||efemale.getText().toString().equals("man")||efemale.getText().toString().equals("other")||efemale.getText().toString().equals("Man")||efemale.getText().toString().equals("Male")||efemale.getText().toString().equals("Other")) {
+            if (efemale.getText().toString().equals("male")||efemale.getText().toString().equals("man")||efemale.getText().toString().equals("Man")||efemale.getText().toString().equals("Male")) {
                 refStudent.child(phone1).child("female").removeValue();
                 refStudent.child(phone1).child("female").setValue(false);
             }

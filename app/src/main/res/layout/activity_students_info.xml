@@ -16,7 +16,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="3"
+        android:layout_weight="4"
         android:layout_height="0dp"
         android:orientation="horizontal">
         <Button
@@ -33,7 +33,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="6"
         android:layout_height="0dp"
         android:orientation="horizontal">
 
@@ -54,14 +54,14 @@
             android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
+            android:layout_weight="3.5"
             android:text=""/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="4.2"
         android:layout_height="0dp"
         android:orientation="horizontal">
 
@@ -82,14 +82,14 @@
             android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
+            android:layout_weight="3.5"
             android:text=""/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="4.2"
         android:layout_height="0dp"
         android:orientation="horizontal">
 
@@ -109,14 +109,14 @@
             android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
+            android:layout_weight="3.5"
             android:text=""/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="4.2"
         android:layout_height="0dp"
         android:orientation="horizontal">
 
@@ -137,7 +137,7 @@
             android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
+            android:layout_weight="3.5"
             android:text=""/>
 
 
@@ -145,7 +145,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="6"
         android:layout_height="0dp"
         android:orientation="horizontal">
 
@@ -172,7 +172,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="6"
         android:layout_height="0dp"
         android:orientation="horizontal">
 
@@ -199,7 +199,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="4.2"
         android:layout_height="0dp"
         android:orientation="horizontal">
 
@@ -211,7 +211,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
-            android:text="Count"/>
+            android:text="Lesson number"/>
 
         <TextView
             android:id="@+id/tvcount1"
@@ -227,7 +227,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="4.2"
         android:layout_height="0dp"
         android:orientation="horizontal">
 
@@ -253,7 +253,7 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="3"
+        android:layout_weight="4.2"
         android:layout_height="0dp"
         android:orientation="horizontal">
 

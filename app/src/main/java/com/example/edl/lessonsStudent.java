@@ -37,7 +37,7 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
     ListView lv1;
     ArrayList<String> stringLst= new ArrayList<String>();
     ArrayAdapter<String> adp1;
-    String day="Sunday";
+    String day="sunday";
     String psss="";
     String ps="";
     TextView tvDays1, tvname;
@@ -80,29 +80,30 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
                     phone=user.getWteacher();
                     phonestudent=user.getPhone();
                     count1=user.getCount();
-                    DatabaseReference refDay1 = refTeacherTime.child(phone).child(day);
-                    // Read from the database
-                    refDay1.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot ds1) {
-                            // This method is called once with the initial value and again
-                            // whenever data at this location is updated.
-                            stringLst.clear();
-                            for (DataSnapshot data : ds1.getChildren()){
-                                String tmp=data.getValue(String.class);
-                                stringLst.add(tmp);
 
-                            }
-                            adp1=new ArrayAdapter<String>(lessonsStudent.this,R.layout.support_simple_spinner_dropdown_item,stringLst);
-                            lv1.setAdapter(adp1);
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError error) {
-                            // Failed to read value
-                        }
-                    });
                 }
+                DatabaseReference refDay1 = refTeacherTime.child(phone).child(day);
+                // Read from the database
+                refDay1.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot ds1) {
+                        // This method is called once with the initial value and again
+                        // whenever data at this location is updated.
+                        stringLst.clear();
+                        for (DataSnapshot data : ds1.getChildren()){
+                            String tmp=data.getValue(String.class);
+                            stringLst.add(tmp);
+
+                        }
+                        adp1=new ArrayAdapter<String>(lessonsStudent.this,R.layout.support_simple_spinner_dropdown_item,stringLst);
+                        lv1.setAdapter(adp1);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+                    }
+                });
             }
         }
         @Override
