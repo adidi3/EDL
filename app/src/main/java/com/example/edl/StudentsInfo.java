@@ -129,14 +129,14 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
                     temail.setText(users.getEmail());
                     ename.setText(users.getName());
 
-                    if(female1.equals("true")){
+                    if(female1==true){
                         efemale.setText("female");
                     }
                     else{
                         efemale.setText("male");
                     }
 
-                    if (manual1.equals("true"))
+                    if (manual1==true)
                         emanual.setText("manual");
                     else
                         emanual.setText("auto");

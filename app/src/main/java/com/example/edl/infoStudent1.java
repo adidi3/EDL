@@ -43,13 +43,21 @@ public class infoStudent1 extends AppCompatActivity {
         tcount=(TextView) findViewById(R.id.tvcount1);
         tdate=(TextView) findViewById(R.id.tvDate1);
 
+
+
+
+    }
+
+    @Override
+    protected void onStart() {
         FirebaseUser fbuser = refAuth.getCurrentUser();
         uid = fbuser.getUid();
         Query query = refStudent.orderByChild("uid").equalTo(uid);
         query.addListenerForSingleValueEvent(VEL);
 
-
+        super.onStart();
     }
+
     com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dS) {
@@ -66,14 +74,14 @@ public class infoStudent1 extends AppCompatActivity {
                     temail.setText(user.getEmail());
                     ename.setText(user.getName());
 
-                    if(female1.equals("true")){
+                    if(female1==true){
                         efemale.setText("female");
                     }
                     else{
                         efemale.setText("male");
                     }
 
-                    if (manual1.equals("true"))
+                    if (manual1==true)
                         emanual.setText("manual");
                     else
                         emanual.setText("auto");

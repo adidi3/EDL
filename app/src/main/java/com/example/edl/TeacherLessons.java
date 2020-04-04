@@ -43,11 +43,11 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
     Day day1= new Day();
     Week week1=new Week();
     String phonestudent="", phonestudent1;
-    AlertDialog.Builder ad, adb;
+    AlertDialog.Builder ad, adb, adb2;
     Ustudents student = new Ustudents();
     TextView vname;
     String count1;
-    LinearLayout dialog, dialogex;
+    LinearLayout dialog, dialogex, dialogxx;
     Uteachers user;
     int t;
     String uid, tmp;
@@ -203,15 +203,37 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
     }
 
     public void NW(View view) {
+        dialogxx = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogxx, null);
+        adb2 = new AlertDialog.Builder(this);
+        adb2.setCancelable(false);
+        adb2.setTitle("would you like to start new week?");
+        adb2.setView(dialogxx);
+        adb2.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
 
-        refTeacherTime.child(phone1).setValue(week1);
-        refTeacherTime.child(phone1).child("sunday").setValue(day1);
-        refTeacherTime.child(phone1).child("monday").setValue(day1);
-        refTeacherTime.child(phone1).child("tuesday").setValue(day1);
-        refTeacherTime.child(phone1).child("wednesday").setValue(day1);
-        refTeacherTime.child(phone1).child("thursday").setValue(day1);
+                refTeacherTime.child(phone1).setValue(week1);
+                refTeacherTime.child(phone1).child("sunday").setValue(day1);
+                refTeacherTime.child(phone1).child("monday").setValue(day1);
+                refTeacherTime.child(phone1).child("tuesday").setValue(day1);
+                refTeacherTime.child(phone1).child("wednesday").setValue(day1);
+                refTeacherTime.child(phone1).child("thursday").setValue(day1);
+                dialogInterface.dismiss();
+            }
 
-    }
+
+
+    });
+            adb2.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            dialogInterface.cancel();
+        }
+    });
+    AlertDialog adb3 = adb2.create();
+            adb3.show();
+
+        }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
