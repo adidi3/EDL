@@ -38,6 +38,8 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
     ArrayList<String> stringLst= new ArrayList<String>();
     ArrayAdapter<String> adp1;
     String day="Sunday";
+    String psss="";
+    String ps="";
     TextView tvDays1, tvname;
     int dayCount=1;
     AlertDialog.Builder ad, adb;
@@ -63,52 +65,8 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
         adp1=new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item,stringLst);
         lv1.setAdapter(adp1);
 
-    /*    final ProgressDialog progressDialog = ProgressDialog.show(this,"Login",
-                "Connecting...",true);
-        refStudent.child(phonestudent).addListenerForSingleValueEvent(new ValueEventListener() {
 
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                student.copyStudent(dataSnapshot.getValue(Ustudents.class));
 
-                tvname.setText("Welcome "+student.getName());
-                names=student.getName();
-                count1=student.getCount();
-                id=student.getId();
-                email=student.getEmail();
-                phone=student.getWteacher();
-                date=student.getDate();
-                female1=student.getFemale();
-                manual1=student.getManual();
-                progressDialog.dismiss();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });*/
-
-            DatabaseReference refDay1 = refTeacherTime.child(phone).child(day);
-        // Read from the database
-        refDay1.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot ds1) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                stringLst.clear();
-                for (DataSnapshot data : ds1.getChildren()){
-                    String tmp=data.getValue(String.class);
-                    stringLst.add(tmp);
-
-                }
-                adp1=new ArrayAdapter<String>(lessonsStudent.this,R.layout.support_simple_spinner_dropdown_item,stringLst);
-                lv1.setAdapter(adp1);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-            }
-        });
     }
 
     com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
@@ -122,6 +80,28 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
                     phone=user.getWteacher();
                     phonestudent=user.getPhone();
                     count1=user.getCount();
+                    DatabaseReference refDay1 = refTeacherTime.child(phone).child(day);
+                    // Read from the database
+                    refDay1.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot ds1) {
+                            // This method is called once with the initial value and again
+                            // whenever data at this location is updated.
+                            stringLst.clear();
+                            for (DataSnapshot data : ds1.getChildren()){
+                                String tmp=data.getValue(String.class);
+                                stringLst.add(tmp);
+
+                            }
+                            adp1=new ArrayAdapter<String>(lessonsStudent.this,R.layout.support_simple_spinner_dropdown_item,stringLst);
+                            lv1.setAdapter(adp1);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            // Failed to read value
+                        }
+                    });
                 }
             }
         }
@@ -218,10 +198,14 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view,final int position, long l) {
         list1 = stringLst.get(position);
+        psss="";
+        ps=list1;
+        for (int x = 0; x <= 9; x++)
+            psss = psss + ps.charAt(x);
 
         if (!list1.equals("08:00-08:40") && !list1.equals("08:45-09:25") && !list1.equals("10:00-10:40") && !list1.equals("10:45-11:25") && !list1.equals("12:30-13:10") && !list1.equals("13:15-13:55") &&
                 !list1.equals("14:00-14:40") && !list1.equals("14:45-15:25") && !list1.equals("19:00-19:40") && !list1.equals("19:45-20:25")) {
-           if(list1.equals(phonestudent+" "+ names)){
+           if(psss.equals(phonestudent)){
                dialogex = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogxxx, null);
                adb = new AlertDialog.Builder(this);
                adb.setCancelable(false);

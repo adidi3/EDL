@@ -7,7 +7,6 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -17,13 +16,11 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Switch;
@@ -35,11 +32,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
@@ -47,13 +42,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.example.edl.FBref.refAllUsers;
 import static com.example.edl.FBref.refAuth;
 import static com.example.edl.FBref.refStudent;
 import static com.example.edl.FBref.refTeacher;
 import static com.example.edl.FBref.refTeacherTime;
 import static com.example.edl.FBref.refUsers;
-import static com.example.edl.FBref.refVarible;
 
 
 public class start extends AppCompatActivity {
@@ -65,7 +58,6 @@ public class start extends AppCompatActivity {
     Switch switchMALEfemale, switchTecherstudent, switchAutoManuel;
     String name="nnn", phone="0", email, password, uid, id, money, date="", wteacher;
     Query query;
-    SpinnerAdapter A1;
     String count="0";
     Ustudents Ustudents1;
     Uteachers Uteachers1;
@@ -78,10 +70,6 @@ public class start extends AppCompatActivity {
     Boolean female=false;
     Boolean manual=false;
     Boolean student= false;
-    DatabaseReference reff;
-    ArrayAdapter<String> adp;
-    Character r;
-    String e;
     List<String> tl= new ArrayList<String>();
     List<String> tlname=new ArrayList<String>();
     String uiduser;
@@ -143,11 +131,6 @@ public class start extends AppCompatActivity {
 
                 };
 
-
-
-        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-              //  R.array.teacher_array, android.R.layout.simple_spinner_item);
-              //  adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 query=refTeacher.orderByChild("name");
                 query.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -335,7 +318,6 @@ public class start extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot ds) {
                     for (DataSnapshot data : ds.getChildren()) {
                         eTemail.setText(refAuth.getCurrentUser().getEmail());
-                        //student = refAuth.getCurrentUser().getStudent();
                     }
                 }
 
@@ -359,16 +341,12 @@ public class start extends AppCompatActivity {
                                 query.addListenerForSingleValueEvent(VEL);
                                 Query query2 = refStudent.orderByChild("uid").equalTo(uiduser);
                                 query2.addListenerForSingleValueEvent(VEL2);
-                               // phone = eTphone.getText().toString();
-
                                 SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
                                 SharedPreferences.Editor editor=settings.edit();
                                 editor.putBoolean("stayConnect",cBstayconnect.isChecked());
                                 editor.commit();
                                 Log.d("start", "signinUserWithEmail:success");
                                 Toast.makeText(start.this, "Login Success", Toast.LENGTH_LONG).show();
-
-
                             } else {
                                 Log.d("start", "signinUserWithEmail:fail");
                                 Toast.makeText(start.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
@@ -407,7 +385,6 @@ public class start extends AppCompatActivity {
                                         wteacher = sf;
                                         Ustudents1 = new Ustudents(name, email, phone, uid, id, password, student, manual, female, date, wteacher, count);
                                         refStudent.child(phone).setValue(Ustudents1);
-                                        refAllUsers.child(phone).setValue(Ustudents1);
                                         Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                                         Intent in = new Intent(start.this, lessonsStudent.class);
                                         startActivity(in);
@@ -416,7 +393,6 @@ public class start extends AppCompatActivity {
                                     else {
                                         Uteachers1 = new Uteachers(name, email, phone, uid, id, password, student, money);
                                         refTeacher.child(phone).setValue(Uteachers1);
-                                        refAllUsers.child(phone).setValue(Uteachers1);
                                         refTeacherTime.child(phone).setValue(week1);
                                         refTeacherTime.child(phone).child("sunday").setValue(day1);
                                         refTeacherTime.child(phone).child("monday").setValue(day1);

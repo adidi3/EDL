@@ -35,7 +35,6 @@ import static com.example.edl.FBref.refTeacherTime;
 public class TeacherLessons extends AppCompatActivity implements AdapterView.OnItemClickListener  {
     String phone1="", name1="", str;
     TextView  tvDays;
- //   TextView v1;
     int  dayCount=1;
     ListView lv;
     ArrayList<String> stringList= new ArrayList<String>();
@@ -57,10 +56,6 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_lessons);
-     //   FirebaseUser firebaseUser= refAuth.getCurrentUser();
-      //  phone1=firebaseUser.getPhoneNumber();
-       // v1=(TextView) findViewById(R.id.textView3);
-        //v1.setText(phone1);
 
         lv = (ListView) findViewById(R.id.lv1);
         tvDays = (TextView) findViewById(R.id.textView2);
@@ -76,24 +71,6 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         adp=new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item,stringList);
         lv.setAdapter(adp);
-
-   /*     final ProgressDialog progressDialog = ProgressDialog.show(this,"Login",
-                "Connecting...",true);
-        refTeacher.child(phone1).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                user.copyUser(dataSnapshot.getValue(Uteachers.class));
-                vname.setText("Welcome "+user.getName());
-                name1=user.getName();
-                money1=user.getMoney();
-                id1=user.getId();
-                email1=user.getEmail();
-                progressDialog.dismiss();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-             }
-        });*/
 
         DatabaseReference refDay = refTeacherTime.child(phone1).child(day);
         // Read from the database
@@ -338,8 +315,6 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
                     }
                     refTeacherTime.child(phone1).child(day).child(str).removeValue();
                     refTeacherTime.child(phone1).child(day).child(str).setValue("Canceled");
-                    //  count1++;
-                    //refStudent.child(phonestudent).child("count").setValue(count1);
                     dialogInterface.dismiss();
                 }
             });
@@ -367,7 +342,7 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
             startActivity(in);
             finish();
         }
-        if (st.equals("information about me")) {
+        if (st.equals("Information about me")) {
             Intent in = new Intent(TeacherLessons.this, infoTeacher.class);
             startActivity(in);
             finish();

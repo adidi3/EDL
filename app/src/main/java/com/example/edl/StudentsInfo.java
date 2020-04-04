@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -117,9 +119,6 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
             if (dS.exists()) {
                 for(DataSnapshot data : dS.getChildren()) {
                     users = data.getValue(Ustudents.class);
-                   // phoneteacher=usert.getPhone();
-                 //   Query query = refStudent.orderByChild("wteacher").equalTo(phoneteacher);
-                  //  query.addListenerForSingleValueEvent(VEL);
                     tphone.setText(users.getPhone());
                     tid.setText(users.getId());
                     female1=users.getFemale();
@@ -200,5 +199,26 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+    public boolean onCreateOptionsMenu (Menu menu){
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    public boolean onOptionsItemSelected (MenuItem item){
+        //menu
+        String st = item.getTitle().toString();
+
+        if (st.equals("Home screen")) {
+            Intent in = new Intent(StudentsInfo.this, TeacherLessons.class);
+            startActivity(in);
+            finish();
+        }
+        if (st.equals("Information about me")) {
+            Intent in = new Intent(StudentsInfo.this, infoTeacher.class);
+            startActivity(in);
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -3,7 +3,10 @@ package com.example.edl;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -69,5 +72,25 @@ public class infoTeacher extends AppCompatActivity {
         }
 
 
+    public boolean onCreateOptionsMenu (Menu menu){
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    public boolean onOptionsItemSelected (MenuItem item){
+        //menu
+        String st = item.getTitle().toString();
 
+        if (st.equals("Students information")) {
+            Intent in = new Intent(infoTeacher.this, StudentsInfo.class);
+            startActivity(in);
+            finish();
+        }
+        if (st.equals("Home screen")) {
+            Intent in = new Intent(infoTeacher.this, TeacherLessons.class);
+            startActivity(in);
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
     }

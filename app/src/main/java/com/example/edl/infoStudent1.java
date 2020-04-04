@@ -3,10 +3,12 @@ package com.example.edl;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,8 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import static com.example.edl.FBref.refAuth;
 import static com.example.edl.FBref.refStudent;
-import static com.example.edl.FBref.refTeacher;
-import static com.example.edl.FBref.refTeacherTime;
 
 public class infoStudent1 extends AppCompatActivity {
     String phone1, uid;
@@ -118,5 +118,20 @@ public class infoStudent1 extends AppCompatActivity {
         }
 
         Toast.makeText(this, "The changes have been saved", Toast.LENGTH_LONG).show();
+    }
+    public boolean onCreateOptionsMenu (Menu menu){
+        getMenuInflater().inflate(R.menu.mainstu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    public boolean onOptionsItemSelected (MenuItem item){
+        //menu
+        String st = item.getTitle().toString();
+
+        if (st.equals("Home screen")) {
+            Intent in = new Intent(infoStudent1.this, lessonsStudent.class);
+            startActivity(in);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

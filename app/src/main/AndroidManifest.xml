@@ -13,7 +13,6 @@
         <activity android:name=".infoStudent1" />
         <activity android:name=".StudentsInfo" />
         <activity android:name=".TeacherLessons" />
-        <activity android:name=".Editlist" />
         <activity android:name=".SettingTeacher" />
         <activity android:name=".lessonsStudent" />
         <activity android:name=".start" />
