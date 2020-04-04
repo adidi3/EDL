@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -15,14 +17,15 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import static com.example.edl.FBref.refAuth;
+import static com.example.edl.FBref.refStudent;
 import static com.example.edl.FBref.refTeacher;
+import static com.example.edl.FBref.refTeacherTime;
 
 public class infoStudent1 extends AppCompatActivity {
-    String phone1, email1, id1, date1, name1, count1, uid;
-    Spinner spinner1;
+    String phone1, uid;
     Boolean female1,manual1;
-    EditText ephone, eemail, eid, efemale, emanual, edate, ename;
-    TextView ecount;
+    EditText  efemale, emanual,  ename;
+    TextView tcount, tid, tdate, tphone, temail;
     Ustudents user;
 
     @Override
@@ -31,18 +34,18 @@ public class infoStudent1 extends AppCompatActivity {
         setContentView(R.layout.activity_info_student1);
 
 
-        eemail=(EditText) findViewById(R.id.etmail1);
-        ephone=(EditText) findViewById(R.id.eTphone1);
-        eid=(EditText) findViewById(R.id.etid1);
+        temail=(TextView) findViewById(R.id.tvmail1);
+        tphone=(TextView) findViewById(R.id.eTphone1);
+        tid=(TextView) findViewById(R.id.tvid1);
         efemale=(EditText) findViewById(R.id.etfe1);
         emanual=(EditText) findViewById(R.id.etmanual1);
-        edate=(EditText) findViewById(R.id.etmail1);
         ename=(EditText) findViewById(R.id.eTname1);
-        ecount=(TextView) findViewById(R.id.tvcount1);
+        tcount=(TextView) findViewById(R.id.tvcount1);
+        tdate=(TextView) findViewById(R.id.tvDate1);
 
         FirebaseUser fbuser = refAuth.getCurrentUser();
         uid = fbuser.getUid();
-        Query query = refTeacher.orderByChild("uid").equalTo(uid);
+        Query query = refStudent.orderByChild("uid").equalTo(uid);
         query.addListenerForSingleValueEvent(VEL);
 
 
@@ -53,15 +56,27 @@ public class infoStudent1 extends AppCompatActivity {
             if (dS.exists()) {
                 for(DataSnapshot data : dS.getChildren()) {
                     user = data.getValue(Ustudents.class);
-                    name1=user.getName();
-                    phone1=user.getPhone();
-                    email1=user.getEmail();
-                    id1=user.getId();
+                    tphone.setText(user.getPhone());
+                    tid.setText(user.getId());
                     female1=user.getFemale();
                     manual1=user.getManual();
-                    count1=user.getCount();
-                    date1=user.getDate();
-                    eemail.setText(email1);
+                    phone1=user.getPhone();
+                    tdate.setText(user.getDate());
+                    tcount.setText(user.getCount());
+                    temail.setText(user.getEmail());
+                    ename.setText(user.getName());
+
+                    if(female1.equals("true")){
+                        efemale.setText("female");
+                    }
+                    else{
+                        efemale.setText("male");
+                    }
+
+                    if (manual1.equals("true"))
+                        emanual.setText("manual");
+                    else
+                        emanual.setText("auto");
 
 
                 }
@@ -72,4 +87,36 @@ public class infoStudent1 extends AppCompatActivity {
         }
     };
 
+    public void update(View view) {
+       refStudent.child(phone1).child("name").removeValue();
+        refStudent.child(phone1).child("name").setValue(ename.getText().toString());
+        if (emanual.getText().toString().equals("manual")){
+            refStudent.child(phone1).child("manual").removeValue();
+            refStudent.child(phone1).child("manual").setValue(true);
+        }
+        else {
+            if (emanual.getText().toString().equals("auto")) {
+                refStudent.child(phone1).child("manual").removeValue();
+                refStudent.child(phone1).child("manual").setValue(false);
+            }
+            else {
+                Toast.makeText(this, "you wrote Invalid character!!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (efemale.getText().toString().equals("female")||efemale.getText().toString().equals("woman")||efemale.getText().toString().equals("Woman")||efemale.getText().toString().equals("Female")){
+            refStudent.child(phone1).child("female").removeValue();
+            refStudent.child(phone1).child("female").setValue(true);
+        }
+        else {
+            if (efemale.getText().toString().equals("male")||efemale.getText().toString().equals("man")||efemale.getText().toString().equals("other")||efemale.getText().toString().equals("Man")||efemale.getText().toString().equals("Male")||efemale.getText().toString().equals("Other")) {
+                refStudent.child(phone1).child("female").removeValue();
+                refStudent.child(phone1).child("female").setValue(false);
+            }
+            else {
+                Toast.makeText(this, "you wrote Invalid character!", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+    }
 }

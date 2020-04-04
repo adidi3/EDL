@@ -3,6 +3,7 @@ package com.example.edl;
 public class Ustudents {
     public String name, email, phone, uid, id, password, date, wteacher, count;
     public boolean student, manual, female;
+    public Ustudents(){}
     public Ustudents (String name, String email, String phone, String uid, String id, String password, Boolean student, Boolean manual, Boolean female, String date, String wteacher, String count) {
         this.name=name;
         this.date=date;
@@ -17,20 +18,7 @@ public class Ustudents {
         this.student=student;
         this.count=count;
     }
-    public Ustudents(){
-        this.name = "";
-        this.email = "";
-        this.uid = "";
-        this.date="";
-        this.phone="";
-        this.id="";
-        this.wteacher="";
-        this.password="";
-        this.female=false;
-        this.manual=false;
-        this.student=true;
-        this.count="";
-    }
+
     public void copyStudent(Ustudents student){
         this.name = student.getName();
         this.email = student.getEmail();

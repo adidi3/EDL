@@ -63,7 +63,7 @@ public class start extends AppCompatActivity {
     Button btn;
     Spinner spinner;
     Switch switchMALEfemale, switchTecherstudent, switchAutoManuel;
-    String name="nnn", phone="0", email, password, uid, id, money, date, wteacher;
+    String name="nnn", phone="0", email, password, uid, id, money, date="", wteacher;
     Query query;
     SpinnerAdapter A1;
     String count="0";
@@ -299,6 +299,7 @@ public class start extends AppCompatActivity {
                 eTmoney.setVisibility(View.INVISIBLE);
                 tvDate.setVisibility(View.INVISIBLE);
                 eTphone.setVisibility(View.INVISIBLE);
+                spinner.setVisibility(View.INVISIBLE);
                 switchTecherstudent.setVisibility(View.INVISIBLE);
                 switchAutoManuel.setVisibility(View.INVISIBLE);
                 switchMALEfemale.setVisibility(View.INVISIBLE);

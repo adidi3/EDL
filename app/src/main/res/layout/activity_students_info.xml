@@ -22,7 +22,7 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:id="@+id/btEnter"
+            android:id="@+id/btChoose"
             android:onClick="show"
             android:layout_weight="0.3"
             android:text="Show student's details"/>
@@ -31,7 +31,7 @@
 
 
 
-        <LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_weight="5"
         android:layout_height="0dp"
@@ -75,7 +75,7 @@
             android:layout_weight="1.5"
             android:text="Phone"/>
 
-        <EditText
+        <TextView
             android:id="@+id/eTphone1"
             android:textSize="20dp"
             android:layout_marginTop="10dp"
@@ -102,8 +102,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:text="Email"/>
-        <EditText
-            android:id="@+id/etmail1"
+        <TextView
+            android:id="@+id/tvmail1"
             android:textSize="20dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
@@ -130,8 +130,8 @@
             android:layout_weight="1.5"
             android:text="id"/>
 
-        <EditText
-            android:id="@+id/etid1"
+        <TextView
+            android:id="@+id/tvid1"
             android:textSize="20dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
@@ -240,8 +240,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:text="Date of birth"/>
-        <EditText
-            android:id="@+id/etDate1"
+        <TextView
+            android:id="@+id/tvDate1"
             android:textSize="20dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
@@ -251,6 +251,18 @@
             android:text=""/>
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="5"
+        android:layout_height="0dp"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/btEnter"
+            android:onClick="update"
+            android:layout_weight="0.3"
+            android:text="Update data"/>
 
-
+    </LinearLayout>
 </LinearLayout>
