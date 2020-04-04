@@ -3,32 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context=".StudentsInfo">
-
-
-    <Spinner
-        android:id="@+id/spinner2"
-        android:layout_width="match_parent"
-        android:layout_weight="4"
-        android:layout_height="0dp" />
+    android:orientation="vertical"
+    tools:context=".infoTeacher">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="3"
+        android:layout_weight="5"
         android:layout_height="0dp"
         android:orientation="horizontal">
-        <Button
+
+        <ImageView
+            android:id="@+id/imageView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:id="@+id/btChoose"
-            android:onClick="show"
-            android:layout_weight="0.3"
-            android:text="Show student's details"/>
+            android:layout_weight="3"
+            app:srcCompat="@drawable/edl2" />
+
+
+        <TextView
+            android:id="@+id/eThello"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:text="Information about me "/>
 
     </LinearLayout>
-
 
 
     <LinearLayout
@@ -143,117 +146,16 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_weight="5"
-        android:layout_height="0dp"
-        android:orientation="horizontal">
 
 
-        <TextView
-            android:textSize="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.5"
-            android:text="Manual/Auto"/>
-        <EditText
-            android:id="@+id/etmanual1"
-            android:textSize="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.5"
-            android:text=""/>
 
-    </LinearLayout>
+
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_weight="5"
-        android:layout_height="0dp"
-        android:orientation="horizontal">
-
-
-        <TextView
-            android:textSize="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.5"
-            android:text="Female/Male"/>
-        <EditText
-            android:id="@+id/etfe1"
-            android:textSize="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.5"
-            android:text=""/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_weight="5"
-        android:layout_height="0dp"
-        android:orientation="horizontal">
-
-
-        <TextView
-            android:textSize="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.5"
-            android:text="Count"/>
-
-        <TextView
-            android:id="@+id/tvcount1"
-            android:textSize="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.5"
-            android:text=""/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_weight="5"
-        android:layout_height="0dp"
-        android:orientation="horizontal">
-
-
-        <TextView
-            android:textSize="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.5"
-            android:text="Date of birth"/>
-        <TextView
-            android:id="@+id/tvDate1"
-            android:textSize="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.5"
-            android:text=""/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_weight="3"
         android:layout_height="0dp"
         android:orientation="horizontal">
         <Button
@@ -261,8 +163,9 @@
             android:layout_height="match_parent"
             android:id="@+id/btEnter"
             android:onClick="update"
-            android:layout_weight="0.2"
+            android:layout_weight="0.3"
             android:text="Update data"/>
 
     </LinearLayout>
+
 </LinearLayout>

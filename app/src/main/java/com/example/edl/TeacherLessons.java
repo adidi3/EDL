@@ -367,6 +367,12 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
             startActivity(in);
             finish();
         }
+        if (st.equals("information about me")) {
+            Intent in = new Intent(TeacherLessons.this, infoTeacher.class);
+            startActivity(in);
+            finish();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }

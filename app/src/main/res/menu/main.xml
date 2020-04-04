@@ -11,6 +11,11 @@
         android:id="@+id/stuinfo"
         android:orderInCategory="3"
         />
+    <item
+        android:title="information about me"
+        android:id="@+id/myinfo"
+        android:orderInCategory="3"
+        />
 
 
 </menu>

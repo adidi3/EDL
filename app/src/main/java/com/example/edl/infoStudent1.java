@@ -117,6 +117,6 @@ public class infoStudent1 extends AppCompatActivity {
             }
         }
 
-
+        Toast.makeText(this, "The changes have been saved", Toast.LENGTH_LONG).show();
     }
 }
