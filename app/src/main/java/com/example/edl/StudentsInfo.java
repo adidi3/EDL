@@ -3,6 +3,8 @@ package com.example.edl;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,8 +40,9 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
     Ustudents user, users;
     int num=0;
     Uteachers usert;
+    LinearLayout dialogxxxx;
     List<String> lst = new ArrayList<String>();
-
+    AlertDialog.Builder adb2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,5 +224,39 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void delete(View view) {
+        dialogxxxx = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogxx, null);
+        adb2 = new AlertDialog.Builder(this);
+        adb2.setCancelable(false);
+        adb2.setTitle("Would you like to remove this student?");
+        adb2.setView(dialogxxxx);
+        adb2.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                refStudent.child(phone1).child("id").removeValue();
+                refStudent.child(phone1).child("name").removeValue();
+                refStudent.child(phone1).child("uid").removeValue();
+                refStudent.child(phone1).child("female").removeValue();
+                refStudent.child(phone1).child("manual").removeValue();
+                refStudent.child(phone1).child("email").removeValue();
+                refStudent.child(phone1).child("password").removeValue();
+                refStudent.child(phone1).child("date").removeValue();
+                refStudent.child(phone1).child("wteacher").removeValue();
+                refStudent.child(phone1).child("student").removeValue();
+                refStudent.child(phone1).child("phone").removeValue();
+                refStudent.child(phone1).child("count").removeValue();
+            }
+
+        });
+        adb2.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        AlertDialog adb1 = adb2.create();
+        adb1.show();
     }
 }

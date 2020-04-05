@@ -273,5 +273,13 @@
             android:layout_weight="0.2"
             android:text="Update data"/>
 
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/btDelete"
+            android:onClick="delete"
+            android:layout_weight="0.2"
+            android:text="Remove student"/>
+
     </LinearLayout>
 </LinearLayout>
