@@ -370,7 +370,17 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
             startActivity(in);
             finish();
         }
+        if (st.equals("About")) {
+            openDialog();
+        }
+
+
 
         return super.onOptionsItemSelected(item);
+    }
+    public void openDialog(){
+        about1 about12= new about1();
+        about12.show(getSupportFragmentManager(),"About");
+
     }
 }

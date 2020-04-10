@@ -50,7 +50,7 @@ import static com.example.edl.FBref.refUsers;
 
 
 public class start extends AppCompatActivity {
-    TextView tVtitle, tVregister, tvDate, tVauto, tVmanual, tVmale, tVfemale, tVteacher, tVstudent;
+    TextView  tVregister, tvDate, tVauto, tVmanual, tVmale, tVfemale, tVteacher, tVstudent;
     EditText eTname, eTphone, eTemail, eTpass, eTid, eTmoney;
     CheckBox cBstayconnect;
     Button btn;
@@ -84,7 +84,6 @@ public class start extends AppCompatActivity {
         switchMALEfemale=(Switch) findViewById(R.id.switchMALEfemale);
         switchTecherstudent=(Switch) findViewById(R.id.switchTecherstudent);
         switchAutoManuel=(Switch) findViewById(R.id.switchAutoManuel);
-        tVtitle=(TextView) findViewById(R.id.tVtitle);
         tvDate=(TextView) findViewById(R.id.tvDate);
         eTname=(EditText)findViewById(R.id.eTname);
         eTemail=(EditText)findViewById(R.id.eTemail);
@@ -253,7 +252,6 @@ public class start extends AppCompatActivity {
         ClickableSpan span = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
-                tVtitle.setText("Register");
                 eTname.setVisibility(View.VISIBLE);
                 eTid.setVisibility(View.VISIBLE);
                 eTmoney.setVisibility(View.VISIBLE);
@@ -276,7 +274,6 @@ public class start extends AppCompatActivity {
         ClickableSpan span = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
-                tVtitle.setText("Login");
                 eTname.setVisibility(View.INVISIBLE);
                 eTid.setVisibility(View.INVISIBLE);
                 eTmoney.setVisibility(View.INVISIBLE);

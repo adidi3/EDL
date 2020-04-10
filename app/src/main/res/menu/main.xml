@@ -14,7 +14,12 @@
     <item
         android:title="Information about me"
         android:id="@+id/myinfo"
-        android:orderInCategory="3"
+        android:orderInCategory="4"
+        />
+    <item
+        android:id="@+id/about"
+        android:title="About"
+        android:orderInCategory="5"
         />
 
 

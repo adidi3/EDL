@@ -199,95 +199,117 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view,final int position, long l) {
         list1 = stringLst.get(position);
-        psss="";
-        ps=list1;
-        for (int x = 0; x <= 9; x++)
-            psss = psss + ps.charAt(x);
-
-        if (!list1.equals("08:00-08:40") && !list1.equals("08:45-09:25") && !list1.equals("10:00-10:40") && !list1.equals("10:45-11:25") && !list1.equals("12:30-13:10") && !list1.equals("13:15-13:55") &&
-                !list1.equals("14:00-14:40") && !list1.equals("14:45-15:25") && !list1.equals("19:00-19:40") && !list1.equals("19:45-20:25")) {
-           if(psss.equals(phonestudent)){
-               dialogex = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogxxx, null);
-               adb = new AlertDialog.Builder(this);
-               adb.setCancelable(false);
-               adb.setTitle("would you like to cancel this lesson?");
-               adb.setView(dialogex);
-               adb.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialogInterface, int i) {
-                       str = ("l" + (position));
-
-                       switch (position){
-                           case 0: tmp="08:00-08:40";break;
-                           case 1: tmp="08:45-09:25";break;
-                           case 2: tmp="10:00-10:40";break;
-                           case 3: tmp="10:45-11:25";break;
-                           case 4: tmp="12:30-13:10";break;
-                           case 5: tmp="13:15-13:55";break;
-                           case 6: tmp="14:00-14:40";break;
-                           case 7: tmp="14:45-15:25";break;
-                           case 8: tmp="19:00-19:40";break;
-                           case 9: tmp="19:45-20:25";break;
-                       }
-
-                       refTeacherTime.child(phone).child(day).child(str).removeValue();
-                       refTeacherTime.child(phone).child(day).child(str).setValue(tmp);
-                       int y = Integer.parseInt(count1);
-                       y--;
-                       count1 = Integer.toString(y);
-                       refStudent.child(phonestudent).child("count").setValue(count1);
-                       Toast.makeText(lessonsStudent.this, "succeeded", Toast.LENGTH_SHORT).show();
-                       dialogInterface.dismiss();
-                   }
-
-               });
-               adb.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialogInterface, int i) {
-                       dialogInterface.cancel();
-                   }
-               });
-               AlertDialog adb1 = adb.create();
-               adb1.show();
-           }
-           else
-               Toast.makeText(this, "you can't choose this lesson", Toast.LENGTH_SHORT).show();
-        } else {
-            dialog = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogx, null);
-            ad = new AlertDialog.Builder(this);
-            ad.setCancelable(false);
-            ad.setTitle("are you sure you want to choose this lesson?");
-            ad.setView(dialog);
-            ad.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
-
-
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    str = ("l" + (position));
-
-                    refTeacherTime.child(phone).child(day).child(str).removeValue();
-                    refTeacherTime.child(phone).child(day).child(str).setValue(phonestudent + " " + names);
-                    int y = Integer.parseInt(count1);
-                    y++;
-                    count1 = Integer.toString(y);
-                    refStudent.child(phonestudent).child("count").removeValue();
-                    refStudent.child(phonestudent).child("count").setValue(count1);
-                    Toast.makeText(lessonsStudent.this, "succeeded", Toast.LENGTH_SHORT).show();
-                    dialogInterface.dismiss();
-                }
-
-            });
-            ad.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
-                }
-            });
-            AlertDialog adb2 = ad.create();
-            adb2.show();
-
+        psss = "";
+        if (list1.equals("08:00-08:40") || list1.equals("08:45-09:25") || list1.equals("10:00-10:40") || list1.equals("10:45-11:25") || list1.equals("12:30-13:10") || list1.equals("13:15-13:55") ||
+                list1.equals("14:00-14:40") || list1.equals("14:45-15:25") || list1.equals("19:00-19:40") || list1.equals("19:45-20:25")|| list1.equals(phonestudent+" "+names)) {
+            ps = list1;
+            for (int x = 0; x <= 9; x++)
+                psss = psss + ps.charAt(x);
         }
-    }
+            if (!list1.equals("08:00-08:40") && !list1.equals("08:45-09:25") && !list1.equals("10:00-10:40") && !list1.equals("10:45-11:25") && !list1.equals("12:30-13:10") && !list1.equals("13:15-13:55") &&
+                    !list1.equals("14:00-14:40") && !list1.equals("14:45-15:25") && !list1.equals("19:00-19:40") && !list1.equals("19:45-20:25")) {
+                if (psss.equals(phonestudent)) {
+                    dialogex = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogxxx, null);
+                    adb = new AlertDialog.Builder(this);
+                    adb.setCancelable(false);
+                    adb.setTitle("would you like to cancel this lesson?");
+                    adb.setView(dialogex);
+                    adb.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            str = ("l" + (position));
+
+                            switch (position) {
+                                case 0:
+                                    tmp = "08:00-08:40";
+                                    break;
+                                case 1:
+                                    tmp = "08:45-09:25";
+                                    break;
+                                case 2:
+                                    tmp = "10:00-10:40";
+                                    break;
+                                case 3:
+                                    tmp = "10:45-11:25";
+                                    break;
+                                case 4:
+                                    tmp = "12:30-13:10";
+                                    break;
+                                case 5:
+                                    tmp = "13:15-13:55";
+                                    break;
+                                case 6:
+                                    tmp = "14:00-14:40";
+                                    break;
+                                case 7:
+                                    tmp = "14:45-15:25";
+                                    break;
+                                case 8:
+                                    tmp = "19:00-19:40";
+                                    break;
+                                case 9:
+                                    tmp = "19:45-20:25";
+                                    break;
+                            }
+
+                            refTeacherTime.child(phone).child(day).child(str).removeValue();
+                            refTeacherTime.child(phone).child(day).child(str).setValue(tmp);
+                            int y = Integer.parseInt(count1);
+                            y--;
+                            count1 = Integer.toString(y);
+                            refStudent.child(phonestudent).child("count").setValue(count1);
+                            Toast.makeText(lessonsStudent.this, "succeeded", Toast.LENGTH_SHORT).show();
+                            dialogInterface.dismiss();
+                        }
+
+                    });
+                    adb.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    AlertDialog adb1 = adb.create();
+                    adb1.show();
+                } else
+                    Toast.makeText(this, "you can't choose this lesson", Toast.LENGTH_SHORT).show();
+            } else {
+                dialog = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogx, null);
+                ad = new AlertDialog.Builder(this);
+                ad.setCancelable(false);
+                ad.setTitle("are you sure you want to choose this lesson?");
+                ad.setView(dialog);
+                ad.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        str = ("l" + (position));
+
+                        refTeacherTime.child(phone).child(day).child(str).removeValue();
+                        refTeacherTime.child(phone).child(day).child(str).setValue(phonestudent + " " + names);
+                        int y = Integer.parseInt(count1);
+                        y++;
+                        count1 = Integer.toString(y);
+                        refStudent.child(phonestudent).child("count").removeValue();
+                        refStudent.child(phonestudent).child("count").setValue(count1);
+                        Toast.makeText(lessonsStudent.this, "succeeded", Toast.LENGTH_SHORT).show();
+                        dialogInterface.dismiss();
+                    }
+
+                });
+                ad.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                AlertDialog adb2 = ad.create();
+                adb2.show();
+
+            }
+        }
+
     public boolean onCreateOptionsMenu (Menu menu){
         getMenuInflater().inflate(R.menu.mainstu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -301,6 +323,14 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
             startActivity(in);
             finish();
         }
+        if (st.equals("About")) {
+            openDialog();
+        }
         return super.onOptionsItemSelected(item);
+    }
+    public void openDialog(){
+        about1 about12= new about1();
+        about12.show(getSupportFragmentManager(),"About");
+
     }
 }

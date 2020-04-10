@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/loginstart"
     tools:context=".MainActivity">
 
     <Space
@@ -17,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.5"
-        app:srcCompat="@drawable/dl" />
+        app:srcCompat="@drawable/open" />
 
     <Space
         android:layout_width="match_parent"

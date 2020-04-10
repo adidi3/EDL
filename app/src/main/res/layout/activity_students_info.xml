@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/loginstart"
     android:layout_height="match_parent"
     tools:context=".StudentsInfo">
 
@@ -19,11 +20,14 @@
         android:layout_weight="4"
         android:layout_height="0dp"
         android:orientation="horizontal">
+
         <Button
             android:layout_width="0dp"
+            android:background="@color/medium"
             android:layout_height="match_parent"
             android:id="@+id/btChoose"
             android:onClick="show"
+
             android:layout_weight="0.3"
             android:text="Show student's details"/>
 
@@ -43,10 +47,12 @@
             android:textSize="20dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:text="Name"/>
+
         <EditText
             android:id="@+id/eTname1"
             android:textSize="20dp"
@@ -71,6 +77,7 @@
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:layout_width="0dp"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:text="Phone"/>
@@ -100,8 +107,10 @@
             android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_weight="1.5"
             android:text="Email"/>
+
         <TextView
             android:id="@+id/tvmail1"
             android:textSize="20dp"
@@ -128,7 +137,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
-            android:text="id"/>
+            android:text="id"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <TextView
             android:id="@+id/tvid1"
@@ -157,7 +167,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
+            android:textColor="@color/colorPrimaryDark"
             android:text="Manual/Auto"/>
+
         <EditText
             android:id="@+id/etmanual1"
             android:textSize="20dp"
@@ -183,8 +195,10 @@
             android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_weight="1.5"
             android:text="Female/Male"/>
+
         <EditText
             android:id="@+id/etfe1"
             android:textSize="20dp"
@@ -210,6 +224,7 @@
             android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_weight="1.5"
             android:text="Lesson number"/>
 
@@ -238,6 +253,7 @@
             android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_weight="1.5"
             android:text="Date of birth"/>
         <TextView
@@ -262,7 +278,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.06"
-            app:srcCompat="@drawable/edl2" />
+            app:srcCompat="@drawable/edlfinal" />
 
 
         <Button
@@ -270,6 +286,7 @@
             android:layout_height="match_parent"
             android:id="@+id/btEnter"
             android:onClick="update"
+            android:background="@color/medium"
             android:layout_weight="0.2"
             android:text="Update data"/>
 
@@ -277,6 +294,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/btDelete"
+            android:background="@color/medium"
             android:onClick="delete"
             android:layout_weight="0.2"
             android:text="Remove student"/>

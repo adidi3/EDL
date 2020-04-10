@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/loginstart"
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".infoStudent1">
@@ -21,9 +22,11 @@
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:layout_width="0dp"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:text="Name"/>
+
         <EditText
             android:id="@+id/eTname1"
             android:textSize="20dp"
@@ -47,6 +50,7 @@
             android:textSize="20dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
@@ -57,6 +61,7 @@
             android:textSize="20dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
+
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
@@ -76,9 +81,11 @@
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:layout_width="0dp"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:text="Email"/>
+
         <TextView
             android:id="@+id/tvmail1"
             android:textSize="20dp"
@@ -105,6 +112,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
+            android:textColor="@color/colorPrimaryDark"
             android:text="id"/>
 
         <TextView
@@ -133,8 +141,10 @@
             android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_weight="1.5"
             android:text="Manual/Auto"/>
+
         <EditText
             android:id="@+id/etmanual1"
             android:textSize="20dp"
@@ -160,8 +170,10 @@
             android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_weight="1.5"
             android:text="Female/Male"/>
+
         <EditText
             android:id="@+id/etfe1"
             android:textSize="20dp"
@@ -188,6 +200,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
+            android:textColor="@color/colorPrimaryDark"
             android:text="Lesson number"/>
 
         <TextView
@@ -214,9 +227,11 @@
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:layout_width="0dp"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:text="Date of birth"/>
+
         <TextView
             android:id="@+id/tvDate1"
             android:textSize="20dp"
@@ -239,13 +254,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.1"
-            app:srcCompat="@drawable/edl2" />
+            app:srcCompat="@drawable/edlfinal" />
 
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/btEnter"
+            android:textStyle="bold"
             android:onClick="update"
+            android:background="@color/medium"
             android:layout_weight="0.3"
             android:text="Update data"/>
 

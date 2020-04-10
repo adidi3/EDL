@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/loginstart"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".infoTeacher">
@@ -17,20 +18,39 @@
             android:id="@+id/imageView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
-            app:srcCompat="@drawable/edl2" />
+            android:layout_weight="2"
+            app:srcCompat="@drawable/edlfinal" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"/>
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_weight="5"
+                android:layout_height="0dp"/>
 
         <TextView
             android:id="@+id/eThello"
             android:textSize="20dp"
-            android:layout_marginTop="10dp"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
             android:layout_weight="5"
+            android:layout_height="0dp"
             android:text="Information about me "/>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_weight="5"
+                android:layout_height="0dp"/>
+        </LinearLayout>
     </LinearLayout>
 
 
@@ -46,10 +66,12 @@
             android:textSize="20dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:text="Name"/>
+
         <EditText
             android:id="@+id/eTname1"
             android:textSize="20dp"
@@ -76,6 +98,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
+            android:textColor="@color/colorPrimaryDark"
             android:text="Phone"/>
 
         <TextView
@@ -102,6 +125,7 @@
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:layout_width="0dp"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:text="Email"/>
@@ -130,6 +154,7 @@
             android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_weight="1.5"
             android:text="id"/>
 
@@ -143,27 +168,21 @@
             android:layout_weight="1.5"
             android:text=""/>
 
-
     </LinearLayout>
-
-
-
-
-
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="3"
         android:layout_height="0dp"
         android:orientation="horizontal">
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/btEnter"
+            android:textStyle="bold"
+            android:background="@color/medium"
             android:onClick="update"
-            android:layout_weight="0.3"
+            android:layout_weight="0.5"
             android:text="Update data"/>
 
     </LinearLayout>

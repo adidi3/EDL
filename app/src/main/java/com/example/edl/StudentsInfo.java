@@ -159,33 +159,34 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void update(View view) {
-        refStudent.child(phone1).child("name").removeValue();
-        refStudent.child(phone1).child("name").setValue(ename.getText().toString());
-        if (emanual.getText().toString().equals("manual")){
-            refStudent.child(phone1).child("manual").removeValue();
-            refStudent.child(phone1).child("manual").setValue(true);
-        }
-        else {
-            if (emanual.getText().toString().equals("auto")) {
+        if (!tdate.getText().equals("")) {
+            refStudent.child(phone1).child("name").removeValue();
+            refStudent.child(phone1).child("name").setValue(ename.getText().toString());
+            if (emanual.getText().toString().equals("manual")) {
                 refStudent.child(phone1).child("manual").removeValue();
-                refStudent.child(phone1).child("manual").setValue(false);
+                refStudent.child(phone1).child("manual").setValue(true);
+            } else {
+                if (emanual.getText().toString().equals("auto")) {
+                    refStudent.child(phone1).child("manual").removeValue();
+                    refStudent.child(phone1).child("manual").setValue(false);
+                } else {
+                    Toast.makeText(this, "you wrote Invalid character!!", Toast.LENGTH_SHORT).show();
+                }
             }
-            else {
-                Toast.makeText(this, "you wrote Invalid character!!", Toast.LENGTH_SHORT).show();
+            if (efemale.getText().toString().equals("female") || efemale.getText().toString().equals("woman") || efemale.getText().toString().equals("Woman") || efemale.getText().toString().equals("Female")) {
+                refStudent.child(phone1).child("female").removeValue();
+                refStudent.child(phone1).child("female").setValue(true);
+            } else {
+                if (efemale.getText().toString().equals("male") || efemale.getText().toString().equals("man") || efemale.getText().toString().equals("Man") || efemale.getText().toString().equals("Male")) {
+                    refStudent.child(phone1).child("female").removeValue();
+                    refStudent.child(phone1).child("female").setValue(false);
+                } else {
+                    Toast.makeText(this, "you wrote Invalid character!", Toast.LENGTH_SHORT).show();
+                }
             }
-        }
-        if (efemale.getText().toString().equals("female")||efemale.getText().toString().equals("woman")||efemale.getText().toString().equals("Woman")||efemale.getText().toString().equals("Female")){
-            refStudent.child(phone1).child("female").removeValue();
-            refStudent.child(phone1).child("female").setValue(true);
         }
         else {
-            if (efemale.getText().toString().equals("male")||efemale.getText().toString().equals("man")||efemale.getText().toString().equals("Man")||efemale.getText().toString().equals("Male")) {
-                refStudent.child(phone1).child("female").removeValue();
-                refStudent.child(phone1).child("female").setValue(false);
-            }
-            else {
-                Toast.makeText(this, "you wrote Invalid character!", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(this, "You didn't select student", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -222,41 +223,55 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
             startActivity(in);
             finish();
         }
+        if (st.equals("About")) {
+           openDialog();
+        }
 
         return super.onOptionsItemSelected(item);
     }
+    public void openDialog(){
+        about1 about12= new about1();
+        about12.show(getSupportFragmentManager(),"About");
+
+    }
 
     public void delete(View view) {
-        dialogxxxx = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogxx, null);
-        adb2 = new AlertDialog.Builder(this);
-        adb2.setCancelable(false);
-        adb2.setTitle("Would you like to remove this student?");
-        adb2.setView(dialogxxxx);
-        adb2.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                refStudent.child(phone1).child("id").removeValue();
-                refStudent.child(phone1).child("name").removeValue();
-                refStudent.child(phone1).child("uid").removeValue();
-                refStudent.child(phone1).child("female").removeValue();
-                refStudent.child(phone1).child("manual").removeValue();
-                refStudent.child(phone1).child("email").removeValue();
-                refStudent.child(phone1).child("password").removeValue();
-                refStudent.child(phone1).child("date").removeValue();
-                refStudent.child(phone1).child("wteacher").removeValue();
-                refStudent.child(phone1).child("student").removeValue();
-                refStudent.child(phone1).child("phone").removeValue();
-                refStudent.child(phone1).child("count").removeValue();
-            }
+        if (!tdate.getText().equals("")) {
+            dialogxxxx = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogxx, null);
+            adb2 = new AlertDialog.Builder(this);
+            adb2.setCancelable(false);
+            adb2.setTitle("Would you like to remove this student?");
+            adb2.setView(dialogxxxx);
+            adb2.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    refStudent.child(phone1).child("id").removeValue();
+                    refStudent.child(phone1).child("name").removeValue();
+                    refStudent.child(phone1).child("uid").removeValue();
+                    refStudent.child(phone1).child("female").removeValue();
+                    refStudent.child(phone1).child("manual").removeValue();
+                    refStudent.child(phone1).child("email").removeValue();
+                    refStudent.child(phone1).child("password").removeValue();
+                    refStudent.child(phone1).child("date").removeValue();
+                    refStudent.child(phone1).child("wteacher").removeValue();
+                    refStudent.child(phone1).child("student").removeValue();
+                    refStudent.child(phone1).child("phone").removeValue();
+                    refStudent.child(phone1).child("count").removeValue();
+                }
 
-        });
-        adb2.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-        AlertDialog adb1 = adb2.create();
-        adb1.show();
+            });
+            adb2.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+            AlertDialog adb1 = adb2.create();
+            adb1.show();
+        }
+        else {
+            Toast.makeText(this, "You didn't select student", Toast.LENGTH_SHORT).show();
+        }
     }
+
 }

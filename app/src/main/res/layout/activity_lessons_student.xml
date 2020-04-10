@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/loginstart"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".lessonsStudent">
@@ -18,14 +19,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            app:srcCompat="@drawable/edl2" />
+            app:srcCompat="@drawable/edlfinal" />
 
         <TextView
             android:id="@+id/tv3"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"
-            android:textColor="@color/colorPrimary"
             android:text="Welcome"
             android:textAlignment="center"
             android:textSize="20dp"
@@ -49,8 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:textColor="@color/colorPrimary"
-            android:text="sunday"
+            android:textColor="@color/colorPrimaryDark"            android:text="sunday"
             android:textAlignment="center"
             android:textSize="20dp"
             />
@@ -73,7 +73,9 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:background="@color/light"
             android:id="@+id/previous"
+            android:textColor="@color/colorPrimaryDark"
             android:onClick="previous"
             android:layout_weight="1"
             android:text="to the previous day"/>
@@ -85,6 +87,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/next"
+            android:background="@color/light"
+            android:textColor="@color/colorPrimaryDark"
             android:onClick="next"
             android:layout_weight="1"
             android:text="to the next day"/>
@@ -97,5 +101,6 @@
         android:layout_width="match_parent"
         android:layout_weight="25"
         android:layout_height="0dp"
+        android:textColor="@color/colorPrimaryDark"
         android:id="@+id/lv11"/>
 </LinearLayout>
