@@ -59,6 +59,7 @@ public class start extends AppCompatActivity {
     String name="nnn", phone="0", email, password, uid, id, money, date="", wteacher;
     Query query;
     String count="0";
+    int yearnow;
     Ustudents Ustudents1;
     Uteachers Uteachers1;
     String s;
@@ -122,10 +123,15 @@ public class start extends AppCompatActivity {
             });
                 d1 = new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(DatePicker view, int day, int month, int year) {
-                        month = month + 1;
-                        date = day + "/" + month + "/" + year;
-                        tvDate.setText(date);
+                    public void onDateSet(DatePicker view, int year1, int month2, int day2) {
+                        month2 = month2 + 1;
+                        date = day2 + "/" + month2 + "/" + year1;
+                        yearnow= Calendar.getInstance().get(Calendar.YEAR);
+                        if ((yearnow-year1>16)|| ((yearnow-year1==16)&&(month2>=6)))
+                          tvDate.setText(date);
+                        else
+                            Toast.makeText(start.this, "You too young to learn driving", Toast.LENGTH_SHORT).show();
+                            
                     }
 
                 };
