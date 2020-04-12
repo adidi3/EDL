@@ -17,7 +17,7 @@ public class FBref {
 
 
     public static FirebaseStorage FBST = FirebaseStorage.getInstance();
-    public static StorageReference mStorageRef = FBST.getReference("images");
-    public static StorageReference islandRef = mStorageRef.child("images/island.jpg");
+    public static StorageReference mStorageRef = FBST.getReference();
+    public static StorageReference refImages = mStorageRef.child("images");
 
 }

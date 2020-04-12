@@ -73,21 +73,24 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@color/light"
+            android:background="@color/white"
             android:id="@+id/previous"
             android:textColor="@color/colorPrimaryDark"
             android:onClick="previous"
             android:layout_weight="1"
             android:text="to the previous day"/>
 
-
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2" />
 
 
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/next"
-            android:background="@color/light"
+            android:background="@color/white"
             android:textColor="@color/colorPrimaryDark"
             android:onClick="next"
             android:layout_weight="1"

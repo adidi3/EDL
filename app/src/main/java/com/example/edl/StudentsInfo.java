@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,31 +15,40 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.edl.FBref.refAuth;
+import static com.example.edl.FBref.refImages;
 import static com.example.edl.FBref.refStudent;
 import static com.example.edl.FBref.refTeacher;
 
 public class StudentsInfo extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     Spinner spinner1;
-    String phone1, uid, phoneteacher="", strStudents="", strphone="";
+    String phone1, uid, phoneteacher="", strStudents="", strphone="", mail="";
     Boolean female1,manual1;
     EditText  efemale, emanual,  ename;
-    TextView tcount, tid, tdate, tphone, temail;
+    TextView tcount, tid, tdate, tphone;
     Ustudents user, users;
+    ImageView iv;
     int num=0;
     Uteachers usert;
     LinearLayout dialogxxxx;
@@ -48,8 +59,8 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_students_info);
+        iv=(ImageView) findViewById(R.id.iv);
         spinner1=(Spinner)findViewById(R.id.spinner2);
-        temail=(TextView) findViewById(R.id.tvmail1);
         tphone=(TextView) findViewById(R.id.eTphone1);
         tid=(TextView) findViewById(R.id.tvid1);
         efemale=(EditText) findViewById(R.id.etfe1);
@@ -85,10 +96,12 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
                     String phones=user.getPhone();
                     String studentInfo = phones+" "+names;
                     lst.add(studentInfo);
+
                 }
                     ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(StudentsInfo.this, android.R.layout.simple_spinner_item, lst);
                     arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner1.setAdapter(arrayAdapter);
+
 
 
             }
@@ -105,6 +118,7 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
             if (dS.exists()) {
                 for(DataSnapshot data : dS.getChildren()) {
                     usert = data.getValue(Uteachers.class);
+
                     phoneteacher=usert.getPhone();
                     Query query = refStudent.orderByChild("wteacher").equalTo(phoneteacher);
                     query.addListenerForSingleValueEvent(VEL);
@@ -128,9 +142,10 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
                     female1=users.getFemale();
                     manual1=users.getManual();
                     phone1=users.getPhone();
+                    mail=users.getEmail();
+                    mail = mail.replace("."," ");
                     tdate.setText(users.getDate());
                     tcount.setText(users.getCount());
-                    temail.setText(users.getEmail());
                     ename.setText(users.getName());
 
                     if(female1==true){
@@ -144,7 +159,14 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
                         emanual.setText("manual");
                     else
                         emanual.setText("auto");
+
+                    try {
+                        download();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+
             }
         }
 
@@ -156,6 +178,28 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
     public void show(View view) {
         Query query2 = refStudent.orderByChild("phone").equalTo(strphone);
         query2.addListenerForSingleValueEvent(VEL3);
+
+    }
+
+    public void download() throws IOException {
+
+        StorageReference refImg = refImages.child(mail+".jpg");
+
+        final File localFile = File.createTempFile(mail,"jpg");
+        refImg.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                String filePath = localFile.getPath();
+                Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+                iv.setImageBitmap(bitmap);
+                iv.setVisibility(View.VISIBLE);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Toast.makeText(infoTeacher.this, "Image download failed", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void update(View view) {
