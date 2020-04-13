@@ -240,6 +240,7 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
         num=pos+1;
         strphone="";
         strStudents = lst.get(pos);
+        iv.setVisibility(View.INVISIBLE);
         for (int x = 0; x <= 9; x++)
             strphone = strphone + strStudents.charAt(x);
 
