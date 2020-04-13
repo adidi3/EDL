@@ -106,7 +106,7 @@ public class infoTeacher extends AppCompatActivity {
         //menu
         String st = item.getTitle().toString();
 
-        if (st.equals("Students information")) {
+        if (st.equals("Students's information")) {
             Intent in = new Intent(infoTeacher.this, StudentsInfo.class);
             startActivity(in);
             finish();

@@ -49,6 +49,8 @@ import static com.example.edl.FBref.refTeacherTime;
 import static com.example.edl.FBref.refUsers;
 
 
+
+
 public class start extends AppCompatActivity {
     TextView  tVregister, tvDate, tVauto, tVmanual, tVmale, tVfemale, tVteacher, tVstudent;
     EditText eTname, eTphone, eTemail, eTpass, eTid, eTmoney;

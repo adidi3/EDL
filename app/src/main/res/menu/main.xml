@@ -7,7 +7,7 @@
         android:orderInCategory="2"
         />
     <item
-        android:title="Students information"
+        android:title="Students's information"
         android:id="@+id/stuinfo"
         android:orderInCategory="3"
         />

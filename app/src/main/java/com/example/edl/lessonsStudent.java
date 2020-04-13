@@ -33,7 +33,7 @@ import static com.example.edl.FBref.refTeacher;
 import static com.example.edl.FBref.refTeacherTime;
 
 public class lessonsStudent extends AppCompatActivity implements AdapterView.OnItemClickListener{
-    String phone="", phonestudent="", names="", count1;
+    String phone="", phonestudent="", names="", count1, smoney;
     ListView lv1;
     ArrayList<String> stringLst= new ArrayList<String>();
     ArrayAdapter<String> adp1;
@@ -41,11 +41,12 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
     String psss="";
     String ps="";
     TextView tvDays1, tvname;
-    int dayCount=1;
+    int dayCount=1, money=0;
     AlertDialog.Builder ad, adb;
     LinearLayout dialog, dialogex;
     String uid, str, list1, tmp;
     Ustudents user;
+    Uteachers usert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,8 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
         uid = fbuser.getUid();
         Query query = refStudent.orderByChild("uid").equalTo(uid);
         query.addListenerForSingleValueEvent(VEL);
+
+
 
         lv1.setOnItemClickListener(this);
         lv1.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -80,6 +83,9 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
                     phone=user.getWteacher();
                     phonestudent=user.getPhone();
                     count1=user.getCount();
+                    Query queryt = refTeacher.orderByChild("phone").equalTo(phone);
+                    queryt.addListenerForSingleValueEvent(VEL2);
+
 
                 }
                 DatabaseReference refDay1 = refTeacherTime.child(phone).child(day);
@@ -110,6 +116,21 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
         public void onCancelled(@NonNull DatabaseError databaseError) {
         }
     };
+
+    com.google.firebase.database.ValueEventListener VEL2 = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot ds) {
+            if (ds.exists()) {
+                for (DataSnapshot data : ds.getChildren()) {
+                    usert = data.getValue(Uteachers.class);
+                    smoney = usert.getMoney();
+                    money=Integer.parseInt(smoney);
+                }}}
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+        }
+    };
+
 
     public void previous(View view) {
         if (dayCount>1){
@@ -295,6 +316,10 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
                         refStudent.child(phonestudent).child("count").setValue(count1);
                         Toast.makeText(lessonsStudent.this, "succeeded", Toast.LENGTH_SHORT).show();
                         dialogInterface.dismiss();
+                        if (y%money==0){
+                            Toast.makeText(lessonsStudent.this, "don't forget to pay this lesson", Toast.LENGTH_LONG).show();
+                        }
+
                     }
 
                 });

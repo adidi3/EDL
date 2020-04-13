@@ -360,7 +360,7 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
         //menu
         String st = item.getTitle().toString();
 
-        if (st.equals("Students information")) {
+        if (st.equals("Students's information")) {
             Intent in = new Intent(TeacherLessons.this, StudentsInfo.class);
             startActivity(in);
             finish();

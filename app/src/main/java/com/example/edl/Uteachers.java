@@ -55,7 +55,7 @@ public class Uteachers {
     }
 
     public void setMoney(String money) {
-        this.money=phone;
+        this.money=money;
     }
 
     public String getUid() {
