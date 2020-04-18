@@ -324,7 +324,7 @@ public class start extends AppCompatActivity {
                     }
                 });
             } else {
-                
+
                 Toast.makeText(this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
             }
             }
