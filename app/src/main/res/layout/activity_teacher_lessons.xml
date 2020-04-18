@@ -26,16 +26,13 @@
             android:id="@+id/textView3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="15"
             android:textColor="@color/colorPrimaryDark"
             android:text="sunday"
             android:textAlignment="center"
             android:textSize="20dp"
             />
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3" />
+
 
     </LinearLayout>
 

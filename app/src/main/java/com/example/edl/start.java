@@ -219,41 +219,7 @@ public class start extends AppCompatActivity {
      * If logged in & asked to be remembered - pass on.
      * <p>
      */
-    protected void onStart() {
-        super.onStart();
-        SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
-        Boolean isChecked=settings.getBoolean("stayConnect",false);
-        FirebaseUser fbuser = refAuth.getCurrentUser();
 
-        if (student) {
-
-            if (refAuth.getCurrentUser() != null && isChecked) {
-                Intent si = new Intent(start.this, lessonsStudent.class);
-                stayConnect = true;
-                startActivity(si);
-                finish();
-            }
-        }
-        else {
-
-            if (refAuth.getCurrentUser() != null && isChecked) {
-                Intent si = new Intent(start.this, TeacherLessons.class);
-                stayConnect = true;
-                startActivity(si);
-                finish();
-            }
-
-        }
-    }
-    /**
-     * On activity pause - If logged in & asked to be remembered - kill activity.
-     * <p>
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (stayConnect) finish();
-    }
 
     private void regoption() {
         SpannableString ss = new SpannableString("Don't have an account?  Register here!");
@@ -316,7 +282,8 @@ public class start extends AppCompatActivity {
      */
     public void logorreg(View view) {
         if (registered) {
-            email=eTemail.getText().toString();
+            if ((!eTemail.getText().toString().equals(""))&&(!eTpass.getText().toString().equals(""))){
+                email=eTemail.getText().toString();
             password=eTpass.getText().toString();
             ValueEventListener mrListener = new ValueEventListener() {
                 @Override
@@ -359,6 +326,8 @@ public class start extends AppCompatActivity {
                         }
                     });
         }
+        else
+                Toast.makeText(this, "Please, fill all the necessary details", Toast.LENGTH_LONG).show();}
         else {
             name = eTname.getText().toString();
             id = eTid.getText().toString();
