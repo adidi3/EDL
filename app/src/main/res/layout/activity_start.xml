@@ -213,13 +213,6 @@
 
 
 
-            <CheckBox
-                        android:id="@+id/cBstayconnect"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Stay Connected" />
-
-
                     <TextView
                         android:id="@+id/tVregister"
                         android:layout_width="match_parent"

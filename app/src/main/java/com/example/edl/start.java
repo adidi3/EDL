@@ -54,7 +54,6 @@ import static com.example.edl.FBref.refUsers;
 public class start extends AppCompatActivity {
     TextView  tVregister, tvDate, tVauto, tVmanual, tVmale, tVfemale, tVteacher, tVstudent;
     EditText eTname, eTphone, eTemail, eTpass, eTid, eTmoney;
-    CheckBox cBstayconnect;
     Button btn;
     Spinner spinner;
     Switch switchMALEfemale, switchTecherstudent, switchAutoManuel;
@@ -94,7 +93,6 @@ public class start extends AppCompatActivity {
         eTid=(EditText)findViewById(R.id.eTid);
         eTphone=(EditText)findViewById(R.id.eTphone);
         eTmoney=(EditText)findViewById(R.id.eTmoney);
-        cBstayconnect=(CheckBox)findViewById(R.id.cBstayconnect);
         spinner=(Spinner) findViewById(R.id.spinner);
         tVregister=(TextView) findViewById(R.id.tVregister);
         btn=(Button)findViewById(R.id.btn);
@@ -281,54 +279,57 @@ public class start extends AppCompatActivity {
      * <p>
      */
     public void logorreg(View view) {
+    if ((!eTemail.getText().toString().isEmpty()&&(!eTemail.getText().toString().equals("")))){
         if (registered) {
-            if ((!eTemail.getText().toString().equals(""))&&(!eTpass.getText().toString().equals(""))){
-                email=eTemail.getText().toString();
-            password=eTpass.getText().toString();
-            ValueEventListener mrListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot ds) {
-                    for (DataSnapshot data : ds.getChildren()) {
-                        eTemail.setText(refAuth.getCurrentUser().getEmail());
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            };
-            if (mrListener!=null) {
-                refUsers.removeEventListener(mrListener);
-            }
-
-            final ProgressDialog pd=ProgressDialog.show(this,"Login","Connecting...",true);
-            refAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            pd.dismiss();
-                            if (task.isSuccessful()) {
-                                FirebaseUser fbuser = refAuth.getCurrentUser();
-                                uiduser = fbuser.getUid();
-                                Query query = refTeacher.orderByChild("uid").equalTo(uiduser);
-                                query.addListenerForSingleValueEvent(VEL);
-                                Query query2 = refStudent.orderByChild("uid").equalTo(uiduser);
-                                query2.addListenerForSingleValueEvent(VEL2);
-                                SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
-                                SharedPreferences.Editor editor=settings.edit();
-                                editor.putBoolean("stayConnect",cBstayconnect.isChecked());
-                                editor.commit();
-                                Log.d("start", "signinUserWithEmail:success");
-                                Toast.makeText(start.this, "Login Success", Toast.LENGTH_LONG).show();
-                            } else {
-                                Log.d("start", "signinUserWithEmail:fail");
-                                Toast.makeText(start.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
-                            }
+            if ((!eTemail.getText().toString().equals("")) && (!eTpass.getText().toString().equals(""))) {
+                email = eTemail.getText().toString();
+                password = eTpass.getText().toString();
+                ValueEventListener mrListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot ds) {
+                        for (DataSnapshot data : ds.getChildren()) {
+                            eTemail.setText(refAuth.getCurrentUser().getEmail());
                         }
-                    });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                };
+                if (mrListener != null) {
+                    refUsers.removeEventListener(mrListener);
+                }
+
+                final ProgressDialog pd = ProgressDialog.show(this, "Login", "Connecting...", true);
+                refAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        pd.dismiss();
+                        if (task.isSuccessful()) {
+                            FirebaseUser fbuser = refAuth.getCurrentUser();
+                            uiduser = fbuser.getUid();
+                            Query query = refTeacher.orderByChild("uid").equalTo(uiduser);
+                            query.addListenerForSingleValueEvent(VEL);
+                            Query query2 = refStudent.orderByChild("uid").equalTo(uiduser);
+                            query2.addListenerForSingleValueEvent(VEL2);
+                            SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.commit();
+                            Log.d("start", "signinUserWithEmail:success");
+                            Toast.makeText(start.this, "Login Success", Toast.LENGTH_LONG).show();
+                        } else {
+                            Log.d("start", "signinUserWithEmail:fail");
+                            Toast.makeText(start.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            } else {
+                Toast.makeText(this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
+            }
+            }
         }
-        else
-                Toast.makeText(this, "Please, fill all the necessary details", Toast.LENGTH_LONG).show();}
         else {
+
             name = eTname.getText().toString();
             id = eTid.getText().toString();
             phone = eTphone.getText().toString();
@@ -348,7 +349,6 @@ public class start extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
                                     SharedPreferences.Editor editor = settings.edit();
-                                    editor.putBoolean("stayConnect", cBstayconnect.isChecked());
                                     editor.commit();
                                     Log.d("start", "createUserWithEmail:success");
                                     FirebaseUser user = refAuth.getCurrentUser();
