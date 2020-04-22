@@ -239,6 +239,7 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
                         public void onClick(DialogInterface dialogInterface, int i) {
                             str = ("l" + (position));
 
+                            
                             switch (position) {
                                 case 0:
                                     tmp = "08:00-08:40";
