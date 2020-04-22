@@ -130,7 +130,7 @@ public class start extends AppCompatActivity {
                         if ((yearnow-year1>16)|| ((yearnow-year1==16)&&(month2>=6)))
                           tvDate.setText(date);
                         else
-                            Toast.makeText(start.this, "You too young to learn driving", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(start.this, "You are too young to learn driving", Toast.LENGTH_SHORT).show();
                             
                     }
 
@@ -214,7 +214,7 @@ public class start extends AppCompatActivity {
     };
     /**
      * On activity start - Checking if user already logged in.
-     * If logged in & asked to be remembered - pass on.
+     * If logged in & a‎sked to be remembered - pass on.
      * <p>
      */
 
@@ -279,7 +279,6 @@ public class start extends AppCompatActivity {
      * <p>
      */
     public void logorreg(View view) {
-    if ((!eTemail.getText().toString().isEmpty()&&(!eTemail.getText().toString().equals("")))){
         if (registered) {
             if ((!eTemail.getText().toString().equals("")) && (!eTpass.getText().toString().equals(""))) {
                 email = eTemail.getText().toString();
@@ -326,7 +325,6 @@ public class start extends AppCompatActivity {
             } else {
 
                 Toast.makeText(this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
-            }
             }
         }
         else {

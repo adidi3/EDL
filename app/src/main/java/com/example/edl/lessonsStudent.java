@@ -210,7 +210,7 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
                 @Override
                 public void onCancelled(DatabaseError error) {
                     // Failed to read value
-                }
+                    }
             });
         }
         else
@@ -221,14 +221,13 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
     public void onItemClick(AdapterView<?> adapterView, View view,final int position, long l) {
         list1 = stringLst.get(position);
         psss = "";
-        if (list1.equals("08:00-08:40") || list1.equals("08:45-09:25") || list1.equals("10:00-10:40") || list1.equals("10:45-11:25") || list1.equals("12:30-13:10") || list1.equals("13:15-13:55") ||
-                list1.equals("14:00-14:40") || list1.equals("14:45-15:25") || list1.equals("19:00-19:40") || list1.equals("19:45-20:25")|| list1.equals(phonestudent+" "+names)) {
-            ps = list1;
-            for (int x = 0; x <= 9; x++)
-                psss = psss + ps.charAt(x);
-        }
+    
             if (!list1.equals("08:00-08:40") && !list1.equals("08:45-09:25") && !list1.equals("10:00-10:40") && !list1.equals("10:45-11:25") && !list1.equals("12:30-13:10") && !list1.equals("13:15-13:55") &&
                     !list1.equals("14:00-14:40") && !list1.equals("14:45-15:25") && !list1.equals("19:00-19:40") && !list1.equals("19:45-20:25")) {
+                ps = list1;
+                if ( list1.equals(phonestudent+" "+names)){
+                    for (int x = 0; x <= 9; x++)
+                        psss = psss + ps.charAt(x);}
                 if (psss.equals(phonestudent)) {
                     dialogex = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogxxx, null);
                     adb = new AlertDialog.Builder(this);
