@@ -22,10 +22,6 @@
                 app:srcCompat="@drawable/edlfinal" />
 
 
-
-
-
-
                     <EditText
                         android:id="@+id/eTname"
                         android:textColorHint="@color/colorPrimaryDark"
@@ -37,7 +33,6 @@
                         android:visibility="invisible" />
 
 
-
                     <EditText
                         android:id="@+id/eTemail"
                         android:drawableStart="@drawable/ic_person_black_24dp"
@@ -45,20 +40,10 @@
                         android:layout_height="wrap_content"
                         android:textColorHint="@color/colorPrimaryDark"
                         android:ems="10"
+                        android:visibility="invisible"
                         android:hint="E-mail"
                         android:inputType="textEmailAddress" />
 
-
-
-                    <EditText
-                        android:id="@+id/eTpass"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:drawableStart="@drawable/ic_lock_black_24dp"
-                        android:hint="password"
-                        android:textColorHint="@color/colorPrimaryDark"
-                        android:inputType="textPassword" />
 
                     <EditText
                         android:id="@+id/eTphone"
@@ -68,7 +53,7 @@
                         android:hint="phone"
                         android:textColorHint="@color/colorPrimaryDark"
                         android:inputType="phone"
-                        android:visibility="invisible"/>
+                        />
 
             <EditText
                 android:id="@+id/eTid"

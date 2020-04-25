@@ -303,7 +303,7 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
             dialog = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogx, null);
             ad = new AlertDialog.Builder(this);
             ad.setCancelable(false);
-            ad.setTitle("Confirm deleting value from Firebase");
+            ad.setTitle("Would you like to cancel this lesson?");
             ad.setView(dialog);
             ad.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
                 @Override

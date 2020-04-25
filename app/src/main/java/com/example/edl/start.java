@@ -1,15 +1,18 @@
 package com.example.edl;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -29,9 +32,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +49,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.example.edl.FBref.refAuth;
 import static com.example.edl.FBref.refStudent;
@@ -52,12 +61,13 @@ import static com.example.edl.FBref.refUsers;
 
 
 public class start extends AppCompatActivity {
+    private static final String TAG ="TAG" ;
     TextView  tVregister, tvDate, tVauto, tVmanual, tVmale, tVfemale, tVteacher, tVstudent;
-    EditText eTname, eTphone, eTemail, eTpass, eTid, eTmoney;
+    EditText eTname, eTphone, eTemail, eTid, eTmoney;
     Button btn;
     Spinner spinner;
     Switch switchMALEfemale, switchTecherstudent, switchAutoManuel;
-    String name="nnn", phone="0", email, password, uid, id, money, date="", wteacher;
+    String name="nnn", phoneInput="0", phone="+972", email, uid, id, money, date="", wteacher;
     Query query;
     String count="0";
     int yearnow;
@@ -78,6 +88,14 @@ public class start extends AppCompatActivity {
     Uteachers usert;
     Ustudents users;
 
+    String code, mVerificationId;
+    Boolean isUID = true;
+    AlertDialog ad, ad1;
+    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    Boolean mVerificationInProgress = false;
+    ValueEventListener usersListener;
+    FirebaseUser user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +107,6 @@ public class start extends AppCompatActivity {
         tvDate=(TextView) findViewById(R.id.tvDate);
         eTname=(EditText)findViewById(R.id.eTname);
         eTemail=(EditText)findViewById(R.id.eTemail);
-        eTpass=(EditText)findViewById(R.id.eTpass);
         eTid=(EditText)findViewById(R.id.eTid);
         eTphone=(EditText)findViewById(R.id.eTphone);
         eTmoney=(EditText)findViewById(R.id.eTmoney);
@@ -158,6 +175,8 @@ public class start extends AppCompatActivity {
                     }
                 });
 
+
+                onVerificationStateChanged();
                 regoption();
     }
 
@@ -230,8 +249,9 @@ public class start extends AppCompatActivity {
                 switchTecherstudent.setVisibility(View.VISIBLE);
                 tVteacher.setVisibility(View.VISIBLE);
                 tVstudent.setVisibility(View.VISIBLE);
-                eTphone.setVisibility(View.VISIBLE);
+                eTemail.setVisibility(View.VISIBLE);
                 btn.setText("Register");
+                isUID=false;
                 registered=false;
                logoption();
             }
@@ -250,7 +270,7 @@ public class start extends AppCompatActivity {
                 eTid.setVisibility(View.INVISIBLE);
                 eTmoney.setVisibility(View.INVISIBLE);
                 tvDate.setVisibility(View.INVISIBLE);
-                eTphone.setVisibility(View.INVISIBLE);
+                eTemail.setVisibility(View.INVISIBLE);
                 spinner.setVisibility(View.INVISIBLE);
                 switchTecherstudent.setVisibility(View.INVISIBLE);
                 switchAutoManuel.setVisibility(View.INVISIBLE);
@@ -263,6 +283,7 @@ public class start extends AppCompatActivity {
                 tVteacher.setVisibility(View.INVISIBLE);
                 btn.setText("Login");
                 registered=true;
+                isUID=true;
                 regoption();
             }
         };
@@ -280,9 +301,48 @@ public class start extends AppCompatActivity {
      */
     public void logorreg(View view) {
         if (registered) {
-            if ((!eTemail.getText().toString().equals("")) && (!eTpass.getText().toString().equals(""))) {
-                email = eTemail.getText().toString();
-                password = eTpass.getText().toString();
+            if ((!eTphone.getText().toString().equals(""))) {
+                phoneInput=eTphone.getText().toString();
+                if ((phoneInput.length() !=10)||(!phoneInput.substring(0, 2).equals("05")) || (phoneInput.indexOf(".") != (-1)) || (phoneInput.indexOf("/") != (-1))
+                        || (phoneInput.indexOf("+") != (-1)) || (phoneInput.indexOf("#") != (-1)) || (phoneInput.indexOf(")") != (-1)) || (phoneInput.indexOf("()") != (-1))
+                        || (phoneInput.indexOf("N") != (-1)) || (phoneInput.indexOf(",") != (-1)) || (phoneInput.indexOf(";") != (-1)) || (phoneInput.indexOf("*") != (-1))
+                        || (phoneInput.indexOf("+") != (-1)) || (phoneInput.indexOf(" ") != (-1)) || (phoneInput.indexOf("-") != (-1))) {
+                    eTphone.setError("invalid phone number");
+                } else {
+                    for (int x = 1; x <= 9; x++)
+                        phone = phone + phoneInput.charAt(x);
+
+                    startPhoneNumberVerification(phone);
+                    onVerificationStateChanged();
+
+                    AlertDialog.Builder adb = new AlertDialog.Builder(this);
+                    final EditText et = new EditText(this);
+                    et.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    adb.setMessage("enter the code you received");
+                    adb.setTitle("Authentication");
+                    adb.setView(et);
+                    adb.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int whichButton) {
+                            code = et.getText().toString();
+                            if (!code.isEmpty())
+                                verifyPhoneNumberWithCode(mVerificationId, code);
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    adb.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int whichButton) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    ad1 = adb.create();
+                    ad1.show();
+                }
+            }else {
+                Toast.makeText(start.this, "Please, enter your phone number.", Toast.LENGTH_LONG).show();
+            }
+
+        }
+        /*
                 ValueEventListener mrListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot ds) {
@@ -326,20 +386,83 @@ public class start extends AppCompatActivity {
 
                 Toast.makeText(this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
             }
-        }
+        }*/
         else {
 
             name = eTname.getText().toString();
             id = eTid.getText().toString();
-            phone = eTphone.getText().toString();
+            phoneInput = eTphone.getText().toString();
             email = eTemail.getText().toString();
-            password = eTpass.getText().toString();
             money = eTmoney.getText().toString();
             s = spinner.getSelectedItem().toString();
 
             if (switchMALEfemale.isChecked()) {female = true; }
             if (switchAutoManuel.isChecked()) { manual = true;}
-            if ((!name.isEmpty()) && (!email.isEmpty()) && (!password.isEmpty()) && (!phone.isEmpty()) && (!id.isEmpty()) && (((!student) && (!money.isEmpty())) || ((student) && (!date.isEmpty())))) {
+            if ((!name.isEmpty()) && (!email.isEmpty()) && (!phoneInput.isEmpty()) && (!id.isEmpty()) &&
+                    (((!student) && (!money.isEmpty())) || ((student) && (!date.isEmpty())))) {
+
+                if ((phoneInput.length() !=10)||(!phoneInput.substring(0,2).equals("05"))||(phoneInput.indexOf(".")!=(-1))||(phoneInput.indexOf("/")!=(-1))
+                        ||(phoneInput.indexOf("+")!=(-1))||(phoneInput.indexOf("#")!=(-1))||(phoneInput.indexOf(")")!=(-1))||(phoneInput.indexOf("()")!=(-1))
+                        ||(phoneInput.indexOf("N")!=(-1))||(phoneInput.indexOf(",")!=(-1))||(phoneInput.indexOf(";")!=(-1))||(phoneInput.indexOf("*")!=(-1))
+                        ||(phoneInput.indexOf("+")!=(-1))||(phoneInput.indexOf(" ")!=(-1))||(phoneInput.indexOf("-")!=(-1))) {
+                    eTphone.setError("invalid phone number");
+                }
+                else {
+                    for (int x = 1; x <= 9; x++)
+                        phone = phone + phoneInput.charAt(x);
+
+
+
+                    if (student) {
+                        for (int i = 0; i <= 9; i++)
+                            sf =sf+s.charAt(i);
+                        wteacher = sf;
+                        Ustudents1 = new Ustudents(name, email, phone, uid, id, student, manual, female, date, wteacher, count);
+                        refStudent.child(phone).setValue(Ustudents1);
+                        Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Uteachers1 = new Uteachers(name, email, phone, uid, id, student, money);
+                        refTeacher.child(phone).setValue(Uteachers1);
+                        refTeacherTime.child(phone).setValue(week1);
+                        refTeacherTime.child(phone).child("sunday").setValue(day1);
+                        refTeacherTime.child(phone).child("monday").setValue(day1);
+                        refTeacherTime.child(phone).child("tuesday").setValue(day1);
+                        refTeacherTime.child(phone).child("wednesday").setValue(day1);
+                        refTeacherTime.child(phone).child("thursday").setValue(day1);
+                        Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
+                    }
+
+
+                    startPhoneNumberVerification(phone);
+                    onVerificationStateChanged();
+
+                    AlertDialog.Builder adb = new AlertDialog.Builder(this);
+                    final EditText et = new EditText(this);
+                    et.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    adb.setMessage("enter the code you received");
+                    adb.setTitle("Authentication");
+                    adb.setView(et);
+                    adb.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int whichButton) {
+                            code = et.getText().toString();
+                            if (!code.isEmpty())
+                                verifyPhoneNumberWithCode(mVerificationId, code);
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    adb.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int whichButton) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    ad = adb.create();
+                    ad.show();
+                }
+            }
+
+
+               /*
                 final ProgressDialog pd = ProgressDialog.show(this, "Register", "Registering...", true);
                 refAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -387,12 +510,128 @@ public class start extends AppCompatActivity {
                                     }
                                 }
                             }
-                        });
-            } else {
+                        });*/
+             else {
                 Toast.makeText(start.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
             }
         }
     }
+
+    /**
+     * this function is called when the user wants to register.
+     * the function sends sms to his phone with a verification code.
+     * @param	phoneNumber the user's phone number. The SMS is sent to this phone number.
+     */
+
+    private void startPhoneNumberVerification(String phoneNumber) {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,           // Phone number to verify
+                40,                 // Timeout duration
+                TimeUnit.SECONDS,      // Unit of timeout
+                this,          // Activity (for callback binding)
+                mCallbacks);          // OnVerificationStateChangedCallbacks
+        mVerificationInProgress = true;
+    }
+
+    /**
+     * this function is called in order to check if the code the user wrote is the code he received and create a credential.
+     * if he wrote a right code, "signInWithPhoneAuthCredential" function is called.
+     * @param	code the code that the
+     * @param verificationId a verification identity to connect with firebase servers.
+     */
+    private void verifyPhoneNumberWithCode(String verificationId, String code) {
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+        signInWithPhoneAuthCredential(credential);
+    }
+
+    /**
+     * this function is called to sign in the user.
+     * if the credential is proper the user is signs in and he sent to the next activity
+     * @param	credential is a credential that everything was right and the user can sign in.
+     */
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        refAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "signInWithCredential:success");
+                            SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = settings.edit();
+                            //  editor.putBoolean("stayConnect", .isChecked());
+                          //  editor.putBoolean("firstRun", false);
+                            editor.commit();
+
+                            FirebaseUser user = refAuth.getCurrentUser();
+                            uid = user.getUid();
+                            if (!isUID) {
+                                if(student){
+                                    refStudent.child(phone).child("uid").setValue(uid);
+                                }
+                                else{
+                                    refTeacher.child(phone).child("uid").setValue(uid);
+                                }
+                            }
+                            setUsersListener();
+                        }
+
+                        else {
+                            Log.d(TAG, "signInWithCredential:failure", task.getException());
+                            Toast.makeText(start.this, "wrong!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * this function checks the status of the verification, if it's completed, failed or inProgress.
+     */
+    private void onVerificationStateChanged() {
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(PhoneAuthCredential credential) {
+                Log.d(TAG, "onVerificationCompleted:" + credential);
+                mVerificationInProgress = false;
+                signInWithPhoneAuthCredential(credential);
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+                Log.w(TAG, "onVerificationFailed", e);
+                mVerificationInProgress = false;
+                if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                    eTphone.setError("Invalid phone number");
+                } else { if (e instanceof FirebaseTooManyRequestsException) {
+                    }
+                }
+            }
+
+            @Override
+            public void onCodeSent(@NonNull String verificationId,
+                                   @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                Log.d(TAG, "onCodeSent:" + verificationId);
+                mVerificationId = verificationId;
+            }
+        };
+    }
+
+    /**
+     * this function connects the current user with his information in the database by checking his uid,
+     * in order to check his status and sent him to the next activity.
+     */
+
+    public void setUsersListener() {
+        user = refAuth.getCurrentUser();
+        Query query = refTeacher.orderByChild("uid").equalTo(uiduser);
+        query.addListenerForSingleValueEvent(VEL);
+        Query query2 = refStudent.orderByChild("uid").equalTo(uiduser);
+        query2.addListenerForSingleValueEvent(VEL2);
+        refStudent.addValueEventListener(usersListener);
+        refTeacher.addValueEventListener(usersListener);
+
+    }
+
+
 
     public void switchTeacher(View view) {
         if (switchTecherstudent.isChecked()){

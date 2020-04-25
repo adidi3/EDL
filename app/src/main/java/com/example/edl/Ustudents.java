@@ -1,10 +1,10 @@
 package com.example.edl;
 
 public class Ustudents {
-    public String name, email, phone, uid, id, password, date, wteacher, count;
+    public String name, email, phone, uid, id, date, wteacher, count;
     public boolean student, manual, female;
     public Ustudents(){}
-    public Ustudents (String name, String email, String phone, String uid, String id, String password, Boolean student, Boolean manual, Boolean female, String date, String wteacher, String count) {
+    public Ustudents (String name, String email, String phone, String uid, String id, Boolean student, Boolean manual, Boolean female, String date, String wteacher, String count) {
         this.name=name;
         this.date=date;
         this.email=email;
@@ -12,7 +12,6 @@ public class Ustudents {
         this.uid=uid;
         this.id=id;
         this.wteacher=wteacher;
-        this.password=password;
         this.female=female;
         this.manual=manual;
         this.student=student;
@@ -26,7 +25,6 @@ public class Ustudents {
         this.phone = student.getPhone();
         this.id = student.getId();
         this.wteacher = student.getWteacher();
-        this.password = student.getPassword();
         this.female = student.getFemale();
         this.manual = student.getManual();
         this.student = student.getStudent();
@@ -98,14 +96,6 @@ public class Ustudents {
 
     public void setId(String id) {
         this.id=id;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password=password;
     }
 
     public String getDate() {
