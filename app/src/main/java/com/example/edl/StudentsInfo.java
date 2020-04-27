@@ -43,7 +43,7 @@ import static com.example.edl.FBref.refTeacher;
 
 public class StudentsInfo extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     Spinner spinner1;
-    String phone1, uid, phoneteacher="", strStudents="", strphone="", mail="";
+    String phone1, uid, phoneteacher="", strStudents="", strphone="", mail="", uids="";
     Boolean female1,manual1;
     EditText  efemale, emanual,  ename;
     TextView tcount, tid, tdate, tphone;
@@ -143,8 +143,8 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
                     manual1=users.getManual();
                     phone1=users.getPhone();
                     mail=users.getEmail();
-                    mail = mail.replace("."," ");
                     tdate.setText(users.getDate());
+                    uids=users.getUid();
                     tcount.setText(users.getCount());
                     ename.setText(users.getName());
 
@@ -183,9 +183,9 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
 
     public void download() throws IOException {
 
-        StorageReference refImg = refImages.child(mail+".jpg");
+        StorageReference refImg = refImages.child(uids+".jpg");
 
-        final File localFile = File.createTempFile(mail,"jpg");
+        final File localFile = File.createTempFile(uids,"jpg");
         refImg.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
@@ -206,11 +206,11 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
         if (!tdate.getText().equals("")) {
             refStudent.child(phone1).child("name").removeValue();
             refStudent.child(phone1).child("name").setValue(ename.getText().toString());
-            if (emanual.getText().toString().equals("manual")) {
+            if ((emanual.getText().toString().equals("manual"))||(emanual.getText().toString().equals("Manual"))) {
                 refStudent.child(phone1).child("manual").removeValue();
                 refStudent.child(phone1).child("manual").setValue(true);
             } else {
-                if (emanual.getText().toString().equals("auto")) {
+                if ((emanual.getText().toString().equals("auto"))||(emanual.getText().toString().equals("Auto")))  {
                     refStudent.child(phone1).child("manual").removeValue();
                     refStudent.child(phone1).child("manual").setValue(false);
                 } else {

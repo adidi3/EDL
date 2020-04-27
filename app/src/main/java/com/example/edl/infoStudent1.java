@@ -38,15 +38,13 @@ import static com.example.edl.FBref.refImages;
 import static com.example.edl.FBref.refStudent;
 
 public class infoStudent1 extends AppCompatActivity {
-    String phone1, uid, mail;
+    String phone1, uid, uid1="";
     Boolean female1, manual1;
     EditText efemale, emanual, ename;
     TextView tcount, tid , tphone, temail;
     Ustudents user;
     ImageView iv;
     int Gallery=1;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +62,7 @@ public class infoStudent1 extends AppCompatActivity {
         tcount = (TextView) findViewById(R.id.tvcount1);
 
         FirebaseUser fbuser = refAuth.getCurrentUser();
-        mail = fbuser.getEmail().replace("."," ");
+        uid1 = fbuser.getUid();
 
         try {
             download();
@@ -123,11 +121,11 @@ public class infoStudent1 extends AppCompatActivity {
     public void update(View view) {
         refStudent.child(phone1).child("name").removeValue();
         refStudent.child(phone1).child("name").setValue(ename.getText().toString());
-        if (emanual.getText().toString().equals("manual")) {
+        if ((emanual.getText().toString().equals("manual"))||(emanual.getText().toString().equals("Manual")))  {
             refStudent.child(phone1).child("manual").removeValue();
             refStudent.child(phone1).child("manual").setValue(true);
         } else {
-            if (emanual.getText().toString().equals("auto")) {
+            if ((emanual.getText().toString().equals("auto"))||(emanual.getText().toString().equals("Auto")))  {
                 refStudent.child(phone1).child("manual").removeValue();
                 refStudent.child(phone1).child("manual").setValue(false);
             } else {
@@ -159,7 +157,7 @@ public class infoStudent1 extends AppCompatActivity {
                 Uri file = data.getData();
                 if (file != null) {
                     final ProgressDialog pd=ProgressDialog.show(this,"Upload image","Uploading...",true);
-                    StorageReference refImg = refImages.child(mail+".jpg");
+                    StorageReference refImg = refImages.child(uid1+".jpg");
                     refImg.putFile(file)
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
@@ -190,9 +188,9 @@ public class infoStudent1 extends AppCompatActivity {
 
     public void download() throws IOException{
 
-        StorageReference refImg = refImages.child(mail+".jpg");
+        StorageReference refImg = refImages.child(uid1+".jpg");
 
-        final File localFile = File.createTempFile(mail,"jpg");
+        final File localFile = File.createTempFile(uid1,"jpg");
         refImg.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {

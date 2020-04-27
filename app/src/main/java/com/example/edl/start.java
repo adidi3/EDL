@@ -57,6 +57,9 @@ import static com.example.edl.FBref.refTeacher;
 import static com.example.edl.FBref.refTeacherTime;
 import static com.example.edl.FBref.refUsers;
 
+/**
+ *
+ */
 
 
 
@@ -93,7 +96,7 @@ public class start extends AppCompatActivity {
     AlertDialog ad, ad1;
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     Boolean mVerificationInProgress = false;
-    ValueEventListener usersListener;
+    ValueEventListener usersListener, usersListener2;
     FirebaseUser user;
 
 
@@ -181,7 +184,7 @@ public class start extends AppCompatActivity {
     }
 
 
-    com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
+  /**  com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dS) {
             if (dS.exists()) {
@@ -213,7 +216,7 @@ public class start extends AppCompatActivity {
                 for(DataSnapshot data : dataSnapshot.getChildren()) {
                     users = data.getValue(Ustudents.class);
                     student=users.getStudent();
-                    phone=users.getPhone();
+                  //  phone=users.getPhone();
                     if (student) {
                         Intent in = new Intent(start.this,lessonsStudent.class);
                         startActivity(in);
@@ -231,6 +234,7 @@ public class start extends AppCompatActivity {
         public void onCancelled(@NonNull DatabaseError databaseError) {
         }
     };
+   */
     /**
      * On activity start - Checking if user already logged in.
      * If logged in & a‎sked to be remembered - pass on.
@@ -309,8 +313,9 @@ public class start extends AppCompatActivity {
                         || (phoneInput.indexOf("+") != (-1)) || (phoneInput.indexOf(" ") != (-1)) || (phoneInput.indexOf("-") != (-1))) {
                     eTphone.setError("invalid phone number");
                 } else {
-                    for (int x = 1; x <= 9; x++)
-                        phone = phone + phoneInput.charAt(x);
+                    if (phone.equals("+972"))
+                        for (int x = 1; x <= 9; x++)
+                            phone = phone + phoneInput.charAt(x);
 
                     startPhoneNumberVerification(phone);
                     onVerificationStateChanged();
@@ -393,33 +398,35 @@ public class start extends AppCompatActivity {
             id = eTid.getText().toString();
             phoneInput = eTphone.getText().toString();
             email = eTemail.getText().toString();
-            money = eTmoney.getText().toString();
-            s = spinner.getSelectedItem().toString();
-
+            if (!student)
+                money = eTmoney.getText().toString();
+            if (student)
+                s = spinner.getSelectedItem().toString();
             if (switchMALEfemale.isChecked()) {female = true; }
             if (switchAutoManuel.isChecked()) { manual = true;}
             if ((!name.isEmpty()) && (!email.isEmpty()) && (!phoneInput.isEmpty()) && (!id.isEmpty()) &&
                     (((!student) && (!money.isEmpty())) || ((student) && (!date.isEmpty())))) {
 
-                if ((phoneInput.length() !=10)||(!phoneInput.substring(0,2).equals("05"))||(phoneInput.indexOf(".")!=(-1))||(phoneInput.indexOf("/")!=(-1))
+                if (((phoneInput.length() !=10)||(!phoneInput.substring(0,2).equals("05")))||(phoneInput.indexOf(".")!=(-1))||(phoneInput.indexOf("/")!=(-1))
                         ||(phoneInput.indexOf("+")!=(-1))||(phoneInput.indexOf("#")!=(-1))||(phoneInput.indexOf(")")!=(-1))||(phoneInput.indexOf("()")!=(-1))
                         ||(phoneInput.indexOf("N")!=(-1))||(phoneInput.indexOf(",")!=(-1))||(phoneInput.indexOf(";")!=(-1))||(phoneInput.indexOf("*")!=(-1))
                         ||(phoneInput.indexOf("+")!=(-1))||(phoneInput.indexOf(" ")!=(-1))||(phoneInput.indexOf("-")!=(-1))) {
                     eTphone.setError("invalid phone number");
                 }
                 else {
+                    if (phone.equals("+972"))
                     for (int x = 1; x <= 9; x++)
                         phone = phone + phoneInput.charAt(x);
 
 
 
                     if (student) {
-                        for (int i = 0; i <= 9; i++)
+                        for (int i = 0; i <= 12; i++)
                             sf =sf+s.charAt(i);
                         wteacher = sf;
                         Ustudents1 = new Ustudents(name, email, phone, uid, id, student, manual, female, date, wteacher, count);
                         refStudent.child(phone).setValue(Ustudents1);
-                        Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
+                       // Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                     }
                     else {
                         Uteachers1 = new Uteachers(name, email, phone, uid, id, student, money);
@@ -430,7 +437,7 @@ public class start extends AppCompatActivity {
                         refTeacherTime.child(phone).child("tuesday").setValue(day1);
                         refTeacherTime.child(phone).child("wednesday").setValue(day1);
                         refTeacherTime.child(phone).child("thursday").setValue(day1);
-                        Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
+                       // Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                     }
 
 
@@ -621,13 +628,63 @@ public class start extends AppCompatActivity {
      */
 
     public void setUsersListener() {
-        user = refAuth.getCurrentUser();
-        Query query = refTeacher.orderByChild("uid").equalTo(uiduser);
-        query.addListenerForSingleValueEvent(VEL);
-        Query query2 = refStudent.orderByChild("uid").equalTo(uiduser);
-        query2.addListenerForSingleValueEvent(VEL2);
-        refStudent.addValueEventListener(usersListener);
-        refTeacher.addValueEventListener(usersListener);
+       user = refAuth.getCurrentUser();
+       /* Query query = refTeacher.orderByChild("uid").equalTo(uiduser);
+       query.addListenerForSingleValueEvent(VEL);
+       Query query2 = refStudent.orderByChild("uid").equalTo(uiduser);
+       query2.addListenerForSingleValueEvent(VEL2);
+
+       */
+
+        usersListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Ustudents1=data.getValue(Ustudents.class);
+                    if (Ustudents1.getStudent()) {
+                        if (user.getUid().equals(data.getValue(Ustudents.class).getUid())){
+
+                            Intent si = new Intent(start.this, lessonsStudent.class);
+                            startActivity(si);
+                            finish();
+                        }
+                    }
+                    else{
+                        Uteachers1=data.getValue(Uteachers.class);
+                        if (!Uteachers1.getStudent()) {
+                             if (user.getUid().equals(data.getValue(Uteachers.class).getUid())) {
+                              Intent si = new Intent(start.this, TeacherLessons.class);
+                              startActivity(si);
+                             finish();
+    }
+}
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        };
+        usersListener2 = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        Uteachers1=data.getValue(Uteachers.class);
+                        if (Uteachers1.getStudent()) {
+                            if (user.getUid().equals(data.getValue(Uteachers.class).getUid())) {
+                                Intent si = new Intent(start.this, TeacherLessons.class);
+                                startActivity(si);
+                                finish();
+                            }
+                        }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        };
+          refStudent.addValueEventListener(usersListener);
+          refTeacher.addValueEventListener(usersListener);
 
     }
 

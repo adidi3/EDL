@@ -39,7 +39,7 @@ import static com.example.edl.FBref.refStudent;
 import static com.example.edl.FBref.refTeacher;
 
 public class infoTeacher extends AppCompatActivity {
-    String phone1, uid, mail;
+    String phone1, uid;
     EditText  ename;
     TextView  tid, tphone, temail;
     Uteachers user;
@@ -61,7 +61,7 @@ public class infoTeacher extends AppCompatActivity {
         FirebaseUser fbuser = refAuth.getCurrentUser();
         uid = fbuser.getUid();
 
-        mail = fbuser.getEmail().replace("."," ");
+
         Query query = refTeacher.orderByChild("uid").equalTo(uid);
         query.addListenerForSingleValueEvent(VEL);
 
@@ -138,7 +138,7 @@ public class infoTeacher extends AppCompatActivity {
                 Uri file = data.getData();
                 if (file != null) {
                     final ProgressDialog pd=ProgressDialog.show(this,"Upload image","Uploading...",true);
-                    StorageReference refImg = refImages.child(mail+".jpg");
+                    StorageReference refImg = refImages.child(uid+".jpg");
                     refImg.putFile(file)
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
@@ -168,9 +168,9 @@ public class infoTeacher extends AppCompatActivity {
 
     public void download() throws IOException{
 
-        StorageReference refImg = refImages.child(mail+".jpg");
+        StorageReference refImg = refImages.child(uid+".jpg");
 
-        final File localFile = File.createTempFile(mail,"jpg");
+        final File localFile = File.createTempFile(uid,"jpg");
         refImg.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {

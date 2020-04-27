@@ -3,8 +3,7 @@ package com.example.edl;
 public class Uteachers {
     private String name, email, phone, uid, id, money;
     private boolean student;
-    public Uteachers(){
-    }
+public Uteachers(){}
     public Uteachers (String name, String email, String phone, String uid, String id, Boolean student, String money){
         this.money=money;
         this.name=name;
