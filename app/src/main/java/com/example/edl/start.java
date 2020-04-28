@@ -5,10 +5,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -21,11 +19,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,13 +32,11 @@ import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
@@ -50,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import static com.example.edl.FBref.refAuth;
 import static com.example.edl.FBref.refStudent;
@@ -57,9 +52,14 @@ import static com.example.edl.FBref.refTeacher;
 import static com.example.edl.FBref.refTeacherTime;
 import static com.example.edl.FBref.refUsers;
 
-/**
- *
- */
+
+ /**
+ *  * @author		Adi Eisenberg <address @adipe120003@gmail.com>
+ *  * @version	    5.3(current version number of program)
+ *  * @since		18/12/2019 (the date of the package the class was added)
+  *  this activity is responsible for connecting and registering to the application.
+ *  */
+
 
 
 
@@ -128,10 +128,15 @@ public class start extends AppCompatActivity {
 
 
 
-
+        /**
+         * this function is called when the user is in the login option but he needs to register.
+         * the function "changes" the screen for the register option.
+         */
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 Calendar calenda1 = Calendar.getInstance();
                 int year = calenda1.get(Calendar.YEAR);
                 int month = calenda1.get(Calendar.MONTH);
@@ -141,7 +146,12 @@ public class start extends AppCompatActivity {
                 dialog.show();
             }
             });
-                d1 = new DatePickerDialog.OnDateSetListener() {
+        /**
+         * This function display the date that was chosen by the student in the text view * <p>
+         * checked if the student is not too young for learning driving lessons. * <p>
+         */
+
+        d1 = new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year1, int month2, int day2) {
                         month2 = month2 + 1;
@@ -159,6 +169,11 @@ public class start extends AppCompatActivity {
                 query=refTeacher.orderByChild("name");
                 query.addValueEventListener(new ValueEventListener() {
                     @Override
+                    /**
+                     * This function reads the phone and name of the teachers and insert all the info to spinner *
+                     * checked if the student is not too young for learn driving . * <p>
+                     */
+
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         tl.clear();
                         tlname.clear();
@@ -184,65 +199,15 @@ public class start extends AppCompatActivity {
     }
 
 
-  /**  com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dS) {
-            if (dS.exists()) {
-                for(DataSnapshot data : dS.getChildren()) {
-                    usert = data.getValue(Uteachers.class);
-                    student=usert.getStudent();
-                    phone=usert.getPhone();
-                    if (student) {
-                        Intent in = new Intent(start.this,lessonsStudent.class);
-                        startActivity(in);
-                        finish();
-                    }
-                    else {
-                        Intent in = new Intent(start.this, TeacherLessons.class);
-                        startActivity(in);
-                        finish();
-                    }
-                }
-            }
-        }
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-        }
-    };
-    com.google.firebase.database.ValueEventListener VEL2 = new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            if (dataSnapshot.exists()) {
-                for(DataSnapshot data : dataSnapshot.getChildren()) {
-                    users = data.getValue(Ustudents.class);
-                    student=users.getStudent();
-                  //  phone=users.getPhone();
-                    if (student) {
-                        Intent in = new Intent(start.this,lessonsStudent.class);
-                        startActivity(in);
-                        finish();
-                    }
-                    else {
-                        Intent in = new Intent(start.this, TeacherLessons.class);
-                        startActivity(in);
-                        finish();
-                    }
-                }
-            }
-        }
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-        }
-    };
-   */
-    /**
-     * On activity start - Checking if user already logged in.
-     * If logged in & a‎sked to be remembered - pass on.
-     * <p>
-     */
+
+     /**
+      * this function is called when the user is in the login option but he needs to register.
+      * the function changes the screen for the register option.
+      */
 
 
-    private void regoption() {
+
+     private void regoption() {
         SpannableString ss = new SpannableString("Don't have an account?  Register here!");
         ClickableSpan span = new ClickableSpan() {
             @Override
@@ -264,8 +229,12 @@ public class start extends AppCompatActivity {
         tVregister.setText(ss);
         tVregister.setMovementMethod(LinkMovementMethod.getInstance());
     }
+     /**
+      * this function is called when the user is in the register option but he needs to log in.
+      * the function "changes" the screen for the login option
+      */
 
-    private void logoption() {
+     private void logoption() {
         SpannableString ss = new SpannableString("Already have an account?  Login here!");
         ClickableSpan span = new ClickableSpan() {
             @Override
@@ -296,21 +265,19 @@ public class start extends AppCompatActivity {
         tVregister.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    /**
-     * Logging in or Registering to the application
-     * Using:   Firebase Auth with email & password
-     *          Firebase Realtime database with the object User to the branch Users
-     * If login or register process is Ok saving stay connect status & pass to next activity
-     * <p>
-     */
-    public void logorreg(View view) {
+     /**
+      * Logging in or Registering to the application
+      * Using:   Firebase Auth with phone and sms code
+      *          Firebase Realtime database with the object User to the branch Ustudents or Uteachers and teachers also to teacherTime.
+      * <p>
+      *    @param view
+      */
+
+     public void logorreg(View view) {
         if (registered) {
             if ((!eTphone.getText().toString().equals(""))) {
                 phoneInput=eTphone.getText().toString();
-                if ((phoneInput.length() !=10)||(!phoneInput.substring(0, 2).equals("05")) || (phoneInput.indexOf(".") != (-1)) || (phoneInput.indexOf("/") != (-1))
-                        || (phoneInput.indexOf("+") != (-1)) || (phoneInput.indexOf("#") != (-1)) || (phoneInput.indexOf(")") != (-1)) || (phoneInput.indexOf("()") != (-1))
-                        || (phoneInput.indexOf("N") != (-1)) || (phoneInput.indexOf(",") != (-1)) || (phoneInput.indexOf(";") != (-1)) || (phoneInput.indexOf("*") != (-1))
-                        || (phoneInput.indexOf("+") != (-1)) || (phoneInput.indexOf(" ") != (-1)) || (phoneInput.indexOf("-") != (-1))) {
+                if (((phoneInput.length() != 10) || (!phoneInput.substring(0, 2).equals("05")) || Pattern.matches("[a-zA-Z]+", phoneInput) == true) ) {
                     eTphone.setError("invalid phone number");
                 } else {
                     if (phone.equals("+972"))
@@ -347,51 +314,7 @@ public class start extends AppCompatActivity {
             }
 
         }
-        /*
-                ValueEventListener mrListener = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot ds) {
-                        for (DataSnapshot data : ds.getChildren()) {
-                            eTemail.setText(refAuth.getCurrentUser().getEmail());
-                        }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                };
-                if (mrListener != null) {
-                    refUsers.removeEventListener(mrListener);
-                }
-
-                final ProgressDialog pd = ProgressDialog.show(this, "Login", "Connecting...", true);
-                refAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        pd.dismiss();
-                        if (task.isSuccessful()) {
-                            FirebaseUser fbuser = refAuth.getCurrentUser();
-                            uiduser = fbuser.getUid();
-                            Query query = refTeacher.orderByChild("uid").equalTo(uiduser);
-                            query.addListenerForSingleValueEvent(VEL);
-                            Query query2 = refStudent.orderByChild("uid").equalTo(uiduser);
-                            query2.addListenerForSingleValueEvent(VEL2);
-                            SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = settings.edit();
-                            editor.commit();
-                            Log.d("start", "signinUserWithEmail:success");
-                            Toast.makeText(start.this, "Login Success", Toast.LENGTH_LONG).show();
-                        } else {
-                            Log.d("start", "signinUserWithEmail:fail");
-                            Toast.makeText(start.this, "e-mail or password are wrong!", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-            } else {
-
-                Toast.makeText(this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
-            }
-        }*/
         else {
 
             name = eTname.getText().toString();
@@ -407,10 +330,7 @@ public class start extends AppCompatActivity {
             if ((!name.isEmpty()) && (!email.isEmpty()) && (!phoneInput.isEmpty()) && (!id.isEmpty()) &&
                     (((!student) && (!money.isEmpty())) || ((student) && (!date.isEmpty())))) {
 
-                if (((phoneInput.length() !=10)||(!phoneInput.substring(0,2).equals("05")))||(phoneInput.indexOf(".")!=(-1))||(phoneInput.indexOf("/")!=(-1))
-                        ||(phoneInput.indexOf("+")!=(-1))||(phoneInput.indexOf("#")!=(-1))||(phoneInput.indexOf(")")!=(-1))||(phoneInput.indexOf("()")!=(-1))
-                        ||(phoneInput.indexOf("N")!=(-1))||(phoneInput.indexOf(",")!=(-1))||(phoneInput.indexOf(";")!=(-1))||(phoneInput.indexOf("*")!=(-1))
-                        ||(phoneInput.indexOf("+")!=(-1))||(phoneInput.indexOf(" ")!=(-1))||(phoneInput.indexOf("-")!=(-1))) {
+                if (((phoneInput.length() != 10) || (!phoneInput.substring(0, 2).equals("05")) || Pattern.matches("[a-zA-Z]+", phoneInput) == true) ) {
                     eTphone.setError("invalid phone number");
                 }
                 else {
@@ -426,7 +346,6 @@ public class start extends AppCompatActivity {
                         wteacher = sf;
                         Ustudents1 = new Ustudents(name, email, phone, uid, id, student, manual, female, date, wteacher, count);
                         refStudent.child(phone).setValue(Ustudents1);
-                       // Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                     }
                     else {
                         Uteachers1 = new Uteachers(name, email, phone, uid, id, student, money);
@@ -437,7 +356,6 @@ public class start extends AppCompatActivity {
                         refTeacherTime.child(phone).child("tuesday").setValue(day1);
                         refTeacherTime.child(phone).child("wednesday").setValue(day1);
                         refTeacherTime.child(phone).child("thursday").setValue(day1);
-                       // Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
                     }
 
 
@@ -468,56 +386,6 @@ public class start extends AppCompatActivity {
                 }
             }
 
-
-               /*
-                final ProgressDialog pd = ProgressDialog.show(this, "Register", "Registering...", true);
-                refAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                pd.dismiss();
-                                if (task.isSuccessful()) {
-                                    SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = settings.edit();
-                                    editor.commit();
-                                    Log.d("start", "createUserWithEmail:success");
-                                    FirebaseUser user = refAuth.getCurrentUser();
-                                    uid = user.getUid();
-                                    if (student) {
-                                        for (int i = 0; i <= 9; i++)
-                                            sf =sf+s.charAt(i);
-                                        wteacher = sf;
-                                        Ustudents1 = new Ustudents(name, email, phone, uid, id, password, student, manual, female, date, wteacher, count);
-                                        refStudent.child(phone).setValue(Ustudents1);
-                                        Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
-                                        Intent in = new Intent(start.this, lessonsStudent.class);
-                                        startActivity(in);
-                                        finish();
-                                    }
-                                    else {
-                                        Uteachers1 = new Uteachers(name, email, phone, uid, id, password, student, money);
-                                        refTeacher.child(phone).setValue(Uteachers1);
-                                        refTeacherTime.child(phone).setValue(week1);
-                                        refTeacherTime.child(phone).child("sunday").setValue(day1);
-                                        refTeacherTime.child(phone).child("monday").setValue(day1);
-                                        refTeacherTime.child(phone).child("tuesday").setValue(day1);
-                                        refTeacherTime.child(phone).child("wednesday").setValue(day1);
-                                        refTeacherTime.child(phone).child("thursday").setValue(day1);
-                                        Toast.makeText(start.this, "Successful registration", Toast.LENGTH_LONG).show();
-                                        Intent in = new Intent(start.this, TeacherLessons.class);
-                                        startActivity(in);
-                                        finish();
-                                    }
-                                }
-                                else {
-                                    if (task.getException() instanceof FirebaseAuthUserCollisionException)
-                                        Toast.makeText(start.this, "User with e-mail already exist!", Toast.LENGTH_LONG).show();
-                                    else {
-                                        Log.w("start", "createUserWithEmail:failure", task.getException());
-                                        Toast.makeText(start.this, "User create failed.", Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            }
-                        });*/
              else {
                 Toast.makeText(start.this, "Please, fill all the necessary details.", Toast.LENGTH_LONG).show();
             }
@@ -563,11 +431,7 @@ public class start extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithCredential:success");
-                            SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = settings.edit();
-                            //  editor.putBoolean("stayConnect", .isChecked());
-                          //  editor.putBoolean("firstRun", false);
-                            editor.commit();
+
 
                             FirebaseUser user = refAuth.getCurrentUser();
                             uid = user.getUid();
@@ -629,12 +493,7 @@ public class start extends AppCompatActivity {
 
     public void setUsersListener() {
        user = refAuth.getCurrentUser();
-       /* Query query = refTeacher.orderByChild("uid").equalTo(uiduser);
-       query.addListenerForSingleValueEvent(VEL);
-       Query query2 = refStudent.orderByChild("uid").equalTo(uiduser);
-       query2.addListenerForSingleValueEvent(VEL2);
 
-       */
 
         usersListener = new ValueEventListener() {
             @Override
@@ -689,7 +548,10 @@ public class start extends AppCompatActivity {
     }
 
 
-
+     /**
+      *this function gets the information about the user's type (student/ teacher) in order to give them the right supplements activity
+      * @param view
+      */
     public void switchTeacher(View view) {
         if (switchTecherstudent.isChecked()){
             tvDate.setVisibility(View.VISIBLE);
