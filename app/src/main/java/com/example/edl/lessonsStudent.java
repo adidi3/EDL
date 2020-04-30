@@ -31,7 +31,10 @@ import static com.example.edl.FBref.refAuth;
 import static com.example.edl.FBref.refStudent;
 import static com.example.edl.FBref.refTeacher;
 import static com.example.edl.FBref.refTeacherTime;
-
+/**
+ * @author Adi Eisenberg
+ * the first student's activity, here the student can edit his sceduale.
+ */
 public class lessonsStudent extends AppCompatActivity implements AdapterView.OnItemClickListener{
     String phone="", phonestudent="", names="", count1, smoney;
     ListView lv1;
@@ -42,8 +45,8 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
     String ps="";
     TextView tvDays1, tvname;
     int dayCount=1, money=0;
-    AlertDialog.Builder ad, adb;
-    LinearLayout dialog, dialogex;
+    AlertDialog.Builder alertdb, adialogb;
+    LinearLayout dialog6, dialogex;
     String uid, str, list1, tmp;
     Ustudents user;
     Uteachers usert;
@@ -72,8 +75,12 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
 
     }
 
+
     com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
         @Override
+        /**
+         *the function reads from FB the necessary details about the student and shows them.
+         */
         public void onDataChange(@NonNull DataSnapshot dS) {
             if (dS.exists()) {
                 for(DataSnapshot data : dS.getChildren()) {
@@ -92,6 +99,9 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
                 // Read from the database
                 refDay1.addValueEventListener(new ValueEventListener() {
                     @Override
+                    /**
+                     *The function reads the teacher's schedule from FB, inserts the info into a list and shows it to the student.
+                     */
                     public void onDataChange(DataSnapshot ds1) {
                         // This method is called once with the initial value and again
                         // whenever data at this location is updated.
@@ -116,6 +126,9 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
         public void onCancelled(@NonNull DatabaseError databaseError) {
         }
     };
+    /**
+     *the function reads from FB the necessary details about the teacher.
+     */
 
     com.google.firebase.database.ValueEventListener VEL2 = new ValueEventListener() {
         @Override
@@ -131,6 +144,10 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
         }
     };
 
+    /**
+     *the function returns the schedule to the previous day, shows the day.
+     @param view
+     */
 
     public void previous(View view) {
         if (dayCount>1){
@@ -153,6 +170,9 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
             // Read from the database
             refDay1.addValueEventListener(new ValueEventListener() {
                 @Override
+                /**
+                 * reads from FB the schedule according to the chosen day.
+                 */
                 public void onDataChange(DataSnapshot ds1) {
                     stringLst.clear();
                     for (DataSnapshot dataSnapshot1 : ds1.getChildren()){
@@ -171,6 +191,10 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
         else
             Toast.makeText(lessonsStudent.this, "this is the first day!", Toast.LENGTH_LONG).show();
     }
+    /**
+     *the function pass the schedule to the next day, and shows the day.
+     @param view
+     */
 
     public void next(View view) {
         if (dayCount<5){
@@ -194,6 +218,10 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
             // Read from the database
             refDay1.addValueEventListener(new ValueEventListener() {
                 @Override
+                /**
+                 *the function reads from FB the schedule according to the chosen day.
+                 */
+
                 public void onDataChange(DataSnapshot ds1) {
                     // This method is called once with the initial value and again
                     // whenever data at this location is updated.
@@ -216,6 +244,10 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
         else
             Toast.makeText(lessonsStudent.this, "this is the last day!", Toast.LENGTH_LONG).show();
     }
+    /**
+     *the function pass the schedule to the next day, shows the day, and reads from FB the schedule according to the chosen day.
+     @param view
+     */
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view,final int position, long l) {
@@ -226,15 +258,15 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
                     !list1.equals("14:00-14:40") && !list1.equals("14:45-15:25") && !list1.equals("19:00-19:40") && !list1.equals("19:45-20:25")) {
                 ps = list1;
                 if ( list1.equals(phonestudent+" "+names)){
-                    for (int x = 0; x <= 9; x++)
+                    for (int x = 0; x <= 12; x++)
                         psss = psss + ps.charAt(x);}
                 if (psss.equals(phonestudent)) {
                     dialogex = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogxxx, null);
-                    adb = new AlertDialog.Builder(this);
-                    adb.setCancelable(false);
-                    adb.setTitle("would you like to cancel this lesson?");
-                    adb.setView(dialogex);
-                    adb.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                    adialogb = new AlertDialog.Builder(this);
+                    adialogb.setCancelable(false);
+                    adialogb.setTitle("would you like to cancel this lesson?");
+                    adialogb.setView(dialogex);
+                    adialogb.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             str = ("l" + (position));
@@ -284,23 +316,23 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
                         }
 
                     });
-                    adb.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+                    adialogb.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.cancel();
                         }
                     });
-                    AlertDialog adb1 = adb.create();
+                    AlertDialog adb1 = adialogb.create();
                     adb1.show();
                 } else
                     Toast.makeText(this, "you can't choose this lesson", Toast.LENGTH_SHORT).show();
             } else {
-                dialog = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogx, null);
-                ad = new AlertDialog.Builder(this);
-                ad.setCancelable(false);
-                ad.setTitle("are you sure you want to choose this lesson?");
-                ad.setView(dialog);
-                ad.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                dialog6 = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogx, null);
+                alertdb = new AlertDialog.Builder(this);
+                alertdb.setCancelable(false);
+                alertdb.setTitle("are you sure you want to choose this lesson?");
+                alertdb.setView(dialog6);
+                alertdb.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
 
 
                     @Override
@@ -323,22 +355,31 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
                     }
 
                 });
-                ad.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+                alertdb.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.cancel();
                     }
                 });
-                AlertDialog adb2 = ad.create();
-                adb2.show();
+                AlertDialog alertDialoglesson = alertdb.create();
+                alertDialoglesson.show();
 
             }
         }
+    /**
+     *the function creates a menu.
+     @param menu
+     */
 
     public boolean onCreateOptionsMenu (Menu menu){
         getMenuInflater().inflate(R.menu.mainstu, menu);
         return super.onCreateOptionsMenu(menu);
     }
+    /**
+     *the function checked which one of the menu’s options was selected by the student, and sent him to the selected screen.
+     *  @param item
+     */
+
     public boolean onOptionsItemSelected (MenuItem item){
         //menu
         String st = item.getTitle().toString();
@@ -353,6 +394,10 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
         }
         return super.onOptionsItemSelected(item);
     }
+    /**
+     *the function previews a Dialog that gives information about the application.
+     */
+
     public void openDialog(){
         about1 about12= new about1();
         about12.show(getSupportFragmentManager(),"About");

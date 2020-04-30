@@ -3,7 +3,23 @@ package com.example.edl;
 public class Ustudents {
     public String name, email, phone, uid, id, date, wteacher, count;
     public boolean student, manual, female;
+    /**
+     * an empty builder. is necessary to use Firebase
+     */
     public Ustudents(){}
+    /** User class builder. this function gets all of the variables in order to create a student's user.
+     * @param name
+     * @param email
+     * @param phone
+     * @param id
+     * @param date
+     * @param student
+     * @param manual
+     * @param wteacher
+     * @param female
+     * @param uid
+     * @param count
+     */
     public Ustudents (String name, String email, String phone, String uid, String id, Boolean student, Boolean manual, Boolean female, String date, String wteacher, String count) {
         this.name=name;
         this.date=date;
@@ -17,7 +33,10 @@ public class Ustudents {
         this.student=student;
         this.count=count;
     }
-
+    /**
+     * the function copy the student with values.
+     *   @param student
+     */
     public void copyStudent(Ustudents student){
         this.name = student.getName();
         this.email = student.getEmail();

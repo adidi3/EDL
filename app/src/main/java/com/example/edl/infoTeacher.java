@@ -37,6 +37,10 @@ import static com.example.edl.FBref.refAuth;
 import static com.example.edl.FBref.refImages;
 import static com.example.edl.FBref.refStudent;
 import static com.example.edl.FBref.refTeacher;
+/**
+ * @author Adi Eisenberg
+ * in this activity the teacher can see his details and change part of them.
+ */
 
 public class infoTeacher extends AppCompatActivity {
     String phone1, uid;
@@ -124,11 +128,17 @@ public class infoTeacher extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     public void openDialog(){
-        about1 about12= new about1();
-        about12.show(getSupportFragmentManager(),"About");
+        about1 aboutinfoteacher= new about1();
+        aboutinfoteacher.show(getSupportFragmentManager(),"About");
 
     }
-
+    /**
+     * After the teacher chose an image from the gallery,
+     * this function uploads the selected image file to the firebase storage
+     * @param requestCode   The call sign of the intent that requested the result
+     * @param resultCode    A code that symbols the status of the result of the activity
+     * @param data          The data returned
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -165,7 +175,10 @@ public class infoTeacher extends AppCompatActivity {
             }
         }
     }
-
+    /**
+     * this function downloads the image from Firebase Storage to a local file and presents the image
+     * @throws IOException
+     */
     public void download() throws IOException{
 
         StorageReference refImg = refImages.child(uid+".jpg");
@@ -186,7 +199,12 @@ public class infoTeacher extends AppCompatActivity {
             }
         });
     }
-
+    /**
+     *the function opens the gallery
+     *the function occurs when the button 'Upload' is clicked.
+     *the function calls to another function with parameters (reference to the gallery and the Intent) in order to upload the profile picture from gallery.
+     * @param view
+     */
     public void upload(View view) {
         Intent si = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

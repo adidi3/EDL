@@ -3,7 +3,19 @@ package com.example.edl;
 public class Uteachers {
     private String name, email, phone, uid, id, money;
     private boolean student;
+    /**
+     * an empty builder. is necessary to use Firebase
+     */
 public Uteachers(){}
+    /** User class builder. this function gets all of the variables in order to create a teacher's user.
+     * @param name
+     * @param email
+     * @param phone
+     * @param id
+     * @param student
+     * @param uid
+     * @param money
+     */
     public Uteachers (String name, String email, String phone, String uid, String id, Boolean student, String money){
         this.money=money;
         this.name=name;

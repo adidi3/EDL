@@ -1,6 +1,20 @@
 package com.example.edl;
-
+/**
+ * a day class. includes the hours of lessons in a day.
+ */
 public class Day {
+    /** day class builder. this function gets all of the variables in day's variable .
+     * @param l1
+     * @param l2
+     * @param l3
+     * @param l9
+     * @param l4
+     * @param l5
+     * @param l6
+     * @param l7
+     * @param l8
+     *  @param l0
+     */
     private String l1, l2, l3, l4, l5, l6, l7, l8, l9, l0;
     public Day () {
         this.l0="08:00-08:40";

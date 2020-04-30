@@ -1,4 +1,11 @@
 package com.example.edl;
+/**
+ *  * @author		Adi Eisenberg <address @adipe120003@gmail.com>
+ *  * @version	    5.3(current version number of program)
+ *  * @since		18/12/2019 (the date of the package the class was added)
+ *  this activity is responsible for connecting and registering to the application.
+ *  */
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -53,13 +60,6 @@ import static com.example.edl.FBref.refTeacherTime;
 import static com.example.edl.FBref.refUsers;
 
 
- /**
- *  * @author		Adi Eisenberg <address @adipe120003@gmail.com>
- *  * @version	    5.3(current version number of program)
- *  * @since		18/12/2019 (the date of the package the class was added)
-  *  this activity is responsible for connecting and registering to the application.
- *  */
-
 
 
 
@@ -87,13 +87,10 @@ public class start extends AppCompatActivity {
     Boolean student= false;
     List<String> tl= new ArrayList<String>();
     List<String> tlname=new ArrayList<String>();
-    String uiduser;
-    Uteachers usert;
-    Ustudents users;
-
+    AlertDialog.Builder adbuild, alertdialogbuilder;
     String code, mVerificationId;
     Boolean isUID = true;
-    AlertDialog ad, ad1;
+    AlertDialog adCode=null, adCode22=null;
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     Boolean mVerificationInProgress = false;
     ValueEventListener usersListener, usersListener2;
@@ -199,7 +196,9 @@ public class start extends AppCompatActivity {
     }
 
 
-
+     /**
+      * On activity pause - If logged in & asked to be remembered - kill activity.
+      */
      /**
       * this function is called when the user is in the login option but he needs to register.
       * the function changes the screen for the register option.
@@ -287,13 +286,13 @@ public class start extends AppCompatActivity {
                     startPhoneNumberVerification(phone);
                     onVerificationStateChanged();
 
-                    AlertDialog.Builder adb = new AlertDialog.Builder(this);
+                     adbuild = new AlertDialog.Builder(this);
                     final EditText et = new EditText(this);
                     et.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    adb.setMessage("enter the code you received");
-                    adb.setTitle("Authentication");
-                    adb.setView(et);
-                    adb.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                    adbuild.setMessage("enter the code you received");
+                    adbuild.setTitle("Authentication");
+                    adbuild.setView(et);
+                    adbuild.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialogInterface, int whichButton) {
                             code = et.getText().toString();
                             if (!code.isEmpty())
@@ -301,13 +300,13 @@ public class start extends AppCompatActivity {
                             dialogInterface.dismiss();
                         }
                     });
-                    adb.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+                    adbuild.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialogInterface, int whichButton) {
                             dialogInterface.cancel();
                         }
                     });
-                    ad1 = adb.create();
-                    ad1.show();
+                    adCode22 = adbuild.create();
+                    adCode22.show();
                 }
             }else {
                 Toast.makeText(start.this, "Please, enter your phone number.", Toast.LENGTH_LONG).show();
@@ -339,36 +338,16 @@ public class start extends AppCompatActivity {
                         phone = phone + phoneInput.charAt(x);
 
 
-
-                    if (student) {
-                        for (int i = 0; i <= 12; i++)
-                            sf =sf+s.charAt(i);
-                        wteacher = sf;
-                        Ustudents1 = new Ustudents(name, email, phone, uid, id, student, manual, female, date, wteacher, count);
-                        refStudent.child(phone).setValue(Ustudents1);
-                    }
-                    else {
-                        Uteachers1 = new Uteachers(name, email, phone, uid, id, student, money);
-                        refTeacher.child(phone).setValue(Uteachers1);
-                        refTeacherTime.child(phone).setValue(week1);
-                        refTeacherTime.child(phone).child("sunday").setValue(day1);
-                        refTeacherTime.child(phone).child("monday").setValue(day1);
-                        refTeacherTime.child(phone).child("tuesday").setValue(day1);
-                        refTeacherTime.child(phone).child("wednesday").setValue(day1);
-                        refTeacherTime.child(phone).child("thursday").setValue(day1);
-                    }
-
-
                     startPhoneNumberVerification(phone);
                     onVerificationStateChanged();
 
-                    AlertDialog.Builder adb = new AlertDialog.Builder(this);
+                     alertdialogbuilder = new AlertDialog.Builder(this);
                     final EditText et = new EditText(this);
                     et.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    adb.setMessage("enter the code you received");
-                    adb.setTitle("Authentication");
-                    adb.setView(et);
-                    adb.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                    alertdialogbuilder.setMessage("enter the code you received");
+                    alertdialogbuilder.setTitle("Authentication");
+                    alertdialogbuilder.setView(et);
+                    alertdialogbuilder.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialogInterface, int whichButton) {
                             code = et.getText().toString();
                             if (!code.isEmpty())
@@ -376,13 +355,13 @@ public class start extends AppCompatActivity {
                             dialogInterface.dismiss();
                         }
                     });
-                    adb.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+                    alertdialogbuilder.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialogInterface, int whichButton) {
                             dialogInterface.cancel();
                         }
                     });
-                    ad = adb.create();
-                    ad.show();
+                    adCode = alertdialogbuilder.create();
+                    adCode.show();
                 }
             }
 
@@ -392,6 +371,26 @@ public class start extends AppCompatActivity {
         }
     }
 
+     /**
+      * the function dismiss the dialog before the new activity will start.
+      */
+     @Override
+     protected void onStop() {
+         // TODO Auto-generated method stub
+         super.onStop();
+         if(adCode22!=null)
+         {
+             adCode22.dismiss();
+         }
+        else {
+             if(adCode!=null)
+             {
+                 adCode.dismiss();
+             }
+        }
+
+
+     }
     /**
      * this function is called when the user wants to register.
      * the function sends sms to his phone with a verification code.
@@ -437,11 +436,22 @@ public class start extends AppCompatActivity {
                             uid = user.getUid();
                             if (!isUID) {
                                 if(student){
-                                    refStudent.child(phone).child("uid").setValue(uid);
-                                }
-                                else{
-                                    refTeacher.child(phone).child("uid").setValue(uid);
-                                }
+                                        for (int i = 0; i <= 12; i++)
+                                            sf =sf+s.charAt(i);
+                                        wteacher = sf;
+                                        Ustudents1 = new Ustudents(name, email, phone, uid, id, student, manual, female, date, wteacher, count);
+                                        refStudent.child(phone).setValue(Ustudents1);
+                                    }
+                                    else {
+                                        Uteachers1 = new Uteachers(name, email, phone, uid, id, student, money);
+                                        refTeacher.child(phone).setValue(Uteachers1);
+                                        refTeacherTime.child(phone).setValue(week1);
+                                        refTeacherTime.child(phone).child("sunday").setValue(day1);
+                                        refTeacherTime.child(phone).child("monday").setValue(day1);
+                                        refTeacherTime.child(phone).child("tuesday").setValue(day1);
+                                        refTeacherTime.child(phone).child("wednesday").setValue(day1);
+                                        refTeacherTime.child(phone).child("thursday").setValue(day1);
+                                    }
                             }
                             setUsersListener();
                         }
@@ -502,7 +512,6 @@ public class start extends AppCompatActivity {
                     Ustudents1=data.getValue(Ustudents.class);
                     if (Ustudents1.getStudent()) {
                         if (user.getUid().equals(data.getValue(Ustudents.class).getUid())){
-
                             Intent si = new Intent(start.this, lessonsStudent.class);
                             startActivity(si);
                             finish();
@@ -511,7 +520,7 @@ public class start extends AppCompatActivity {
                     else{
                         Uteachers1=data.getValue(Uteachers.class);
                         if (!Uteachers1.getStudent()) {
-                             if (user.getUid().equals(data.getValue(Uteachers.class).getUid())) {
+                            if (user.getUid().equals(data.getValue(Uteachers.class).getUid())) {
                               Intent si = new Intent(start.this, TeacherLessons.class);
                               startActivity(si);
                              finish();
@@ -520,6 +529,7 @@ public class start extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
@@ -531,6 +541,7 @@ public class start extends AppCompatActivity {
                         Uteachers1=data.getValue(Uteachers.class);
                         if (Uteachers1.getStudent()) {
                             if (user.getUid().equals(data.getValue(Uteachers.class).getUid())) {
+                                onDestroy();
                                 Intent si = new Intent(start.this, TeacherLessons.class);
                                 startActivity(si);
                                 finish();
@@ -579,7 +590,4 @@ public class start extends AppCompatActivity {
 
         }
     }
-
-
-
 }

@@ -36,7 +36,10 @@ import java.io.IOException;
 import static com.example.edl.FBref.refAuth;
 import static com.example.edl.FBref.refImages;
 import static com.example.edl.FBref.refStudent;
-
+/**
+ * @author Adi Eisenberg
+ * in this activity the student can see his details and change part of them.
+ */
 public class infoStudent1 extends AppCompatActivity {
     String phone1, uid, uid1="";
     Boolean female1, manual1;
@@ -71,7 +74,9 @@ public class infoStudent1 extends AppCompatActivity {
         }
 
     }
-
+    /**
+     *this function gets the UID of the student and search him in the FB.
+     */
     @Override
     protected void onStart() {
         FirebaseUser fbuser = refAuth.getCurrentUser();
@@ -82,8 +87,12 @@ public class infoStudent1 extends AppCompatActivity {
         super.onStart();
     }
 
+    /**
+     *the function previews a Dialog that gives information about the application.
+     */
     com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
         @Override
+
         public void onDataChange(@NonNull DataSnapshot dS) {
             if (dS.exists()) {
                 for (DataSnapshot data : dS.getChildren()) {
@@ -117,6 +126,11 @@ public class infoStudent1 extends AppCompatActivity {
         public void onCancelled(@NonNull DatabaseError databaseError) {
         }
     };
+    /**
+     the function happens when the button 'Update' is clicked.
+     if the student changed his details the older details will be deleted and the new one will replace it on FB
+     @param view
+     */
 
     public void update(View view) {
         refStudent.child(phone1).child("name").removeValue();
@@ -146,7 +160,13 @@ public class infoStudent1 extends AppCompatActivity {
 
         Toast.makeText(this, "The changes have been saved", Toast.LENGTH_SHORT).show();
     }
-
+    /**
+     * After the student chose an image from the gallery,
+     * this function uploads the selected image file to the firebase storage
+     * @param requestCode   The call sign of the intent that requested the result
+     * @param resultCode    A code that symbols the status of the result of the activity
+     * @param data          The data returned
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -185,7 +205,10 @@ public class infoStudent1 extends AppCompatActivity {
         }
 
     }
-
+    /**
+     * this function downloads the image from Firebase Storage to a local file and presents the image
+     * @throws IOException
+     */
     public void download() throws IOException{
 
         StorageReference refImg = refImages.child(uid1+".jpg");
@@ -206,11 +229,19 @@ public class infoStudent1 extends AppCompatActivity {
             }
         });
     }
+    /**
+     *the function creates a menu.
+     @param menu
+     */
 
     public boolean onCreateOptionsMenu (Menu menu){
         getMenuInflater().inflate(R.menu.mainstu, menu);
         return super.onCreateOptionsMenu(menu);
     }
+    /**
+     *the function checked which one of the menu’s options was selected by the student, and sent him to the selected screen.
+     */
+
     public boolean onOptionsItemSelected (MenuItem item){
         //menu
         String st = item.getTitle().toString();
@@ -226,12 +257,21 @@ public class infoStudent1 extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    /**
+     *the function previews a Dialog that gives information about the application.
+     */
+
     public void openDialog(){
         about1 about12= new about1();
         about12.show(getSupportFragmentManager(),"About");
 
     }
-
+    /**
+     *  the function opens the gallery
+        *the function occurs when the button 'Upload' is clicked.
+        *the function calls to another function with parameters (reference to the gallery and the Intent) in order to upload the profile picture from gallery.
+     * @param view
+     */
     public void upload(View view) {
 
         Intent si = new Intent(Intent.ACTION_PICK,
