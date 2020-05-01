@@ -8,11 +8,17 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,6 +44,7 @@ import static com.example.edl.FBref.refTeacherTime;
 public class lessonsStudent extends AppCompatActivity implements AdapterView.OnItemClickListener{
     String phone="", phonestudent="", names="", count1, smoney;
     ListView lv1;
+    ImageButton bl, br;
     ArrayList<String> stringLst= new ArrayList<String>();
     ArrayAdapter<String> adp1;
     String day="sunday";
@@ -57,7 +64,9 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
         setContentView(R.layout.activity_lessons_student);
        lv1=(ListView)findViewById(R.id.lv11);
        tvDays1=(TextView)findViewById(R.id.tv2);
-       tvname=(TextView)findViewById(R.id.tv3);
+       bl=(ImageButton)findViewById(R.id.previous);
+        br=(ImageButton)findViewById(R.id.next);
+        tvname=(TextView)findViewById(R.id.tv3);
 
         FirebaseUser fbuser = refAuth.getCurrentUser();
         uid = fbuser.getUid();
@@ -91,35 +100,13 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
                     phonestudent=user.getPhone();
                     count1=user.getCount();
                     Query queryt = refTeacher.orderByChild("phone").equalTo(phone);
-                    queryt.addListenerForSingleValueEvent(VEL2);
+                    queryt.addValueEventListener(VEL2);
 
 
                 }
-                DatabaseReference refDay1 = refTeacherTime.child(phone).child(day);
-                // Read from the database
-                refDay1.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    /**
-                     *The function reads the teacher's schedule from FB, inserts the info into a list and shows it to the student.
-                     */
-                    public void onDataChange(DataSnapshot ds1) {
-                        // This method is called once with the initial value and again
-                        // whenever data at this location is updated.
-                        stringLst.clear();
-                        for (DataSnapshot data : ds1.getChildren()){
-                            String tmp=data.getValue(String.class);
-                            stringLst.add(tmp);
+                DatabaseReference refDay11 = refTeacherTime.child(phone).child(day);
+                refDaysList(refDay11);
 
-                        }
-                        adp1=new ArrayAdapter<String>(lessonsStudent.this,R.layout.support_simple_spinner_dropdown_item,stringLst);
-                        lv1.setAdapter(adp1);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        // Failed to read value
-                    }
-                });
             }
         }
         @Override
@@ -130,12 +117,12 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
      *the function reads from FB the necessary details about the teacher.
      */
 
-    com.google.firebase.database.ValueEventListener VEL2 = new ValueEventListener() {
+    ValueEventListener VEL2 = new ValueEventListener() {
         @Override
-        public void onDataChange(@NonNull DataSnapshot ds) {
-            if (ds.exists()) {
-                for (DataSnapshot data : ds.getChildren()) {
-                    usert = data.getValue(Uteachers.class);
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+            if (dataSnapshot1.exists()) {
+                for (DataSnapshot datateach : dataSnapshot1.getChildren()) {
+                    usert = datateach.getValue(Uteachers.class);
                     smoney = usert.getMoney();
                     money=Integer.parseInt(smoney);
                 }}}
@@ -150,6 +137,7 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
      */
 
     public void previous(View view) {
+        br.setImageResource(R.drawable.arroedriverright);
         if (dayCount>1){
             dayCount--;
             switch (dayCount){
@@ -166,37 +154,20 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
                     day="wednesday";
                     break;
             }
-            DatabaseReference refDay1 = refTeacherTime.child(phone).child(day);
-            // Read from the database
-            refDay1.addValueEventListener(new ValueEventListener() {
-                @Override
-                /**
-                 * reads from FB the schedule according to the chosen day.
-                 */
-                public void onDataChange(DataSnapshot ds1) {
-                    stringLst.clear();
-                    for (DataSnapshot dataSnapshot1 : ds1.getChildren()){
-                        String tmp=dataSnapshot1.getValue(String.class);
-                        stringLst.add(tmp);
-                    }
-                    adp1=new ArrayAdapter<String>(lessonsStudent.this,R.layout.support_simple_spinner_dropdown_item,stringLst);
-                    lv1.setAdapter(adp1);
-                }
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                }
-            });
+            DatabaseReference refDayy = refTeacherTime.child(phone).child(day);
+            refDaysList(refDayy);
         }
-        else
+        else{
+            bl.setImageResource(R.drawable.stopsign);
             Toast.makeText(lessonsStudent.this, "this is the first day!", Toast.LENGTH_LONG).show();
-    }
+    }}
     /**
      *the function pass the schedule to the next day, and shows the day.
      @param view
      */
 
     public void next(View view) {
+        bl.setImageResource(R.drawable.arrowdriverleft);
         if (dayCount<5){
             dayCount++;
             switch (dayCount){
@@ -214,36 +185,13 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
                     break;
             }
 
-            DatabaseReference refDay1 = refTeacherTime.child(phone).child(day);
-            // Read from the database
-            refDay1.addValueEventListener(new ValueEventListener() {
-                @Override
-                /**
-                 *the function reads from FB the schedule according to the chosen day.
-                 */
-
-                public void onDataChange(DataSnapshot ds1) {
-                    // This method is called once with the initial value and again
-                    // whenever data at this location is updated.
-                    stringLst.clear();
-                    for (DataSnapshot dataSnapshot1 : ds1.getChildren()){
-                        String tmp=dataSnapshot1.getValue(String.class);
-                        stringLst.add(tmp);
-
-                    }
-                    adp1=new ArrayAdapter<String>(lessonsStudent.this,R.layout.support_simple_spinner_dropdown_item,stringLst);
-                    lv1.setAdapter(adp1);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    }
-            });
+            DatabaseReference refDays = refTeacherTime.child(phone).child(day);
+            refDaysList(refDays);
         }
-        else
+        else{
+            br.setImageResource(R.drawable.stopsign);
             Toast.makeText(lessonsStudent.this, "this is the last day!", Toast.LENGTH_LONG).show();
-    }
+    }}
     /**
      *the function pass the schedule to the next day, shows the day, and reads from FB the schedule according to the chosen day.
      @param view
@@ -261,7 +209,7 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
                     for (int x = 0; x <= 12; x++)
                         psss = psss + ps.charAt(x);}
                 if (psss.equals(phonestudent)) {
-                    dialogex = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogxxx, null);
+                    dialogex = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogx, null);
                     adialogb = new AlertDialog.Builder(this);
                     adialogb.setCancelable(false);
                     adialogb.setTitle("would you like to cancel this lesson?");
@@ -333,8 +281,6 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
                 alertdb.setTitle("are you sure you want to choose this lesson?");
                 alertdb.setView(dialog6);
                 alertdb.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
-
-
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         str = ("l" + (position));
@@ -362,9 +308,13 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
                     }
                 });
                 AlertDialog alertDialoglesson = alertdb.create();
-                alertDialoglesson.show();
+                try {
+                    alertDialoglesson.show();
+                }
+                catch (WindowManager.BadTokenException ex) {
+                    ex.printStackTrace();
 
-            }
+                }   }
         }
     /**
      *the function creates a menu.
@@ -390,7 +340,8 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
             finish();
         }
         if (st.equals("About")) {
-            openDialog();
+            about1 about12= new about1();
+            about12.show(getSupportFragmentManager(),"About");
         }
         return super.onOptionsItemSelected(item);
     }
@@ -398,9 +349,29 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
      *the function previews a Dialog that gives information about the application.
      */
 
-    public void openDialog(){
-        about1 about12= new about1();
-        about12.show(getSupportFragmentManager(),"About");
+    /**
+     *The function reads the teacher's schedule from FB, inserts the info into a list and shows it to the student.
+     */
+    private void refDaysList(DatabaseReference refDay1){
+        refDay1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
 
+            public void onDataChange(DataSnapshot ds1) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                stringLst.clear();
+                for (DataSnapshot datasnap : ds1.getChildren()){
+                    String tmp=datasnap.getValue(String.class);
+                    stringLst.add(tmp);
+                }
+                adp1=new ArrayAdapter<String>(lessonsStudent.this,R.layout.support_simple_spinner_dropdown_item,stringLst);
+                lv1.setAdapter(adp1);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
     }
 }

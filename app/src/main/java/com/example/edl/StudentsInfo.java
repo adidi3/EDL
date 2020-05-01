@@ -316,7 +316,8 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
             finish();
         }
         if (st.equals("About")) {
-           openDialog();
+            about1 about12= new about1();
+            about12.show(getSupportFragmentManager(),"About");
         }
 
         return super.onOptionsItemSelected(item);
@@ -325,11 +326,6 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
      *the function previews a Dialog that gives information about the application.
      */
 
-    public void openDialog(){
-        about1 about12= new about1();
-        about12.show(getSupportFragmentManager(),"About");
-
-    }
 
     /**
      *the function happens when the button 'delete' is clicked.
@@ -339,7 +335,7 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
 
     public void delete(View view) {
         if (!tdate.getText().equals("")) {
-            dialogxxxx = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogxx, null);
+            dialogxxxx = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogx, null);
             adb2 = new AlertDialog.Builder(this);
             adb2.setCancelable(false);
             adb2.setTitle("Would you like to remove this student?");

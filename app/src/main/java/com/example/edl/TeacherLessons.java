@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -49,6 +50,7 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
     AlertDialog.Builder adbnw, adbcancel, adbreturn;
     Ustudents student = new Ustudents();
     TextView vname;
+    ImageButton bur, bul;
     String count1;
     LinearLayout dialogcancel, dialogreturn, dialognewweek;
     Uteachers user;
@@ -62,6 +64,8 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
 
         lv = (ListView) findViewById(R.id.lv1);
         tvDays = (TextView) findViewById(R.id.textView2);
+        bul=(ImageButton)findViewById(R.id.btl);
+        bur=(ImageButton)findViewById(R.id.btr);
         vname = (TextView) findViewById(R.id.textView3);
 
         FirebaseUser fbuser = refAuth.getCurrentUser();
@@ -91,26 +95,8 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
                     phone1=user.getPhone();
 
                 }
-                DatabaseReference refDay = refTeacherTime.child(phone1).child(day);
-                // Read from the database
-                refDay.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot ds) {
-                        // This method is called once with the initial value and again
-                        // whenever data at this location is updated.
-                        stringList.clear();
-                        for (DataSnapshot data : ds.getChildren()){
-                            String tmp=data.getValue(String.class);
-                            stringList.add(tmp);
-                        }
-                        adp=new ArrayAdapter<String>(TeacherLessons.this,R.layout.support_simple_spinner_dropdown_item,stringList);
-                        lv.setAdapter(adp);
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        // Failed to read value
-                    }
-                });
+                DatabaseReference ref_Day = refTeacherTime.child(phone1).child(day);
+                refDaysList(ref_Day);
             }
         }
         @Override
@@ -122,6 +108,7 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
      @param view
      */
     public void bl(View view) {
+        bur.setImageResource(R.drawable.arroedriverright);
         if (dayCount>1){
             dayCount--;
             switch (dayCount){
@@ -138,37 +125,20 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
                     day="wednesday";
                     break;
             }
-            DatabaseReference refDay = refTeacherTime.child(phone1).child(day);
-            // Read from the database
-            refDay.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot ds) {
-                    // This method is called once with the initial value and again
-                    // whenever data at this location is updated.
-                    stringList.clear();
-                    for (DataSnapshot data : ds.getChildren()){
-                        String tmp=data.getValue(String.class);
-                        stringList.add(tmp);
+            DatabaseReference ref_Day = refTeacherTime.child(phone1).child(day);
+            refDaysList(ref_Day);
 
-                    }
-                    adp=new ArrayAdapter<String>(TeacherLessons.this,R.layout.support_simple_spinner_dropdown_item,stringList);
-                    lv.setAdapter(adp);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                }
-            });
         }
-        else
+        else{
+            bul.setImageResource(R.drawable.stopsign);
         Toast.makeText(TeacherLessons.this, "it's the first day!", Toast.LENGTH_LONG).show();
-    }
+    }}
     /**
      *the function returns the schedule to the previous day, shows the day, and reads from FB the schedule according to the chosen day.
      @param view
      */
     public void br(View view) {
+        bul.setImageResource(R.drawable.arrowdriverleft);
         if (dayCount<5){
             dayCount++;
             switch (dayCount){
@@ -186,32 +156,14 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
                   break;
             }
 
-            DatabaseReference refDay = refTeacherTime.child(phone1).child(day);
-            // Read from the database
-            refDay.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot ds) {
-                    // This method is called once with the initial value and again
-                    // whenever data at this location is updated.
-                    stringList.clear();
-                    for (DataSnapshot data : ds.getChildren()){
-                        String tmp=data.getValue(String.class);
-                        stringList.add(tmp);
+            DatabaseReference ref_Day = refTeacherTime.child(phone1).child(day);
+            refDaysList(ref_Day);
 
-                    }
-                    adp=new ArrayAdapter<String>(TeacherLessons.this,R.layout.support_simple_spinner_dropdown_item,stringList);
-                    lv.setAdapter(adp);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                }
-            });
         }
-        else
+        else{
+            bur.setImageResource(R.drawable.stopsign);
         Toast.makeText(TeacherLessons.this, "it's the last day!", Toast.LENGTH_LONG).show();
-    }
+    }}
     /**
      *the function happens when the button 'new week' is clicked, and then the function opens a dialog.
      *if the teacher selects to reset the schedule, all the lessons and hours in the current week will be change in FB to the fixed hours.
@@ -219,7 +171,7 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
      */
 
     public void NW(View view) {
-        dialognewweek = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogxx, null);
+        dialognewweek = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogx, null);
         adbnw = new AlertDialog.Builder(this);
         adbnw.setCancelable(false);
         adbnw.setTitle("would you like to start new week?");
@@ -261,7 +213,7 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
     public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
         phonestudent1 = stringList.get(position);
         if (phonestudent1.equals("Canceled")) {
-            dialogreturn = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogxxx, null);
+            dialogreturn = (LinearLayout) getLayoutInflater().inflate(R.layout.dialogx, null);
             adbreturn = new AlertDialog.Builder(this);
             adbreturn.setCancelable(false);
             adbreturn.setTitle("would you like to return this lesson?");
@@ -402,20 +354,36 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
             finish();
         }
         if (st.equals("About")) {
-            openDialog();
+            about1 about12= new about1();
+            about12.show(getSupportFragmentManager(),"About");
         }
 
 
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
     /**
      *the function previews a Dialog that gives information about the application.
      */
-
-    public void openDialog(){
-        about1 about12= new about1();
-        about12.show(getSupportFragmentManager(),"About");
+    private void refDaysList(DatabaseReference refDay){
+        refDay.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot ds) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                stringList.clear();
+                for (DataSnapshot data : ds.getChildren()){
+                    String tmp=data.getValue(String.class);
+                    stringList.add(tmp);
+                }
+                adp=new ArrayAdapter<String>(TeacherLessons.this,R.layout.support_simple_spinner_dropdown_item,stringList);
+                lv.setAdapter(adp);
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
 
     }
 }

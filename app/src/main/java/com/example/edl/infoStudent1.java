@@ -252,7 +252,8 @@ public class infoStudent1 extends AppCompatActivity {
             finish();
         }
         if (st.equals("About")) {
-            openDialog();
+            about1 about12= new about1();
+            about12.show(getSupportFragmentManager(),"About");
         }
 
         return super.onOptionsItemSelected(item);
@@ -261,11 +262,7 @@ public class infoStudent1 extends AppCompatActivity {
      *the function previews a Dialog that gives information about the application.
      */
 
-    public void openDialog(){
-        about1 about12= new about1();
-        about12.show(getSupportFragmentManager(),"About");
 
-    }
     /**
      *  the function opens the gallery
         *the function occurs when the button 'Upload' is clicked.

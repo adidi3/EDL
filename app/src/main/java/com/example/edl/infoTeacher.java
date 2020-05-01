@@ -121,16 +121,12 @@ public class infoTeacher extends AppCompatActivity {
             finish();
         }
         if (st.equals("About")) {
-            openDialog();
+            about1 about12= new about1();
+            about12.show(getSupportFragmentManager(),"About");
         }
 
 
         return super.onOptionsItemSelected(item);
-    }
-    public void openDialog(){
-        about1 aboutinfoteacher= new about1();
-        aboutinfoteacher.show(getSupportFragmentManager(),"About");
-
     }
     /**
      * After the teacher chose an image from the gallery,
