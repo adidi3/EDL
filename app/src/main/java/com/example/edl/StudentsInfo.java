@@ -81,16 +81,10 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
         uid = fbuser.getUid();
         Query query1 = refTeacher.orderByChild("uid").equalTo(uid);
         query1.addListenerForSingleValueEvent(VEL2);
-
-
-
-
-
     }
     /**
      *the function reads from FB the students that is belong to the teacher, insert their phones and names into a spinner, and then shows the spinner.
      */
-
     com.google.firebase.database.ValueEventListener VEL = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dS) {
@@ -102,14 +96,10 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
                     String phones=user.getPhone();
                     String studentInfo = phones+" "+names;
                     lst.add(studentInfo);
-
                 }
                     ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(StudentsInfo.this, android.R.layout.simple_spinner_item, lst);
                     arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner1.setAdapter(arrayAdapter);
-
-
-
             }
         }
 
@@ -220,7 +210,6 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Toast.makeText(infoTeacher.this, "Image download failed", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -302,7 +291,6 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
      */
 
     public boolean onOptionsItemSelected (MenuItem item){
-        //menu
         String st = item.getTitle().toString();
 
         if (st.equals("Home screen")) {
@@ -319,13 +307,8 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
             about1 about12= new about1();
             about12.show(getSupportFragmentManager(),"About");
         }}}
-
         return super.onOptionsItemSelected(item);
     }
-    /**
-     *the function previews a Dialog that gives information about the application.
-     */
-
 
     /**
      *the function happens when the button 'delete' is clicked.
@@ -371,5 +354,4 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
             Toast.makeText(this, "You didn't select student", Toast.LENGTH_SHORT).show();
         }
     }
-
 }

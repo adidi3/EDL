@@ -210,9 +210,7 @@ public class infoStudent1 extends AppCompatActivity {
      * @throws IOException
      */
     public void download() throws IOException{
-
         StorageReference refImg = refImages.child(uid1+".jpg");
-
         final File localFile = File.createTempFile(uid1,"jpg");
         refImg.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
@@ -225,7 +223,6 @@ public class infoStudent1 extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Toast.makeText(infoTeacher.this, "Image download failed", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -243,7 +240,6 @@ public class infoStudent1 extends AppCompatActivity {
      */
 
     public boolean onOptionsItemSelected (MenuItem item) {
-        //menu
         String st = item.getTitle().toString();
 
         if (st.equals("Home screen")) {
@@ -256,14 +252,8 @@ public class infoStudent1 extends AppCompatActivity {
                 about12.show(getSupportFragmentManager(), "About");
             }
         }
-
-
         return super.onOptionsItemSelected(item);
     }
-    /**
-     *the function previews a Dialog that gives information about the application.
-     */
-
 
     /**
      *  the function opens the gallery

@@ -57,10 +57,6 @@ import static com.example.edl.FBref.refAuth;
 import static com.example.edl.FBref.refStudent;
 import static com.example.edl.FBref.refTeacher;
 import static com.example.edl.FBref.refTeacherTime;
-import static com.example.edl.FBref.refUsers;
-
-
-
 
 
 public class start extends AppCompatActivity {
@@ -70,29 +66,20 @@ public class start extends AppCompatActivity {
     Button btn;
     Spinner spinner;
     Switch switchMALEfemale, switchTecherstudent, switchAutoManuel;
-    String name="nnn", phoneInput="0", phone="+972", email, uid, id, money, date="", wteacher;
+    String name="nnn", phoneInput="0", phone="+972", email, uid, id, money, date="", wteacher, count="0", s, sf= "", code, mVerificationId;
     Query query;
-    String count="0";
     int yearnow;
     Ustudents Ustudents1;
     Uteachers Uteachers1;
-    String s;
-    String sf= "";
     Day day1= new Day();
     Week week1=new Week();
     DatePickerDialog.OnDateSetListener d1;
-    Boolean stayConnect, registered;
-    Boolean female=false;
-    Boolean manual=false;
-    Boolean student= false;
+    Boolean female=false, manual=false, student= false, isUID = true, registered, mVerificationInProgress = false ;
     List<String> tl= new ArrayList<String>();
     List<String> tlname=new ArrayList<String>();
     AlertDialog.Builder adbuild, alertdialogbuilder;
-    String code, mVerificationId;
-    Boolean isUID = true;
     AlertDialog adCode=null, adCode22=null;
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
-    Boolean mVerificationInProgress = false;
     ValueEventListener usersListener, usersListener2;
     FirebaseUser user;
 
@@ -120,7 +107,6 @@ public class start extends AppCompatActivity {
         tVmanual=(TextView) findViewById(R.id.manual);
         tVauto=(TextView) findViewById(R.id.auto);
 
-        stayConnect=false;
         registered=true;
 
 
@@ -184,17 +170,13 @@ public class start extends AppCompatActivity {
                         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinner.setAdapter(arrayAdapter);
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                     }
                 });
-
-
                 onVerificationStateChanged();
                 regoption();
     }
-
 
      /**
       * On activity pause - If logged in & asked to be remembered - kill activity.
@@ -203,9 +185,6 @@ public class start extends AppCompatActivity {
       * this function is called when the user is in the login option but he needs to register.
       * the function changes the screen for the register option.
       */
-
-
-
      private void regoption() {
         SpannableString ss = new SpannableString("Don't have an account?  Register here!");
         ClickableSpan span = new ClickableSpan() {
@@ -376,7 +355,6 @@ public class start extends AppCompatActivity {
       */
      @Override
      protected void onStop() {
-         // TODO Auto-generated method stub
          super.onStop();
          if(adCode22!=null)
          {
@@ -399,11 +377,11 @@ public class start extends AppCompatActivity {
 
     private void startPhoneNumberVerification(String phoneNumber) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber,           // Phone number to verify
-                40,                 // Timeout duration
-                TimeUnit.SECONDS,      // Unit of timeout
-                this,          // Activity (for callback binding)
-                mCallbacks);          // OnVerificationStateChangedCallbacks
+                phoneNumber,
+                40,
+                TimeUnit.SECONDS,
+                this,
+                mCallbacks);
         mVerificationInProgress = true;
     }
 

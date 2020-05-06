@@ -158,7 +158,6 @@ public class SettingTeacher extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
     public boolean onOptionsItemSelected(MenuItem item) {
-        //menu
         String st=item.getTitle().toString();
         if (st.equals("Home screen")){
             Intent gotogal = new Intent(this, TeacherLessons.class);

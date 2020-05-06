@@ -35,7 +35,6 @@ import java.io.IOException;
 
 import static com.example.edl.FBref.refAuth;
 import static com.example.edl.FBref.refImages;
-import static com.example.edl.FBref.refStudent;
 import static com.example.edl.FBref.refTeacher;
 /**
  * @author Adi Eisenberg
@@ -61,10 +60,8 @@ public class infoTeacher extends AppCompatActivity {
         tid=(TextView) findViewById(R.id.tvid1);
         ename=(EditText) findViewById(R.id.eTname1);
 
-
         FirebaseUser fbuser = refAuth.getCurrentUser();
         uid = fbuser.getUid();
-
 
         Query query = refTeacher.orderByChild("uid").equalTo(uid);
         query.addListenerForSingleValueEvent(VEL);
@@ -94,22 +91,30 @@ public class infoTeacher extends AppCompatActivity {
         public void onCancelled(@NonNull DatabaseError databaseError) {
         }
     };
-
+    /**
+     *the function happens when the button 'Update' is clicked.
+     *if the teacher changed his details the older details will be deleted and the new one will replace it on FB
+     *@param view
+     */
     public void update(View view) {
         refTeacher.child(phone1).child("name").removeValue();
         refTeacher.child(phone1).child("name").setValue(ename.getText().toString());
         Toast.makeText(this, "The changes have been saved", Toast.LENGTH_LONG).show();
-        }
-
-
+    }
+    /**
+     *the function creates a menu.
+     @param menu
+     */
     public boolean onCreateOptionsMenu (Menu menu){
         getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
+    /**
+     *the function checked which one of the menu’s options was selected by the teacher, and sent him to the selected screen.
+     *  @param item
+     */
     public boolean onOptionsItemSelected (MenuItem item){
-        //menu
         String st = item.getTitle().toString();
-
         if (st.equals("Students's information")) {
             Intent in = new Intent(infoTeacher.this, StudentsInfo.class);
             startActivity(in);
@@ -124,8 +129,6 @@ public class infoTeacher extends AppCompatActivity {
             about1 about12= new about1();
             about12.show(getSupportFragmentManager(),"About");
         }}}
-
-
         return super.onOptionsItemSelected(item);
     }
     /**
@@ -191,7 +194,6 @@ public class infoTeacher extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-               // Toast.makeText(infoTeacher.this, "Image download failed", Toast.LENGTH_LONG).show();
             }
         });
     }

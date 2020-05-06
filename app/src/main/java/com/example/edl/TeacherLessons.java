@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -340,7 +339,6 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
      */
 
     public boolean onOptionsItemSelected (MenuItem item){
-        //menu
         String st = item.getTitle().toString();
 
         if (st.equals("Students's information")) {
@@ -360,14 +358,12 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
         return true;
     }
     /**
-     *the function previews a Dialog that gives information about the application.
+     *The function reads the teacher's schedule from FB, inserts the info into a list and shows it to the teacher.
      */
     private void refDaysList(DatabaseReference refDay){
         refDay.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot ds) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
                 stringList.clear();
                 for (DataSnapshot data : ds.getChildren()){
                     String tmp=data.getValue(String.class);
@@ -378,7 +374,6 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
             }
             @Override
             public void onCancelled(DatabaseError error) {
-                // Failed to read value
             }
         });
     }

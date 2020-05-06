@@ -4,21 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -42,19 +37,15 @@ import static com.example.edl.FBref.refTeacherTime;
  * the first student's activity, here the student can edit his sceduale.
  */
 public class lessonsStudent extends AppCompatActivity implements AdapterView.OnItemClickListener{
-    String phone="", phonestudent="", names="", count1, smoney;
+    String phone="", phonestudent="", names="", count1, smoney, day="sunday", psss="", ps="", uid, str, list1, tmp;
     ListView lv1;
     ImageButton bl, br;
     ArrayList<String> stringLst= new ArrayList<String>();
     ArrayAdapter<String> adp1;
-    String day="sunday";
-    String psss="";
-    String ps="";
     TextView tvDays1, tvname;
     int dayCount=1, money=0;
     AlertDialog.Builder alertdb, adialogb;
     LinearLayout dialog6, dialogex;
-    String uid, str, list1, tmp;
     Ustudents user;
     Uteachers usert;
 
@@ -73,15 +64,10 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
         Query query = refStudent.orderByChild("uid").equalTo(uid);
         query.addListenerForSingleValueEvent(VEL);
 
-
-
         lv1.setOnItemClickListener(this);
         lv1.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         adp1=new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item,stringLst);
         lv1.setAdapter(adp1);
-
-
-
     }
 
 
@@ -318,7 +304,7 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
         }
     /**
      *the function creates a menu.
-     @param menu
+     *@param menu
      */
 
     public boolean onCreateOptionsMenu (Menu menu){
@@ -331,7 +317,6 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
      */
 
     public boolean onOptionsItemSelected (MenuItem item){
-        //menu
         String st = item.getTitle().toString();
 
         if (st.equals("information")) {
@@ -345,9 +330,6 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
         }}
         return super.onOptionsItemSelected(item);
     }
-    /**
-     *the function previews a Dialog that gives information about the application.
-     */
 
     /**
      *The function reads the teacher's schedule from FB, inserts the info into a list and shows it to the student.
@@ -357,8 +339,6 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
             @Override
 
             public void onDataChange(DataSnapshot ds1) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
                 stringLst.clear();
                 for (DataSnapshot datasnap : ds1.getChildren()){
                     String tmp=datasnap.getValue(String.class);
@@ -370,7 +350,6 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
 
             @Override
             public void onCancelled(DatabaseError error) {
-                // Failed to read value
             }
         });
     }
