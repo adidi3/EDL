@@ -310,15 +310,15 @@ public class StudentsInfo extends AppCompatActivity implements AdapterView.OnIte
             startActivity(in);
             finish();
         }
-        if (st.equals("Information about me")) {
+        else {    if (st.equals("Information about me")) {
             Intent in = new Intent(StudentsInfo.this, infoTeacher.class);
             startActivity(in);
             finish();
         }
-        if (st.equals("About")) {
+        else{ if (st.equals("About")) {
             about1 about12= new about1();
             about12.show(getSupportFragmentManager(),"About");
-        }
+        }}}
 
         return super.onOptionsItemSelected(item);
     }

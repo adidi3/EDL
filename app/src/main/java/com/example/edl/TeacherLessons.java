@@ -348,18 +348,15 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
             startActivity(in);
             finish();
         }
-        if (st.equals("Information about me")) {
+        else {   if (st.equals("Information about me")) {
             Intent in = new Intent(TeacherLessons.this, infoTeacher.class);
             startActivity(in);
             finish();
-        }
-        if (st.equals("About")) {
+        } else {
+          if (st.equals("About")) {
             about1 about12= new about1();
             about12.show(getSupportFragmentManager(),"About");
-        }
-
-
-
+        }}}
         return true;
     }
     /**
@@ -384,6 +381,5 @@ public class TeacherLessons extends AppCompatActivity implements AdapterView.OnI
                 // Failed to read value
             }
         });
-
     }
 }

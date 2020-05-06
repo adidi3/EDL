@@ -242,7 +242,7 @@ public class infoStudent1 extends AppCompatActivity {
      *the function checked which one of the menu’s options was selected by the student, and sent him to the selected screen.
      */
 
-    public boolean onOptionsItemSelected (MenuItem item){
+    public boolean onOptionsItemSelected (MenuItem item) {
         //menu
         String st = item.getTitle().toString();
 
@@ -250,11 +250,13 @@ public class infoStudent1 extends AppCompatActivity {
             Intent in = new Intent(infoStudent1.this, lessonsStudent.class);
             startActivity(in);
             finish();
+        } else {
+            if (st.equals("About")) {
+                about1 about12 = new about1();
+                about12.show(getSupportFragmentManager(), "About");
+            }
         }
-        if (st.equals("About")) {
-            about1 about12= new about1();
-            about12.show(getSupportFragmentManager(),"About");
-        }
+
 
         return super.onOptionsItemSelected(item);
     }

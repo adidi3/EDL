@@ -339,10 +339,10 @@ public class lessonsStudent extends AppCompatActivity implements AdapterView.OnI
             startActivity(in);
             finish();
         }
-        if (st.equals("About")) {
+       else{ if (st.equals("About")) {
             about1 about12= new about1();
             about12.show(getSupportFragmentManager(),"About");
-        }
+        }}
         return super.onOptionsItemSelected(item);
     }
     /**

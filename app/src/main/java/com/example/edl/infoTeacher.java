@@ -115,15 +115,15 @@ public class infoTeacher extends AppCompatActivity {
             startActivity(in);
             finish();
         }
-        if (st.equals("Home screen")) {
+        else{ if (st.equals("Home screen")) {
             Intent in = new Intent(infoTeacher.this, TeacherLessons.class);
             startActivity(in);
             finish();
         }
-        if (st.equals("About")) {
+       else{ if (st.equals("About")) {
             about1 about12= new about1();
             about12.show(getSupportFragmentManager(),"About");
-        }
+        }}}
 
 
         return super.onOptionsItemSelected(item);
